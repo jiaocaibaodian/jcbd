@@ -12,14 +12,19 @@ class Index extends BaseController
     {
         return View::fetch();
     }
+    public function signin()
+    {
+        return View::fetch();
+    }
+    public function emaillogin()
+    {
+        return View::fetch();
+    }
     public function login()
     {
         return View::fetch();
     }
-    public function login1(){
-        return View::fetch();
-    }
-    public function resource()
+    public function login1()
     {
         return View::fetch();
     }
@@ -55,12 +60,11 @@ class Index extends BaseController
         }
     }
     public function get_register() //
-
     {
         session_start();
         $_POST = Request::post();
         //检查验证码
-        if ($_SESSION['mailCode'] != $_POST['mailCode']) {
+        if ($_SESSION['mailCode']!=$_POST['mailCode']){
             return json(["count" => 0, "errMsg" => "验证码输入错误"]);
         }
         //检查该邮箱或用户名是否存在
@@ -192,43 +196,15 @@ class Index extends BaseController
         }
     }
     public function send_code()
-    {
+    {   
         session_start();
         $_POST = Request::post();
-        $code = rand(100000, 999999);
-        mailto($_POST['mail_to'], "用户", "教材宝典", "尊敬的用户，您好！您的验证码是" . $code);
+        $code = rand(100000,999999);
+        mailto($_POST['mail_to'],"用户","教材宝典","尊敬的用户，您好！您的验证码是".$code);
         $_SESSION['mailCode'] = $code;
         return "邮件发送成功";
     }
-    public function upload()
-    {
-        var_dump($_FILES);
-        //允许上传的文件类型后缀
-        $allowedExts = array("gif", "jpeg", "jpg", "png","pdf","txt");
-        $temp = explode(".", $_FILES["file"]["name"]);
-        echo $_FILES["file"]["size"];
-        $extension = end($temp); // 获取文件后缀名
-        if (in_array($extension, $allowedExts)) {
-            if ($_FILES["file"]["error"] > 0) {
-                echo "错误：: " . $_FILES["file"]["error"] . "<br>";
-            } else {
-                echo "上传文件名: " . $_FILES["file"]["name"] . "<br>";
-                echo "文件类型: " . $_FILES["file"]["type"] . "<br>";
-                echo "文件大小: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-                echo "文件临时存储的位置: " . $_FILES["file"]["tmp_name"] . "<br>";
-
-                // 判断当前目录下的 upload 目录是否存在该文件
-                // 如果没有 upload 目录，你需要创建它，upload 目录权限为 777
-                if (file_exists("upload/" . $_FILES["file"]["name"])) {
-                    echo $_FILES["file"]["name"] . " 文件已经存在。 ";
-                } else {
-                    // 如果 upload 目录不存在该文件则将文件上传到 upload 目录下
-                    move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
-                    echo "文件存储在: " . "upload/" . $_FILES["file"]["name"];
-                }
-            }
-        } else {
-            echo "非法的文件格式";
-        }
+    public function test(){
+        return View::fetch();
     }
 }
