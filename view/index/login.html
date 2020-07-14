@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+    <title>登录</title>
+</head>
+
+<body>
+    <el-container id="app">
+        <el-header>
+            <i class="el-icon-upload"></i>
+        </el-header>
+        <el-main>
+            <el-tabs>
+                <el-tab-pane label="用户名登录">
+                    <el-form>
+                        <el-form-item>
+                            <el-input v-model="login.uname" type="text" placeholder="用户名"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="login.upsw" type="password" placeholder="密码"></el-input>
+                        </el-form-item>
+                        <el-form-item class="checkcode">
+                            <el-input v-model="login.checkcode" type="text" placeholder="输入验证码" @blur="code_check()"></el-input>
+                            <img src="/index/get_check_img" onclick="this.src='get_check_img?'+new Date().getTime();" width="100" height="40">
+                        </el-form-item>
+                        <span class="code_check_tip">
+                            <i class="el-icon-warning"></i>
+                            <span>验证码错误</span>
+                        </span>
+                        <el-button type="primary" @click="get_login()">登录</el-button>
+                    </el-form>
+                    <div class="psw_rm">
+                        <el-form>
+                            <el-form-item label="记住密码">
+                                <el-switch active-color="#129b22" inactive-color="#8387d8" v-model="login.rmpsw"></el-switch>
+                            </el-form-item>
+                        </el-form>
+                        <div class="psw_fg">
+                            <el-button type="text">忘记密码</el-button>
+                            <i class="el-icon-arrow-right"></i>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="邮箱登录">
+                    <el-form>
+                        <el-form-item>
+                            <el-input v-model="login.uemail" type="text" placeholder="邮箱号"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="login.upsw" type="password" placeholder="密码"></el-input>
+                        </el-form-item>
+                        <el-form-item class="checkcode">
+                            <el-input v-model="login.checkcode" type="text" placeholder="输入验证码" @blur="code_check()"></el-input>
+                            <img src="/index/get_check_img" onclick="this.src='get_check_img?'+new Date().getTime();" width="100" height="40">
+                        </el-form-item>
+                        <span class="code_check_tip">
+                            <i class="el-icon-warning"></i>
+                            <span>验证码错误</span>
+                        </span>
+                        <el-button type="primary" @click="get_login()">登录</el-button>
+                    </el-form>
+                    <div class="psw_rm">
+                        <el-form>
+                            <el-form-item label="记住密码">
+                                <el-switch active-color="#129b22" inactive-color="#8387d8" v-model="login.rmpsw"></el-switch>
+                            </el-form-item>
+                        </el-form>
+                        <div class="psw_fg">
+                            <el-button type="text">忘记密码</el-button>
+                            <i class="el-icon-arrow-right"></i>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="注册">
+                    <el-form>
+                        <el-form-item>
+                            <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @change="email_check()"></el-input>
+                            <span class="email_check_tip">
+                                <i class="el-icon-warning"></i>
+                                <span>邮箱名不合法</span>
+                            </span>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="register.upsw" type="password" placeholder="密码" @change="psw_check()" maxlength="16"></el-input>
+                            <span class="psw_check_tip">
+                                <i class="el-icon-warning"></i>
+                                <span>密码不合法</span>
+                            </span>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="register.checkpsw" type="password" placeholder="确认密码" @change="psw_check()"></el-input>
+                            <span class="checkpsw_check_tip">
+                                <i class="el-icon-warning"></i>
+                                <span>两次密码不一致</span>
+                            </span>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-input v-model="register.uname" placeholder="用户名" @change="uname_check()"></el-input>
+                            <span class="name_check_tip">
+                                <i class="el-icon-warning"></i>
+                                <span>用户名已被占用</span>
+                            </span>
+                            <img src="/static/img/random.jpg" alt="随机生成" class="random-img" @click="get_uname()">
+                        </el-form-item>
+                        <el-button type="primary" @click="register.dialogVisible = true">注册</el-button>
+                    </el-form>
+                </el-tab-pane>
+            </el-tabs>
+        </el-main>
+        <el-dialog title="邮件验证" :visible.sync="register.dialogVisible" width="30%">
+            <el-form>
+                <el-form-item>
+                    <el-input v-model="register.mailCode" placeholder="输入验证码" class="mail-input"></el-input>
+                    <el-button type="primary" @click="getMailCode()">获取验证码</el-button>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="register.dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="get_register()">确 定</el-button>
+            </span>
+        </el-dialog>
+    </el-container>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+    <script src="/static/js/login.js"></script>
+</body>
+
+</html>

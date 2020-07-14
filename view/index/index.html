@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>首页</title>
+</head>
+
+<body>
+    <el-container id="app">
+        <el-header>
+            <!-- 导航条 -->
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                <el-menu-item>
+                    <img src="/static/img/jiaocaibaodian.png" alt="网站logo" class="logo">
+                </el-menu-item>
+                <el-menu-item index="1">首页</el-menu-item>
+                <el-menu-item index="2">专业区</el-menu-item>
+                <el-menu-item index="3">讨论区</el-menu-item>
+                <el-menu-item index="4"><a href="/index/resource">资源区</a></el-menu-item>
+                <el-submenu index="5">
+                    <template slot="title">个人</template>
+                    <el-menu-item index="5-1">我的书架</el-menu-item>
+                    <el-menu-item index="5-2">我的视频库</el-menu-item>
+                    <el-menu-item index="5-3">个人主页</el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </el-header>
+        <el-main>
+
+        </el-main>
+        <el-footer>
+
+        </el-footer>
+    </el-container>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+    <script src="/static/js/index.js"></script>
+</body>
+
+</html>
