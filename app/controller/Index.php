@@ -16,6 +16,9 @@ class Index extends BaseController
     {
         return View::fetch();
     }
+    public function login1(){
+        return View::fetch();
+    }
     public function resource()
     {
         return View::fetch();

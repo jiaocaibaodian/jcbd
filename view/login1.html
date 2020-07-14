@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>登录界面模板@戈小戈</title>
+    <link rel="Shortcut Icon" href="http://www.rcloud.cn/tp/public/img/jiaocaibaodian.ico" type="image/x-icon" />
+    <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://www.rcloud.cn/tp/public/plugins/styles.css">
+    <script type="text/javascript" src="http://www.rcloud.cn/tp/public/plugins/vue/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="login-box" id="app">
+            <img src="http://www.rcloud.cn/tp/public/img/jiaocaibaodian.png" width="50" height="50">
+            <h3 class="login-title">欢迎</h3>
+            <el-form class="box">
+
+                <el-form-item :span="8">
+                    <el-input id="name" v-model="name" placeholder="请输入帐号">
+                        <template slot="prepend">帐号</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item :span="8">
+                    <el-input id="password" v-model="password" type="password" placeholder="请输入密码">
+                        <template slot="prepend">密码</template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item :span="8">
+                    <el-button id="login" v-on:click="check" style="width:100%" type="primary">登录</el-button>
+                </el-form-item>
+            </el-form>
+
+        </div>
+        <el-form class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </el-form>
+    </div>
+</body>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            name: '',
+            password: ''
+        },
+        methods: {
+            check: function(event) {
+                //获取值
+                var name = this.name;
+                var password = this.password;
+                if (name == '' || password == '') {
+                    this.$message({
+                        message: '账号或密码为空！',
+                        type: 'error'
+                    })
+                    return;
+                }
+                $.ajax({
+                    url: 'login',
+                    type: 'post',
+                    data: {
+                        name: name,
+                        password: password
+                    },
+                    success: function(data) {
+                        var result = data.result;
+                        if (result == 'true' || result == true) {
+                            alert("登录成功");
+                        } else {
+                            alert("登录失败");
+                        }
+                    },
+                    error: function(data) {
+                        alert(data);
+                    },
+                    dataType: 'json',
+                })
+            }
+        }
+    })
+</script>
+<script type="text/javascript">
+    $('#login').click(function(event) {
+        event.preventDefault();
+        $('.box').fadeOut(1000);
+        $('.login-title').addClass('hover');
+    });
+</script>
+
+</html>

@@ -23,13 +23,13 @@ function mailto($to, $nickname, $title, $content)
         $mail->CharSet = 'utf-8';                         // 设置邮件格式编码
         $mail->Host = 'smtp.qq.com';                          // Specify main and backup SMTP servers   smtp服务器的名称
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = '2633017367@qq.com';                 // SMTP username
-        $mail->Password = 'zarhwmfalmuzeabj';                           // SMTP password   此为QQ授权码。
+        $mail->Username = '@qq.com';                 // SMTP username
+        $mail->Password = '';                           // SMTP password   此为QQ授权码。
         $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted   目前规定必须使用ssl，非ssl的协议已经不支持了
         $mail->Port = 465;                                    // TCP port to connect to   ssl协议，端口号一般是465
 
         //Recipients
-        $mail->setFrom('2633017367@qq.com', 'jcbd管理员'); // 设置邮件发送人信息(邮箱, 昵称)
+        $mail->setFrom('@qq.com', 'jcbd管理员'); // 设置邮件发送人信息(邮箱, 昵称)
         $mail->addAddress($to, $nickname);     // 设置收件人信息(邮箱, 昵称)
 //        $mail->addAddress('ellen@example.com');               // Name is optional
 //        $mail->addReplyTo('info@example.com', 'Information');
