@@ -31,15 +31,19 @@
             </el-menu>
         </el-header>
         <el-main>
-            <div class="upload-file">
-                <el-upload accept="image/*,.pdf,.mp4,.txt" ref="upload" multiple :limit="5" action="http://xxx.xxx.xxx/personality/uploadExcel" :on-change="handleChange" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList" :http-request="uploadFile"
-                    :auto-upload="false">
-                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                    <el-button style="margin-left: 133px;" size="small" type="success" @click="submitUpload">上传到服务器
-                    </el-button>
-                    <div slot="tip" class="el-upload__tip">可以上传图片和pdf，以及mp4视频和文本</div>
-                </el-upload>
-            </div>
+            <el-form>
+                <el-form-item>
+                    <div class="upload-file">
+                        <el-upload accept="image/*,.pdf,.mp4,.txt" ref="upload" multiple :limit="5" action="http://xxx.xxx.xxx/personality/uploadExcel" :on-change="handleChange" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList" :http-request="uploadFile"
+                            :auto-upload="false">
+                            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                            <el-button style="margin-left: 133px;" size="small" type="success" @click="submitUpload">上传到服务器
+                            </el-button>
+                            <div slot="tip" class="el-upload__tip">可以上传图片和pdf，以及mp4视频和文本</div>
+                        </el-upload>
+                    </div>
+                </el-form-item>
+            </el-form>
         </el-main>
         <el-footer>
 

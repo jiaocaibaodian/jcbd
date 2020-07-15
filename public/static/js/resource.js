@@ -15,7 +15,7 @@ var app = new Vue({
 
         // 上传到服务器
         submitUpload() {
-            let fieldData = this.uploadData.fieldData; // 缓存，注意，fieldData不要与fileData看混
+            //let fieldData = this.uploadData.fieldData; // 缓存，注意，fieldData不要与fileData看混
             if (this.fileList.length === 0) {
                 this.$message({
                     message: '请先选择文件',

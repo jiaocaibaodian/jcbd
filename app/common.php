@@ -51,3 +51,15 @@ function mailto($to, $nickname, $title, $content)
         exception($mail->ErrorInfo,1001);                 // 失败抛出错误信息
     }
 }
+function objectToArray($object)
+{
+    $array = array();
+    if (is_object($object)) {
+       foreach ($object as $key => $value) {
+          $array[$key] = $value;
+       }
+    } else {
+       $array = $object;
+    }
+    return $array;
+}
