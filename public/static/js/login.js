@@ -20,32 +20,33 @@ var app = new Vue({
         }
     },
     created: function() {
+        console.log(this.login);
         var uname = $.cookie("uname");
         var uemail = $.cookie("uemail");
         var upsw = $.cookie("upsw");
         if (uname) {
-            this._data.login.uname = uname;
-            this._data.login.uemail = uemail;
-            this._data.login.upsw = upsw;
-            this._data.login.rmpsw = true;
+            this.login.uname = uname;
+            this.login.uemail = uemail;
+            this.login.upsw = upsw;
+            this.login.rmpsw = true;
         }
     },
     methods: {
         get_login() {
             var loginData = {};
-            if (app._data.login.uname == "") { //邮箱登录
+            if (this.login.uname == "") { //邮箱登录
                 loginData = {
-                    uemail: app._data.login.uemail,
-                    upsw: app._data.login.upsw,
-                    rmpsw: app._data.login.rmpsw,
-                    checkcode: app._data.login.checkcode
+                    uemail: this.login.uemail,
+                    upsw: this.login.upsw,
+                    rmpsw: this.login.rmpsw,
+                    checkcode: this.login.checkcode
                 }
             } else {
                 loginData = { //用户名登录
-                    uname: app._data.login.uname,
-                    upsw: app._data.login.upsw,
-                    rmpsw: app._data.login.rmpsw,
-                    checkcode: app._data.login.checkcode
+                    uname: this.login.uname,
+                    upsw: this.login.upsw,
+                    rmpsw: this.login.rmpsw,
+                    checkcode: this.login.checkcode
                 }
             }
             console.log(loginData);
@@ -74,7 +75,7 @@ var app = new Vue({
                     method: 'post',
                     url: "/index/code_check",
                     data: {
-                        checkcode: app._data.login.checkcode
+                        checkcode: this.login.checkcode
                     }
                 })
                 .then(res => {
@@ -90,7 +91,7 @@ var app = new Vue({
         email_check() {
             //检测邮箱合法性
             var regExp = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-            if (!regExp.test(app._data.register.uemail)) {
+            if (!regExp.test(this.register.uemail)) {
                 $(".email_check_tip").css("display", "inline");
                 return false;
             } else {
@@ -100,7 +101,7 @@ var app = new Vue({
         },
         psw_check() {
             //检测密码合法性，必须且只能包含字母和数字和下划线，
-            var psw = app._data.register.upsw;
+            var psw = this.register.upsw;
             var flag = (/^\d+$/.test(psw)) || (/^[a-zA-Z]+$/.test(psw));
             if (flag) {
                 $(".psw_check_tip").text("密码中至少包含字母和数字")
@@ -115,7 +116,7 @@ var app = new Vue({
             }
             $(".psw_check_tip").css("display", "none");
             //检测两次密码一致性
-            var checkpsw = app._data.register.checkpsw;
+            var checkpsw = this.register.checkpsw;
             if (checkpsw != psw) {
                 $(".checkpsw_check_tip").text("两次密码不一致")
                 $(".checkpsw_check_tip").css("display", "inline");
@@ -130,7 +131,7 @@ var app = new Vue({
                     method: 'post',
                     url: "/index/uname_check",
                     data: {
-                        uname: app._data.register.uname
+                        uname: this.register.uname
                     }
                 })
                 .then((res) => {
@@ -144,7 +145,7 @@ var app = new Vue({
                 })
         },
         get_register() {
-            //app._data.register.dialogVisible = false;
+            //this.register.dialogVisible = false;
             var flag = this.email_check() && this.psw_check();
             if (!flag) {
                 alert("输入有误，请重新输入");
@@ -154,7 +155,7 @@ var app = new Vue({
             axios({
                     method: 'post',
                     url: "/index/get_register",
-                    data: app._data.register
+                    data: this.register
                 })
                 .then((res) => {
                     console.log(res.data);
@@ -172,7 +173,7 @@ var app = new Vue({
             axios.get("/index/get_uname")
                 .then(res => {
                     console.log(res.data);
-                    app._data.register.uname = res.data;
+                    this.register.uname = res.data;
                     $(".name_check_tip").css("display", "none");
                 })
                 .catch(err => {
@@ -184,7 +185,7 @@ var app = new Vue({
                     method: "post",
                     url: "/index/send_code",
                     data: {
-                        mail_to: app._data.register.uemail
+                        mail_to: this.register.uemail
                     }
                 })
                 .then(res => {

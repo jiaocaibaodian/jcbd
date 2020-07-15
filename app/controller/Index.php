@@ -229,9 +229,9 @@ class Index extends BaseController
         $_SESSION['mailCode'] = $code;
         return "邮件发送成功";
     }
-    public function upload()
+    public function upload()    //资源上传接口
     {
-        var_dump($_FILES);
+        return json($_FILES);
         //允许上传的文件类型后缀
         $allowedExts = array("gif", "jpeg", "jpg", "png","pdf","txt");
         $temp = explode(".", $_FILES["file"]["name"]);
