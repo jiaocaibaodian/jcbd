@@ -5,6 +5,11 @@ html {
     overflow: hidden;
 }
 
+* {
+    padding: 0;
+    margin: 0;
+}
+
 .el-form {
     margin-bottom: 20px;
     &:last-child {
@@ -16,8 +21,8 @@ html {
     background-color: rgba(255, 255, 255, 0.5);
     width: 300px;
     min-height: 350px;
-    max-height: 350px;
-    margin-top: 150px;
+    max-height: 420px;
+    margin-top: 100px;
     margin-right: auto;
     margin-left: auto;
     margin-bottom: 200px;
@@ -31,86 +36,6 @@ html {
     text-align: center;
     color: #409EFF;
     font-size: 30px;
-}
-
-* {
-    padding: 0;
-    margin: 0;
-}
-
-.login-title.hover {
-    margin-top: 50px;
-    color: #ff4040;
-    font-size: 40px;
-    animation: changeshadow 1s ease-in infinite;
-    /* 其它浏览器兼容性前缀 */
-    -webkit-animation: changeshadow 1s linear infinite;
-    -moz-animation: changeshadow 1s linear infinite;
-    -ms-animation: changeshadow 1s linear infinite;
-    -o-animation: changeshadow 1s linear infinite;
-}
-
-@keyframes changeshadow {
-    0% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-    50% {
-        text-shadow: 0 0 40px #FFB5C5
-    }
-    100% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-}
-
-
-/* 添加兼容性前缀 */
-
-@-webkit-keyframes changeshadow {
-    0% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-    50% {
-        text-shadow: 0 0 40px #FFB5C5
-    }
-    100% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-}
-
-@-moz-keyframes changeshadow {
-    0% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-    50% {
-        text-shadow: 0 0 40px #FFB5C5
-    }
-    100% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-}
-
-@-ms-keyframes changeshadow {
-    0% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-    50% {
-        text-shadow: 0 0 40px #FFB5C5
-    }
-    100% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-}
-
-@-o-keyframes changeshadow {
-    0% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
-    50% {
-        text-shadow: 0 0 40px #FFB5C5
-    }
-    100% {
-        text-shadow: 0 0 4px #FFB5C5
-    }
 }
 
 .bg-bubbles {
@@ -235,4 +160,133 @@ html {
         -webkit-transform: translateY(-700px) rotate(600deg);
         transform: translateY(-700px) rotate(600deg);
     }
+}
+
+html {
+    height: 100%;
+    background-color: #50a3a2;
+    background-image: linear-gradient(0deg, #50a3a2 0%, #2af5d8 50%, #50a3a2 100%);
+    overflow: hidden;
+}
+
+.random-img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    z-index: 100;
+    right: 10px;
+    top: 5px;
+}
+
+.el-header {
+    text-align: center;
+    height: 80px;
+}
+
+.el-header i {
+    font-size: 60px;
+}
+
+.el-main {
+    overflow: hidden;
+}
+
+.el-main .el-form .el-button {
+    width: 100%;
+}
+
+.psw_rm {
+    width: 100%;
+    display: inline-flex;
+}
+
+.psw_rm .el-form {
+    flex: 1;
+}
+
+.name_check_tip,
+.code_check_tip,
+.psw_check_tip,
+.checkpsw_check_tip,
+.email_check_tip {
+    display: none;
+    margin-top: 50px;
+    color: red;
+    animation: changeshadow 1s ease-in infinite;
+    /* 其它浏览器兼容性前缀 */
+    -webkit-animation: changeshadow 1s linear infinite;
+    -moz-animation: changeshadow 1s linear infinite;
+    -ms-animation: changeshadow 1s linear infinite;
+    -o-animation: changeshadow 1s linear infinite;
+}
+
+@keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+
+/* 添加兼容性前缀 */
+
+@-webkit-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+@-moz-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+@-ms-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+@-o-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+.el-form-item.checkcode .el-form-item__content {
+    display: flex;
+}
+
+.el-form-item.checkcode .el-form-item__content .el-input {
+    flex: 1;
 }

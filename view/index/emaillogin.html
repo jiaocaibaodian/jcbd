@@ -9,7 +9,7 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/static/css/styles.css">
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
-    <title>用户名登录</title>
+    <title>邮箱登录</title>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
         <h3 class="login-title">欢迎</h3>
         <el-form class="box">
             <el-form-item>
-                <el-input v-model="login.uname" type="text" placeholder="用户名">
+                <el-input v-model="login.uemail" type="text" placeholder="邮箱号">
                     <template slot="prepend">帐号</template>
                 </el-input>
             </el-form-item>
@@ -38,6 +38,7 @@
                             <span>验证码错误</span>
             </span>
             <el-button id="login" style="width:100%" type="primary" @click="get_login()">登录</el-button>
+
             <div class="psw_rm">
                 <el-form>
                     <el-form-item label="记住密码">
@@ -45,10 +46,10 @@
                     </el-form-item>
                 </el-form>
                 <el-form>
-                    <el-link href="emaillogin" type="primary" style=" margin-top:10%;margin-left:10px">邮箱名登录</el-link>
+                    <el-link href="login" type="primary" style=" margin-top:10%;margin-left:10px">用户名登录</el-link>
                 </el-form>
                 <div class="psw_fg">
-                    <el-button type="text" href="">忘记密码</el-button>
+                    <el-button type="text">忘记密码</el-button>
                     <i class="el-icon-arrow-right"></i>
                 </div>
             </div>
@@ -65,6 +66,7 @@
             <li></li>
             <li></li>
         </el-form>
+
     </div>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>

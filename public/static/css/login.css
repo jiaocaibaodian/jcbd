@@ -41,6 +41,12 @@ body {
     flex: 1;
 }
 
+.psw_fg {
+    display: inline-flex;
+    align-items: flex-start;
+    padding-top: 10px;
+}
+
 .el-main .el-tabs .el-tab-pane .el-form .el-form-item .name_check_tip,
 .code_check_tip,
 .psw_check_tip,

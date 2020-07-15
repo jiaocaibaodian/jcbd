@@ -6,7 +6,7 @@ var app = new Vue({
                 uname: "",
                 uemail: "",
                 upsw: "",
-                rmpsw: 0,
+                rmpsw: false,
                 checkcode: ""
             },
             register: {
@@ -19,25 +19,36 @@ var app = new Vue({
             },
         }
     },
+    created: function() {
+        var uname = $.cookie("uname");
+        var uemail = $.cookie("uemail");
+        var upsw = $.cookie("upsw");
+        if (uname) {
+            this._data.login.uname = uname;
+            this._data.login.uemail = uemail;
+            this._data.login.upsw = upsw;
+            this._data.login.rmpsw = true;
+        }
+    },
     methods: {
         get_login() {
-            var flag = this.code_check()
-            if (!flag) {
-                alert("输入有误，请重新输入");
-                return;
-            }
             var loginData = {};
             if (app._data.login.uname == "") { //邮箱登录
                 loginData = {
                     uemail: app._data.login.uemail,
                     upsw: app._data.login.upsw,
+                    rmpsw: app._data.login.rmpsw,
+                    checkcode: app._data.login.checkcode
                 }
             } else {
                 loginData = { //用户名登录
                     uname: app._data.login.uname,
-                    upsw: app._data.login.upsw
+                    upsw: app._data.login.upsw,
+                    rmpsw: app._data.login.rmpsw,
+                    checkcode: app._data.login.checkcode
                 }
             }
+            console.log(loginData);
             axios({
                     method: 'post',
                     url: "/index/get_login",
@@ -45,7 +56,12 @@ var app = new Vue({
                 })
                 .then(res => {
                     console.log(res.data);
-                    alert(res.data.msg);
+                    if (res.data.code)
+                        alert(res.data.msg);
+                    else {
+                        alert(res.data.errMsg);
+                        return;
+                    }
                     //跳转到首页
                     window.location.href = "index.html";
                 })

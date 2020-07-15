@@ -16,7 +16,12 @@ class Index extends BaseController
     {
         return View::fetch();
     }
-    public function login1(){
+    public function signin()
+    {
+        return View::fetch();
+    }
+    public function emaillogin()
+    {
         return View::fetch();
     }
     public function resource()
@@ -26,6 +31,12 @@ class Index extends BaseController
     public function get_login()
     {
         $_POST = Request::post();
+        //检查验证码
+        session_start();
+        if (strtolower($_SESSION["checkcode"]) != strtolower($_POST['checkcode'])) {
+            return json(["code" => 0, "errMsg" => "验证码输入错误"]);
+        }
+        //区分登录方式，根据邮箱或用户名获得该用户的完整数据
         $data = [];
         if (array_key_exists("uemail", $_POST)) {
             $data = Db::table("user")->where("uemail", $_POST['uemail'])->select();
@@ -34,20 +45,40 @@ class Index extends BaseController
         if (array_key_exists("uname", $_POST)) {
             $data = Db::table("user")->where("uname", $_POST['uname'])->select();
         }
-
-        //检查用户登录状态
-        $token = $_COOKIE[$data[0]['uname']];
-        $result = Db::table("user")->where("token", $token)->findOrEmpty();
+        //利用token检查用户登录状态
+        $token = "";
+        $result = [];
+        if (array_key_exists($data[0]['uname'], $_COOKIE)) {
+            $token = $_COOKIE[$data[0]['uname']];
+            $result = Db::table("user")->where("token", $token)->findOrEmpty();
+        }
         if (count($result) == 0) { //表示用户未登录，（cookie过期）
-
             //检测邮箱号或用户名是否存在
             if (count($data) > 0) { //如果存在,那么取出密码，跟post的密码对照
                 if ($data[0]['upsw'] == $_POST['upsw']) { //密码一致，更新token值，返回登录成功消息
                     $token = md5($data[0]['uname'] . date("Y-m-d", time()) . $_POST['upsw']);
                     setcookie($data[0]['uname'], $token, time() + 3600, "/");
+                    if ($_POST['rmpsw']==1){
+                        setcookie("uname",$data[0]['uname'],time()+7*24*60*60,"/");
+                        setcookie("uemail",$data[0]['uemail'],time()+7*24*60*60,"/");
+                        setcookie("upsw",$data[0]['upsw'],time()+7*24*60*60,"/");
+                    }else{
+                        setcookie("uname","",time()-7*24*60*60,"/");
+                        setcookie("uemail","",time()-7*24*60*60,"/");
+                        setcookie("upsw","",time()+7*24*60*60,"/");
+                    }
                     return json(['code' => 1, 'msg' => "登录成功", 'uname' => $data[0]['uname']]);
                 }
             } else {
+                if ($_POST['rmpsw']){
+                    setcookie("uname",$data[0]['uname'],time()+7*24*60*60);
+                    setcookie("uemail",$data[0]['uemail'],time()+7*24*60*60);
+                    setcookie("upsw",$data[0]['upsw'],time()+7*24*60*60);
+                }else{
+                    setcookie("uname","",time()-7*24*60*60);
+                    setcookie("uemail","",time()-7*24*60*60);
+                    setcookie("upsw","",time()+7*24*60*60);
+                }
                 return json(['code' => 0, 'errMsg' => "该用户不存在"]);
             }
         } else {
@@ -55,7 +86,6 @@ class Index extends BaseController
         }
     }
     public function get_register() //
-
     {
         session_start();
         $_POST = Request::post();
@@ -90,7 +120,6 @@ class Index extends BaseController
         }
     }
     public function get_uname() //获取用户名
-
     {
         $str = "abcdefghijklmnopqrstuvwxyz";
         $numstr = "1234567890";
