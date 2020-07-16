@@ -234,10 +234,12 @@ class Index extends BaseController
     public function upload() //资源上传接口
     {
         $_POST = Request::post();
+        var_dump($_POST);
         // 获取表单上传文件
         $files = request()->file("files");
+        var_dump($files);
         try {
-            validate(['files' => 'filesize:102400000|fileExt:jpg,pdf,jpeg,png,mp3,mp4'])
+            validate(['files' => 'filesize:102400000|fileExt:jpg,gif,pdf,jpeg,png,mp3,mp4'])
                 ->check($files);
             //验证通过，将资源存放到服务器
             $savename = [];
@@ -246,6 +248,17 @@ class Index extends BaseController
             }
             //在数据库中添加该资源的信息，包括作者，来源，类型，标签，存储路径等等
             
+        } catch (\think\exception\ValidateException $e) {
+            echo $e->getMessage();
+        }
+    }
+    public function upload_cover(){
+        //上传封面
+        $image = request()->file();
+        try {
+            validate(['image'=>'fileExt:jpg,png,gif,jpeg'])
+                ->check($image);
+            $savename = \think\facade\Filesystem::disk('public')->putFile('cover', $image['image']);
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
