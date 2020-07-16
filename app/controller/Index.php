@@ -233,18 +233,32 @@ class Index extends BaseController
     }
     public function upload() //资源上传接口
     {
-        
+        $_POST = Request::post();
         // 获取表单上传文件
         $files = request()->file("files");
         try {
             validate(['files' => 'filesize:102400000|fileExt:jpg,pdf,jpeg,png,mp3,mp4'])
                 ->check($files);
+            //验证通过，将资源存放到服务器
             $savename = [];
             foreach ($files as $file) {
                 $savename[] = \think\facade\Filesystem::putFile('topic', $file);
             }
+            //在数据库中添加该资源的信息，包括作者，来源，类型，标签，存储路径等等
+            
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
+    }
+    public function get_label(){
+        $label = input("param.label");
+        $lclass= input("param.lclass");
+        $result = [];
+        if ($lclass==1){
+            $result = Db::table("label")->where("lclass",1)->select();
+        }elseif ($lclass==0){
+            $result = Db::table("label")->where("attachl",$label)->select();
+        }
+        return json($result);
     }
 }

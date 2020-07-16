@@ -2,7 +2,7 @@ var app = new Vue({
     el: "#app",
     data() {
         return {
-            activeIndex: 4,
+            activeIndex: '4',
             fileData: '', // 文件上传数据（多文件合一）
             fileList: [], // upload多文件数组
         }

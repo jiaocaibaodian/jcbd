@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css">
@@ -24,15 +25,26 @@
                 <el-menu-item index="4">资源区</el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">个人</template>
-                    <el-menu-item index="5-1">我的书架</el-menu-item>
-                    <el-menu-item index="5-2">我的视频库</el-menu-item>
-                    <el-menu-item index="5-3">个人主页</el-menu-item>
+                    <el-menu-item index="5-1">登录</el-menu-item>
+                    <el-menu-item index="5-2">注册</el-menu-item>
+                    <el-menu-item index="5-3">我的书架</el-menu-item>
+                    <el-menu-item index="5-4">我的视频库</el-menu-item>
+                    <el-menu-item index="5-5">个人主页</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-header>
         <el-main>
-            <el-form>
-                <el-form-item>
+            <el-form ref="form">
+                <el-form-item label-width="80px">
+                    <el-form-item label="标签">
+                        <!-- 通过级联的方式选择资源的各级标签 -->
+                        <el-cascader placeholder="试试搜索：指南" :options="fieldData.labels" @active-item-change="handleItemChange" v-model="fieldData.selectedLabels"></el-cascader>
+                    </el-form-item>
+                    <el-form-item label="类型">
+                        <el-select v-model="fieldData.type" placeholder="请选择">
+                            <el-option v-for="type in fieldData.types" :key="type" :value="type"></el-option>
+                        </el-select>
+                    </el-form-item>
                     <div class="upload-file">
                         <el-upload accept="image/*,.pdf,.mp4,.txt" ref="upload" multiple :limit="5" action="http://xxx.xxx.xxx/personality/uploadExcel" :on-change="handleChange" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList" :http-request="uploadFile"
                             :auto-upload="false">
@@ -52,7 +64,122 @@
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
-    <script src="/static/js/resource.js"></script>
+    <!-- <script src="/static/js/resource.js"></script> -->
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    activeIndex: '4',
+                    fileData: '', // 文件上传数据（多文件合一）
+                    fileList: [], // upload多文件数组
+                    fieldData: {
+                        labels: [],
+                        types: ["视频", "教材", "教材答案", "原址链接", "电子书籍", "博客转载"],
+                        type: "",
+                        selectedLabels: "",
+                    }
+                }
+            },
+            created: function() {
+                //初始化fieldData.labels和fieldData.types
+                this.get_label("", 1)
+                    .then(res => {
+                        console.log(res.data);
+                        for (let i = 0; i < res.data.length; i++) {
+                            this.fieldData.labels.push({
+                                label: res.data[i].lname,
+                                value: res.data[i].lname,
+                                children: []
+                            })
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            methods: {
+                // 上传文件
+                uploadFile(file) {
+                    this.fileData.append('files[]', file.file); // append增加数据
+                },
+
+                // 上传到服务器
+                submitUpload() {
+                    let fieldData = this.fieldData; // 缓存，注意，fieldData不要与fileData看混
+                    if (this.fileList.length === 0) {
+                        this.$message({
+                            message: '请先选择文件',
+                            type: 'warning'
+                        })
+                    } else {
+                        this.fileData = new FormData(); // new formData对象
+                        this.$refs.upload.submit(); // 提交调用uploadFile函数
+                        this.fileData.append("labels", fieldData.selectedLabels);
+                        this.fileData.append("type", fieldData.type)
+                        axios.post("/index/upload", this.fileData).then((res) => {
+                            console.log(res.data);
+                        });
+                    }
+                },
+                get_label(label = "", lclass = 0) {
+                    return axios.get("/index/get_label?label=" + label + "&lclass=" + lclass)
+                },
+                changeLabels(data, j, val, appendData) {
+                    for (let i = 0; i < data.length; i++) {
+                        if ((j < val.length - 1) && data[i].label == val[j]) {
+                            console.log(data[i].label, j);
+                            return this.changeLabels(data[i].children, j + 1, val, appendData);
+                        } else if ((j == val.length - 1) && data[i].label == val[j]) {
+                            data[i].children = appendData;
+                            console.log(data);
+                            return;
+                        }
+                    }
+                    console.log("do nothing");
+                },
+                handleItemChange(val) {
+                    console.log(val);
+                    this.get_label(val[val.length - 1])
+                        .then(res => {
+                            var appendData = [];
+                            for (let i = 0; i < res.data.length; i++) {
+                                appendData.push({
+                                    label: res.data[i].lname,
+                                    value: res.data[i].lname,
+                                    children: []
+                                })
+                            }
+                            this.changeLabels(this.fieldData.labels, 0, val, appendData);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                },
+                //移除
+                handleRemove(file, fileList) {
+                    this.fileList = fileList;
+                    // return this.$confirm(`确定移除 ${ file.name }？`);
+                },
+
+                // 选取文件超过数量提示
+                handleExceed(files, fileList) {
+                    this.$message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+                },
+
+                //监控上传文件列表
+                handleChange(file, fileList) {
+                    let existFile = fileList.slice(0, fileList.length - 1).find(f => f.name === file.name);
+                    if (existFile) {
+                        this.$message.error('当前文件已经存在!');
+                        fileList.pop();
+                    }
+                    this.fileList = fileList;
+                },
+            }
+        })
+    </script>
+    <script src="/static/js/bindlinks.js"></script>
 </body>
 
 </html>
