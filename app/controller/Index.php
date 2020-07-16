@@ -251,14 +251,9 @@ class Index extends BaseController
         }
     }
     public function get_label(){
-        $label = input("param.label");
-        $lclass= input("param.lclass");
-        $result = [];
-        if ($lclass==1){
-            $result = Db::table("label")->where("lclass",1)->select();
-        }elseif ($lclass==0){
-            $result = Db::table("label")->where("attachl",$label)->select();
-        }
-        return json($result);
+        $data = Db::table("label")->where("lclass",1)->select();
+        $root = array();
+        recurGetLabels($data,$root);
+        return json($root);
     }
 }

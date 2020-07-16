@@ -38,7 +38,7 @@
                 <el-form-item label-width="80px">
                     <el-form-item label="标签">
                         <!-- 通过级联的方式选择资源的各级标签 -->
-                        <el-cascader placeholder="试试搜索：指南" :options="fieldData.labels" @active-item-change="handleItemChange" v-model="fieldData.selectedLabels"></el-cascader>
+                        <el-cascader placeholder="试试搜索：指南" change-on-select filterable :options="fieldData.labels" v-model="fieldData.selectedLabels"></el-cascader>
                     </el-form-item>
                     <el-form-item label="类型">
                         <el-select v-model="fieldData.type" placeholder="请选择">
@@ -83,16 +83,10 @@
             },
             created: function() {
                 //初始化fieldData.labels和fieldData.types
-                this.get_label("", 1)
+                axios.get("/index/get_label")
                     .then(res => {
                         console.log(res.data);
-                        for (let i = 0; i < res.data.length; i++) {
-                            this.fieldData.labels.push({
-                                label: res.data[i].lname,
-                                value: res.data[i].lname,
-                                children: []
-                            })
-                        }
+                        this.fieldData.labels = res.data;
                     })
                     .catch(err => {
                         console.log(err);
@@ -121,40 +115,6 @@
                             console.log(res.data);
                         });
                     }
-                },
-                get_label(label = "", lclass = 0) {
-                    return axios.get("/index/get_label?label=" + label + "&lclass=" + lclass)
-                },
-                changeLabels(data, j, val, appendData) {
-                    for (let i = 0; i < data.length; i++) {
-                        if ((j < val.length - 1) && data[i].label == val[j]) {
-                            console.log(data[i].label, j);
-                            return this.changeLabels(data[i].children, j + 1, val, appendData);
-                        } else if ((j == val.length - 1) && data[i].label == val[j]) {
-                            data[i].children = appendData;
-                            console.log(data);
-                            return;
-                        }
-                    }
-                    console.log("do nothing");
-                },
-                handleItemChange(val) {
-                    console.log(val);
-                    this.get_label(val[val.length - 1])
-                        .then(res => {
-                            var appendData = [];
-                            for (let i = 0; i < res.data.length; i++) {
-                                appendData.push({
-                                    label: res.data[i].lname,
-                                    value: res.data[i].lname,
-                                    children: []
-                                })
-                            }
-                            this.changeLabels(this.fieldData.labels, 0, val, appendData);
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
                 },
                 //移除
                 handleRemove(file, fileList) {

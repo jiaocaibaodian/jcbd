@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 // 邮箱
+use think\facade\Db;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 function mailto($to, $nickname, $title, $content)
@@ -62,4 +63,15 @@ function objectToArray($object)
        $array = $object;
     }
     return $array;
+}
+function recurGetLabels($data,&$root){
+    foreach ($data as $key=>$item) {
+        $root[$key]["label"] = $item['lname'];
+        $root[$key]["value"] = $item['lname'];
+        $data2 = Db::table("label")->where("attachl",$item['lname'])->select();
+        if (count($data2)!=0){
+            $root[$key]["children"] = array();
+            recurGetLabels($data2,$root[$key]["children"]);
+        }
+    }
 }
