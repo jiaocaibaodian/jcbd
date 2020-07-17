@@ -75,3 +75,8 @@ function recurGetLabels($data,&$root){
         }
     }
 }
+function getUnameByToken(){
+    $token = $_COOKIE['token'];
+    $data = Db::table("user")->where("token",$token)->find();
+    return $data['uname'];
+}

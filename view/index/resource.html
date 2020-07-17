@@ -45,18 +45,26 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
+                    <el-input v-model="fieldData.rgname" placeholder="在此输入创建组名，如果上传多个同标签文件，可创建组，或者选择您已有的组">
+                        <el-select clearable :change="handleGroupChange" v-model="fieldData.selectedGroup.value" slot="prepend" placeholder="选择已有组" style="width:200px;">
+                            <el-option v-for="groupitem in fieldData.group" :key="groupitem.id" :value="groupitem.value"></el-option>
+                        </el-select>
+                        <el-button slot="append" @click="create_group()">创建</el-button>
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
                     <el-input v-model="fieldData.author">
-                        <template slot="prepend">"作者"</template>
+                        <template slot="prepend">作者</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-input v-model="fieldData.rorigin">
-                        <template slot="prepend">"来源"</template>
+                        <template slot="prepend">来源</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-input v-model="fieldData.rname">
-                        <template slot="prepend">"名称"</template>
+                        <template slot="prepend">名称</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item>

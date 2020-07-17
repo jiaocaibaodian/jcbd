@@ -8,6 +8,7 @@ use think\facade\View;
 use think\Validate;
 class Index extends BaseController
 {
+    private $imageSrc = "";
     public function index()
     {
         return View::fetch();
@@ -27,6 +28,13 @@ class Index extends BaseController
     public function resource()
     {
         return View::fetch();
+    }
+    public function checkState(){
+        if (array_key_exists('token',$_COOKIE)){
+            return json(["code"=>1,"msg"=>"已登录"]);
+        }else{
+            return json(["code"=>0,"errMsg"=>"登录失效,请重新登录"]);
+        }
     }
     public function get_login()
     {
@@ -48,16 +56,18 @@ class Index extends BaseController
         //利用token检查用户登录状态
         $token = "";
         $result = [];
-        if (array_key_exists($data[0]['uname'], $_COOKIE)) {
-            $token = $_COOKIE[$data[0]['uname']];
+        if (array_key_exists("token", $_COOKIE)) {
+            $token = $_COOKIE["token"];
             $result = Db::table("user")->where("token", $token)->findOrEmpty();
         }
         if (count($result) == 0) { //表示用户未登录，（cookie过期）
             //检测邮箱号或用户名是否存在
             if (count($data) > 0) { //如果存在,那么取出密码，跟post的密码对照
                 if ($data[0]['upsw'] == $_POST['upsw']) { //密码一致，更新token值，返回登录成功消息
-                    $token = md5($data[0]['uname'] . date("Y-m-d", time()) . $_POST['upsw']);
-                    setcookie($data[0]['uname'], $token, time() + 3600, "/");
+                    $token = md5($data[0]['uname'] . time() . $_POST['upsw']);
+                    setcookie("token", $token, time() + 3600, "/");
+                    //更新user表token值
+                    Db::table("user")->where("uname",$data[0]['uname'])->update(["token"=>$token]);
                     if ($_POST['rmpsw'] == 1) {
                         setcookie("uname", $data[0]['uname'], time() + 7 * 24 * 60 * 60, "/");
                         setcookie("uemail", $data[0]['uemail'], time() + 7 * 24 * 60 * 60, "/");
@@ -112,7 +122,7 @@ class Index extends BaseController
             ];
             //在user表中增加该用户记录，返回插入条数及状态相关信息
             $result = Db::table("user")->insert($data);
-            setcookie($_POST['uname'], $token, time() + 3600, "/");
+            setcookie("token", $token, time() + 3600, "/");
             if ($result == 0) {
                 return json(["count" => $result, "errMsg" => "注册失败"]);
             } else {
@@ -234,20 +244,60 @@ class Index extends BaseController
     public function upload() //资源上传接口
     {
         $_POST = Request::post();
-        var_dump($_POST);
         // 获取表单上传文件
         $files = request()->file("files");
-        var_dump($files);
+        $uname = \getUnameByToken();
         try {
             validate(['files' => 'filesize:102400000|fileExt:jpg,gif,pdf,jpeg,png,mp3,mp4'])
                 ->check($files);
             //验证通过，将资源存放到服务器
             $savename = [];
             foreach ($files as $file) {
-                $savename[] = \think\facade\Filesystem::putFile('topic', $file);
+                $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
+                //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
+                $rid = $file->md5();
+                $data = [
+                    "rid"=>$rid,
+                    "rname"=>$_POST['rname'],
+                    "rcover"=>"/storage/".$this->imageSrc,
+                    "rtype"=>$_POST['rtype'],
+                    "rsrc"=>"/storage/".$savename[count($savename)-1],
+                    "rorigin"=>$_POST['rorigin'],
+                    "rauthor"=>$_POST['rauthor'],
+                    "keywords"=>$_POST['keywords']
+                ];
+                Db::table("resource")->replace()->insert($data);
+                //更新资源标签表
+                $labels = explode(",",$_POST['labels']);
+                foreach($labels as $item){
+                    $data = [
+                        "rid"=>$rid,
+                        "lname"=>$item
+                    ];
+                    Db::table("res_lab")->replace()->insert($data);
+                }
+                //更新资源组表，插入新增资源组记录
+                if ($_POST['rgid']!=""){
+                    $data = [
+                        "rgid"=>$_POST['rgid'],
+                        "rgname"=>$_POST['rgname'],
+                        "rid"=>$rid,
+                        "uname"=>$uname
+                    ];
+                    Db::table("rgroup")->replace()->insert($data);
+                }
+                //更新upload表，插入用户上传记录
+                $data = [
+                    "uname"=>$uname,
+                    "rid"=>$rid,
+                    "rname"=>$_POST['rname'],
+                    "rsrc"=>"/storage/".$savename[count($savename)-1]
+                ];
+                Db::table("upload")->replace()->insert($data);
             }
-            //在数据库中添加该资源的信息，包括作者，来源，类型，标签，存储路径等等
-            
+            //删除资源组表中建表时的默认资源
+            Db::table("rgroup")->where('rid',"000001")->where('rgid',$_POST['rgid'])->delete();
+            return json(["code"=>1,"msg"=>"上传成功"]);
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
@@ -259,6 +309,7 @@ class Index extends BaseController
             validate(['image'=>'fileExt:jpg,png,gif,jpeg'])
                 ->check($image);
             $savename = \think\facade\Filesystem::disk('public')->putFile('cover', $image['image']);
+            $this->imageSrc = $savename;
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
@@ -268,5 +319,35 @@ class Index extends BaseController
         $root = array();
         recurGetLabels($data,$root);
         return json($root);
+    }
+    public function get_group(){
+        //根据token取得用户名
+        $uname = getUnameByToken();
+        //获得该用户的资源组数据
+        $data = Db::table("rgroup")->where("uname",$uname)->select();
+        //转换数据格式
+        $need = [];
+        foreach ($data as $key=>$item){
+            $need[$key]["id"] = $item['rgid'];
+            $need[$key]["value"] = $item["rgname"];
+        }
+        return json($need);
+    }
+    public function create_group(){
+        //插入一条记录
+        $rgname = Request::post("rgname");
+        //根据token拿到用户名
+        $uname = \getUnameByToken();
+        $rgid = \uniqid();
+        Db::table("rgroup")->insert([
+            "rgid"=>$rgid,
+            "rgname"=>$rgname,
+            "rid"=>"000001",
+            "uname"=>$uname
+        ]);
+        return json([
+            "rgid"=>$rgid,
+            "rgname"=>$rgname
+        ]);
     }
 }
