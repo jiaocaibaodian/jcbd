@@ -1,159 +1,173 @@
+html {
+    height: 100%;
+    background-color: #50a3a2;
+    background-image: linear-gradient(0deg, #50a3a2 0%, #5bbebd 50%, #50a3a2 100%);
+    overflow: hidden;
+}
 
- html {
-  height:100%;
-  background-color: #50a3a2;
-  background-image: linear-gradient(0deg, #50a3a2 0%, #2af5d8 50%, #50a3a2 100%);
-  overflow: hidden;
+* {
+    padding: 0;
+    margin: 0;
 }
 
 .el-form {
-  margin-bottom: 20px;
-  &:last-child {
-      margin-bottom: 0;
-  }
+    margin-bottom: 20px;
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .login-box {
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 300px;
-  min-height:350px;
-  max-height:420px;
-  margin-top:100px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 200px;
-  border-radius: 5px;
-  padding: 35px;
-  box-shadow: 0 0 5px #DCDFE6;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 300px;
+    min-height: 350px;
+    max-height: 420px;
+    margin-top: 100px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 200px;
+    border-radius: 5px;
+    padding: 35px;
+    box-shadow: 0 0 5px #DCDFE6;
 }
 
 .login-title {
-  margin-bottom: 20px;
-  text-align: center;
-  color: #409EFF;
-  font-size: 30px;
-}
-*{
-  padding:0;
-  margin:0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #409EFF;
+    font-size: 30px;
 }
 
 .bg-bubbles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
+
 .bg-bubbles li {
-  position: absolute;
-  list-style: none;
-  display: block;
-  width: 40px;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0.15);
-  bottom: -160px;
-  -webkit-animation: square 25s infinite;
-  animation: square 25s infinite;
-  -webkit-transition-timing-function: linear;
-  transition-timing-function: linear;
+    position: absolute;
+    list-style: none;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius:100%;
+    background-color: rgba(255, 255, 255, 0.15);
+    bottom: -160px;
+    -webkit-animation: square 25s infinite;
+    animation: square 25s infinite;
+    -webkit-transition-timing-function: linear;
+    transition-timing-function: linear;
 }
+
 .bg-bubbles li:nth-child(1) {
-  left: 10%;
+    left: 10%;
 }
+
 .bg-bubbles li:nth-child(2) {
-  left: 20%;
-  width: 80px;
-  height: 80px;
-  -webkit-animation-delay: 2s;
-          animation-delay: 2s;
-  -webkit-animation-duration: 17s;
-          animation-duration: 17s;
+    left: 20%;
+    width: 80px;
+    height: 80px;
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+    -webkit-animation-duration: 17s;
+    animation-duration: 17s;
 }
+
 .bg-bubbles li:nth-child(3) {
-  left: 25%;
-  -webkit-animation-delay: 4s;
-          animation-delay: 4s;
+    left: 25%;
+    -webkit-animation-delay: 4s;
+    animation-delay: 4s;
 }
+
 .bg-bubbles li:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  -webkit-animation-duration: 22s;
-          animation-duration: 22s;
-  background-color: rgba(255, 255, 255, 0.25);
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    -webkit-animation-duration: 22s;
+    animation-duration: 22s;
+    background-color: rgba(255, 255, 255, 0.25);
 }
+
 .bg-bubbles li:nth-child(5) {
-  left: 70%;
+    left: 70%;
 }
+
 .bg-bubbles li:nth-child(6) {
-  left: 80%;
-  width: 120px;
-  height: 120px;
-  -webkit-animation-delay: 3s;
-          animation-delay: 3s;
-  background-color: rgba(255, 255, 255, 0.2);
+    left: 80%;
+    width: 120px;
+    height: 120px;
+    -webkit-animation-delay: 3s;
+    animation-delay: 3s;
+    background-color: rgba(255, 255, 255, 0.2);
 }
+
 .bg-bubbles li:nth-child(7) {
-  left: 32%;
-  width: 160px;
-  height: 160px;
-  -webkit-animation-delay: 7s;
-          animation-delay: 7s;
+    left: 32%;
+    width: 160px;
+    height: 160px;
+    -webkit-animation-delay: 7s;
+    animation-delay: 7s;
 }
+
 .bg-bubbles li:nth-child(8) {
-  left: 55%;
-  width: 20px;
-  height: 20px;
-  -webkit-animation-delay: 15s;
-          animation-delay: 15s;
-  -webkit-animation-duration: 40s;
-          animation-duration: 40s;
+    left: 55%;
+    width: 20px;
+    height: 20px;
+    -webkit-animation-delay: 15s;
+    animation-delay: 15s;
+    -webkit-animation-duration: 40s;
+    animation-duration: 40s;
 }
+
 .bg-bubbles li:nth-child(9) {
-  left: 25%;
-  width: 10px;
-  height: 10px;
-  -webkit-animation-delay: 2s;
-          animation-delay: 2s;
-  -webkit-animation-duration: 40s;
-          animation-duration: 40s;
-  background-color: rgba(255, 255, 255, 0.3);
+    left: 25%;
+    width: 10px;
+    height: 10px;
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+    -webkit-animation-duration: 40s;
+    animation-duration: 40s;
+    background-color: rgba(255, 255, 255, 0.3);
 }
+
 .bg-bubbles li:nth-child(10) {
-  left: 90%;
-  width: 160px;
-  height: 160px;
-  -webkit-animation-delay: 11s;
-          animation-delay: 11s;
+    left: 90%;
+    width: 160px;
+    height: 160px;
+    -webkit-animation-delay: 11s;
+    animation-delay: 11s;
 }
+
 @-webkit-keyframes square {
-  0% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  100% {
-    -webkit-transform: translateY(-700px) rotate(600deg);
-            transform: translateY(-700px) rotate(600deg);
-  }
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100% {
+        -webkit-transform: translateY(-700px) rotate(600deg);
+        transform: translateY(-700px) rotate(600deg);
+    }
 }
+
 @keyframes square {
-  0% {
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-  100% {
-    -webkit-transform: translateY(-700px) rotate(600deg);
-            transform: translateY(-700px) rotate(600deg);
-  }
+    0% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100% {
+        -webkit-transform: translateY(-700px) rotate(600deg);
+        transform: translateY(-700px) rotate(600deg);
+    }
 }
 
 html {
-  height:100%;
-  background-color: #50a3a2;
-  background-image: linear-gradient(0deg, #50a3a2 0%, #2af5d8 50%, #50a3a2 100%);
-  overflow: hidden;
+    height: 100%;
+    background-color: #50a3a2;
+    background-image: linear-gradient(0deg, #50a3a2 0%, #2af5d8 50%, #50a3a2 100%);
+    overflow: hidden;
 }
 
 .random-img {
@@ -164,6 +178,7 @@ html {
     right: 10px;
     top: 5px;
 }
+
 .el-header {
     text-align: center;
     height: 80px;
@@ -173,7 +188,7 @@ html {
     font-size: 60px;
 }
 
-.el-main{
+.el-main {
     overflow: hidden;
 }
 
@@ -184,7 +199,6 @@ html {
 .psw_rm {
     width: 100%;
     display: inline-flex;
-    
 }
 
 .psw_rm .el-form {
@@ -195,47 +209,218 @@ html {
 .code_check_tip,
 .psw_check_tip,
 .checkpsw_check_tip,
-.email_check_tip{ 
-  display: none;
-  margin-top: 50px;
-  color: red;
-  animation: changeshadow 1s  ease-in  infinite ;
-  /* 其它浏览器兼容性前缀 */
-  -webkit-animation: changeshadow 1s linear infinite;
-  -moz-animation: changeshadow 1s linear infinite;
-  -ms-animation: changeshadow 1s linear infinite;
-  -o-animation: changeshadow 1s linear infinite;
-}  
-@keyframes changeshadow {  
-    0%{ text-shadow: 0 0 4px red}  
-    50%{ text-shadow: 0 0 80px red}  
-    100%{ text-shadow: 0 0 4px red}  
+.email_check_tip {
+    display: none;
+    margin-top: 50px;
+    color: red;
+    animation: changeshadow 1s ease-in infinite;
+    /* 其它浏览器兼容性前缀 */
+    -webkit-animation: changeshadow 1s linear infinite;
+    -moz-animation: changeshadow 1s linear infinite;
+    -ms-animation: changeshadow 1s linear infinite;
+    -o-animation: changeshadow 1s linear infinite;
 }
+
+@keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
+}
+
+
 /* 添加兼容性前缀 */
+
 @-webkit-keyframes changeshadow {
-0%{ text-shadow: 0 0 4px red}  
-      50%{ text-shadow: 0 0 80px red}  
-      100%{ text-shadow: 0 0 4px red}  
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
 }
+
 @-moz-keyframes changeshadow {
-  0%{ text-shadow: 0 0 4px red}  
-        50%{ text-shadow: 0 0 80px red}  
-        100%{ text-shadow: 0 0 4px red}  
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
 }
+
 @-ms-keyframes changeshadow {
-  0%{ text-shadow: 0 0 4px red}  
-        50%{ text-shadow: 0 0 80px red}  
-        100%{ text-shadow: 0 0 4px red}  
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
 }
+
 @-o-keyframes changeshadow {
-  0%{ text-shadow: 0 0 4px red}  
-        50%{ text-shadow: 0 0 80px red}  
-        100%{ text-shadow: 0 0 4px red}  
+    0% {
+        text-shadow: 0 0 4px red
+    }
+    50% {
+        text-shadow: 0 0 80px red
+    }
+    100% {
+        text-shadow: 0 0 4px red
+    }
 }
+
 .el-form-item.checkcode .el-form-item__content {
     display: flex;
 }
 
 .el-form-item.checkcode .el-form-item__content .el-input {
     flex: 1;
+}
+/* 实现logo效果 */
+.logo{
+    position: relative;
+}
+.logo1{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image:url(/static/img/jiaocaibaodian1.png);
+    background-size:50px 50px;
+    z-index: 2;
+}
+.logo2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image:url(/static/img/jiaocaibaodian2.png);
+    background-size:50px 50px;
+    z-index:3;
+    animation: haha1 2s linear infinite;
+    -webkit-animation: haha1 2s linear infinite;
+    -moz-animation: haha1 2s linear infinite;
+    -ms-animation: haha1 2s linear infinite;
+    -o-animation: haha1 2s linear infinite;
+}
+@keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+      }
+    
+      25% {
+        transform: rotate(90deg);
+      }
+    
+      50% {
+        transform: rotate(180deg);
+      }
+    
+      75% {
+        transform: rotate(270deg);
+      }
+    
+      100% {
+        transform: rotate(360deg);
+      }
+}
+  
+  @-webkit-keyframes haha1 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(90deg);
+    }
+  
+    50% {
+      transform: rotate(180deg);
+    }
+  
+    75% {
+      transform: rotate(270deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @-moz-keyframes haha1 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(90deg);
+    }
+  
+    50% {
+      transform: rotate(180deg);
+    }
+  
+    75% {
+      transform: rotate(270deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+@-ms-keyframes haha1 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(90deg);
+    }
+  
+    50% {
+      transform: rotate(180deg);
+    }
+  
+    75% {
+      transform: rotate(270deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes haha1 {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    25% {
+      transform: rotate(90deg);
+    }
+  
+    50% {
+      transform: rotate(180deg);
+    }
+  
+    75% {
+      transform: rotate(270deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
 }

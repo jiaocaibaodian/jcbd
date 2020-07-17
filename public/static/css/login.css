@@ -1,8 +1,6 @@
-html {
-  height:100%;
-  background-color: #50a3a2;
-  background-image: linear-gradient(0deg, #50a3a2 0%, #2af5d8 50%, #50a3a2 100%);
-  overflow: hidden;
+@import "util.css";
+body {
+    background-color: #66b1ff;
 }
 
 .random-img {
@@ -13,17 +11,12 @@ html {
     left: 220px;
     top: 5px;
 }
- 
+
 .el-container {
-  background-color: rgba(255, 255, 255, 0.5);
-  width: 300px;
-  min-height:350px;
-  margin-top:100px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 200px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #DCDFE6;
+    width: 300px;
+    height: 480px;
+    background-color: white;
+    margin: 100px auto;
 }
 
 .el-header {
@@ -33,10 +26,6 @@ html {
 
 .el-header i {
     font-size: 60px;
-}
-
-.el-main{
-    overflow: hidden;
 }
 
 .el-main .el-form .el-button {
@@ -52,7 +41,13 @@ html {
     flex: 1;
 }
 
-.name_check_tip,
+.psw_fg {
+    display: inline-flex;
+    align-items: flex-start;
+    padding-top: 10px;
+}
+
+.el-main .el-tabs .el-tab-pane .el-form .el-form-item .name_check_tip,
 .code_check_tip,
 .psw_check_tip,
 .checkpsw_check_tip,
