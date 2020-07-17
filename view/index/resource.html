@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ch">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/static/js/bindlinks.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css">
     <title>首页</title>
@@ -13,11 +14,15 @@
 
 <body>
     <el-container id="app">
+        <!-- 导航条 -->
         <el-header>
-            <!-- 导航条 -->
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+            <div class="logo">
+                <div class="logo1"></div>
+                <div class="logo2"></div>
+            </div>
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#fff" text-color="#409EFF" active-text-color="#FF6A6A">
+
                 <el-menu-item>
-                    <img src="/static/img/jiaocaibaodian.png" alt="网站logo" class="logo">
                 </el-menu-item>
                 <el-menu-item index="1">首页</el-menu-item>
                 <el-menu-item index="2">专业区</el-menu-item>
@@ -34,7 +39,7 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-form ref="form" label-width="80px">
+            <el-form ref="form" label-width="80px" class="input-box">
                 <el-form-item label="标签">
                     <!-- 通过级联的方式选择资源的各级标签 -->
                     <el-cascader placeholder="试试搜索：Java" change-on-select filterable :options="fieldData.labels" v-model="fieldData.selectedLabels"></el-cascader>
@@ -94,6 +99,18 @@
         <el-footer>
 
         </el-footer>
+        <el-form class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </el-form>
     </el-container>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>

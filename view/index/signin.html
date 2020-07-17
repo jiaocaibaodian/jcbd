@@ -14,7 +14,10 @@
 
 <body>
     <div class="login-box" id="app">
-        <img src="/static/img/jiaocaibaodian.png" width="50" height="50">
+        <div class="logo">
+            <div class="logo1"></div>
+            <div class="logo2"></div>
+        </div>
         <h3 class="login-title">欢迎</h3>
         <el-form>
             <el-form-item>
@@ -52,11 +55,11 @@
                         <i class="el-icon-warning"></i>
                         <span>用户名已被占用</span>
                 </span>
-                <img src="/static/img/random.jpg" alt="随机生成" class="random-img" @click="get_uname()">
+                <img src="/static/img/random.png" alt="随机生成" class="random-img" @click="get_uname()">
             </el-form-item>
             <el-button id="login" style="width:100%" type="primary" @click="register.dialogVisible = true">注册</el-button>
         </el-form>
-        <el-dialog title="邮件验证" :visible.sync="register.dialogVisible" width="30%">
+        <el-dialog title="邮件验证" :visible.sync="register.dialogVisible" width="300px" height="300px">
             <el-form>
                 <el-form-item>
                     <el-input v-model="register.mailCode" placeholder="输入验证码" class="mail-input"></el-input>

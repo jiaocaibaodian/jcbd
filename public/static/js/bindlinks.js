@@ -6,9 +6,9 @@ $(function() {
         window.location.href = "/index/resource";
     })
     $("#app .el-header .el-menu .el-submenu .el-menu-item:eq(0)").click(function() {
-        window.open("/index/login");
+        window.location.href = "/index/login";
     })
     $("#app .el-header .el-menu .el-submenu .el-menu-item:eq(1)").click(function() {
-        window.open("/index/signin");
+        window.location.href = "/index/signin";
     })
 })
