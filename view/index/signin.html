@@ -91,5 +91,19 @@
     <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
     <script src="/static/js/login.js"></script>
 </body>
+<script type="text/javascript">
+    $('.random-img').click(function(event){
+        $('.random-img').addClass('shake-opacity');
+        var gxg1=0;
+        var gxg= setInterval(function(){
+            gxg1=gxg1+1;
+            if(gxg1==1)
+            {
+            $('.random-img').removeClass('shake-opacity');
+            clearInterval(gxg);
+            }
+        },300)
 
+    });
+    </script>
 </html>
