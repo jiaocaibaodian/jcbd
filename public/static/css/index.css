@@ -1,8 +1,9 @@
-@import "util.css";
+@import url(util.css);
 html {
     height: 100%;
     background-color: #F0FFFF;
 }
+
 .el-header {
     padding: 0;
 }
@@ -14,147 +15,137 @@ html {
 .el-header .el-menu .el-menu-item:first-child {
     flex: 1;
 }
-.input-box{
+
+.input-box {
     width: 500px;
     padding: 30px;
 }
 
+
 /* 实现logo效果 */
-.logo{
-    top:5px;
-    left:5px;
+
+.logo {
+    top: 5px;
+    left: 5px;
     position: relative;
 }
-.logo1{
+
+.logo1 {
     position: absolute;
     width: 50px;
     height: 50px;
-    background-image:url(/static/img/jiaocaibaodian1.png);
-    background-size:50px 50px;
+    background-image: url(/static/img/jiaocaibaodian1.png);
+    background-size: 50px 50px;
     z-index: 2;
 }
-.logo2{
+
+.logo2 {
     position: absolute;
     width: 50px;
     height: 50px;
-    background-image:url(/static/img/jiaocaibaodian2.png);
-    background-size:50px 50px;
-    z-index:3;
+    background-image: url(/static/img/jiaocaibaodian2.png);
+    background-size: 50px 50px;
+    z-index: 3;
     animation: haha1 2s linear infinite;
     -webkit-animation: haha1 2s linear infinite;
     -moz-animation: haha1 2s linear infinite;
     -ms-animation: haha1 2s linear infinite;
     -o-animation: haha1 2s linear infinite;
 }
+
 @keyframes haha1 {
     0% {
         transform: rotate(0deg);
-      }
-    
-      25% {
+    }
+    25% {
         transform: rotate(90deg);
-      }
-    
-      50% {
+    }
+    50% {
         transform: rotate(180deg);
-      }
-    
-      75% {
+    }
+    75% {
         transform: rotate(270deg);
-      }
-    
-      100% {
+    }
+    100% {
         transform: rotate(360deg);
-      }
+    }
 }
-  
-  @-webkit-keyframes haha1 {
+
+@-webkit-keyframes haha1 {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  
     25% {
-      transform: rotate(90deg);
+        transform: rotate(90deg);
     }
-  
     50% {
-      transform: rotate(180deg);
+        transform: rotate(180deg);
     }
-  
     75% {
-      transform: rotate(270deg);
+        transform: rotate(270deg);
     }
-  
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  @-moz-keyframes haha1 {
+}
+
+@-moz-keyframes haha1 {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  
     25% {
-      transform: rotate(90deg);
+        transform: rotate(90deg);
     }
-  
     50% {
-      transform: rotate(180deg);
+        transform: rotate(180deg);
     }
-  
     75% {
-      transform: rotate(270deg);
+        transform: rotate(270deg);
     }
-  
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
 @-ms-keyframes haha1 {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  
     25% {
-      transform: rotate(90deg);
+        transform: rotate(90deg);
     }
-  
     50% {
-      transform: rotate(180deg);
+        transform: rotate(180deg);
     }
-  
     75% {
-      transform: rotate(270deg);
+        transform: rotate(270deg);
     }
-  
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
 @-o-keyframes haha1 {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  
     25% {
-      transform: rotate(90deg);
+        transform: rotate(90deg);
     }
-  
     50% {
-      transform: rotate(180deg);
+        transform: rotate(180deg);
     }
-  
     75% {
-      transform: rotate(270deg);
+        transform: rotate(270deg);
     }
-  
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
+
+
 /* 实现背景气泡效果 */
+
 .bg-bubbles {
     position: absolute;
     top: 0;
@@ -170,8 +161,8 @@ html {
     display: block;
     width: 40px;
     height: 40px;
-    border-radius:100%;
-    background-color: rgba(187,255,255, 0.8);
+    border-radius: 100%;
+    background-color: rgba(187, 255, 255, 0.8);
     bottom: -160px;
     -webkit-animation: square 25s infinite;
     animation: square 25s infinite;
@@ -205,7 +196,7 @@ html {
     height: 60px;
     -webkit-animation-duration: 22s;
     animation-duration: 22s;
-    background-color: rgba(187,255,255, 0.2);
+    background-color: rgba(187, 255, 255, 0.2);
 }
 
 .bg-bubbles li:nth-child(5) {
@@ -218,7 +209,7 @@ html {
     height: 120px;
     -webkit-animation-delay: 3s;
     animation-delay: 3s;
-    background-color: rgba(187,255,255, 0.3);
+    background-color: rgba(187, 255, 255, 0.3);
 }
 
 .bg-bubbles li:nth-child(7) {
@@ -247,7 +238,7 @@ html {
     animation-delay: 2s;
     -webkit-animation-duration: 40s;
     animation-duration: 40s;
-    background-color: rgba(187,255,255, 0.5);
+    background-color: rgba(187, 255, 255, 0.5);
 }
 
 .bg-bubbles li:nth-child(10) {

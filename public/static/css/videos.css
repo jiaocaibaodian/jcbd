@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.w {
+    /* 版心 */
+    width: 1150px;
+    margin: auto;
+}
+
+li {
+    list-style: none;
+}
+
+.header {
+    height: 45px;
+    background-color: rgb(230, 233, 82);
+    margin: 30px auto;
+}
+
+.logo {
+    float: left;
+    width: 90px;
+    height: 45px;
+    /* 装logo的盒子 */
+}
+
+.nav {
+    float: left;
+    margin-left: 45px;
+}
+
+.nav ul li {
+    float: left;
+    margin: 0 20px;
+}
+
+.nav ul li a {
+    display: block;
+    height: 50px;
+    padding: 0 13px;
+    line-height: 50px;
+    font-size: 18px;
+    color: #050505;
+    text-decoration: none;
+}
+
+.nav ul li a:hover {
+    border-bottom: 2px solid #00a4ff;
+    color: #00a4ff;
+}
+
+
+/* search搜索模块 */
+
+.search {
+    float: left;
+    width: 412px;
+    height: 45px;
+    background-color: skyblue;
+    margin-left: 330px;
+}
+
+.search input {
+    float: left;
+    width: 345px;
+    height: 43px;
+    border: 1px solid #00a4ff;
+    border-right: none;
+    color: #bfbfbf;
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+.search button {
+    float: left;
+    width: 50px;
+    height: 45px;
+    background-color: blue; 
+    border: none;
+    /* background: url(imges/搜索.png); */
+}
