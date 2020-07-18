@@ -25,39 +25,20 @@ var app = new Vue({
         }
     },
     created: function() {
-        //检查登录状态
-        axios.get("/index/checkState")
+        //初始化fieldData.labels和fieldData.types
+        axios.get("/resource/get_label")
             .then(res => {
                 console.log(res.data);
-                if (res.data.code) {
-                    //初始化fieldData.labels和fieldData.types
-                    axios.get("/index/get_label")
-                        .then(res => {
-                            console.log(res.data);
-                            this.fieldData.labels = res.data;
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        })
-                        //初始化用户已经建立的组名
-                    axios.get("/index/get_group")
-                        .then(res => {
-                            console.log(res.data);
-                            this.fieldData.group = res.data;
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        })
-                } else {
-                    this.$message({
-                        message: "登录失效，1秒后跳转到登录",
-                        type: "warning"
-                    })
-                    setTimeout(function() {
-                        window.location.href = "/index/login";
-                    }, 1000);
-
-                }
+                this.fieldData.labels = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            //初始化用户已经建立的组名
+        axios.get("/resource/get_group")
+            .then(res => {
+                console.log(res.data);
+                this.fieldData.group = res.data;
             })
             .catch(err => {
                 console.error(err);
@@ -85,7 +66,7 @@ var app = new Vue({
             //访问后端，在资源组表中插入一条记录,并返回用户名
             axios({
                     method: 'post',
-                    url: "/index/create_group",
+                    url: "/resource/create_group",
                     data: {
                         rgname: this.fieldData.rgname
                     }
@@ -140,7 +121,7 @@ var app = new Vue({
                 this.fileData.append("rorigin", fieldData.rorigin)
                 this.fileData.append("rname", fieldData.rname)
                 this.fileData.append("keywords", fieldData.keywords)
-                axios.post("/index/upload", this.fileData).then((res) => {
+                axios.post("/resource/uploadFile", this.fileData).then((res) => {
                     console.log(res.data);
                 });
             }

@@ -52,7 +52,7 @@ var app = new Vue({
             console.log(loginData);
             axios({
                     method: 'post',
-                    url: "/index/get_login",
+                    url: "/login/get_login",
                     data: loginData
                 })
                 .then(res => {
@@ -64,7 +64,7 @@ var app = new Vue({
                         return;
                     }
                     //跳转到首页
-                    window.location.href = "index.html";
+                    window.location.href = "/index/";
                 })
                 .catch(err => {
                     console.log(err);
@@ -73,7 +73,7 @@ var app = new Vue({
         code_check() {
             return axios({
                     method: 'post',
-                    url: "/index/code_check",
+                    url: "/login/code_check",
                     data: {
                         checkcode: this.login.checkcode
                     }
@@ -129,7 +129,7 @@ var app = new Vue({
             //检测用户名是否被占用
             return axios({
                     method: 'post',
-                    url: "/index/uname_check",
+                    url: "/login/uname_check",
                     data: {
                         uname: this.register.uname
                     }
@@ -154,7 +154,7 @@ var app = new Vue({
             //注册接口
             axios({
                     method: 'post',
-                    url: "/index/get_register",
+                    url: "/login/get_register",
                     data: this.register
                 })
                 .then((res) => {
@@ -170,7 +170,7 @@ var app = new Vue({
         },
         get_uname() {
             //获取随机用户名
-            axios.get("/index/get_uname")
+            axios.get("/login/get_uname")
                 .then(res => {
                     console.log(res.data);
                     this.register.uname = res.data;
@@ -183,7 +183,7 @@ var app = new Vue({
         getMailCode() {
             axios({
                     method: "post",
-                    url: "/index/send_code",
+                    url: "/login/send_code",
                     data: {
                         mail_to: this.register.uemail
                     }

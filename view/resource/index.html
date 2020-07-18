@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>首页</title>
+</head>
+
+<body>
+    <el-container id="app">
+        <el-header>
+            <div class="logo">
+                <div class="logo1"></div>
+                <div class="logo2"></div>
+            </div>
+            <!-- 导航条 -->
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#fff" text-color="#409EFF" active-text-color="#FF6A6A">
+                <el-menu-item>
+                </el-menu-item>
+                <el-menu-item index="1">首页</el-menu-item>
+                <el-menu-item index="2">专业区</el-menu-item>
+                <el-menu-item index="3">讨论区</el-menu-item>
+                <el-menu-item index="4">资源区</el-menu-item>
+                <el-submenu index="5">
+                    <template slot="title">个人</template>
+                    <el-menu-item index="5-1">登录</el-menu-item>
+                    <el-menu-item index="5-2">注册</el-menu-item>
+                    <el-menu-item index="5-3">我的书架</el-menu-item>
+                    <el-menu-item index="5-4">我的视频库</el-menu-item>
+                    <el-menu-item index="5-5">个人主页</el-menu-item>
+                </el-submenu>
+            </el-menu>
+        </el-header>
+        <el-main>
+
+        </el-main>
+        <el-footer>
+
+        </el-footer>
+    </el-container>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
+    <script src="/static/js/resource.js"></script>
+    <!-- 下方是绑定菜单链接的jquery代码引入 -->
+    <script src="/static/js/bindlinks.js"></script>
+</body>
+
+</html>
