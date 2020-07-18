@@ -6,34 +6,23 @@ use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 use think\Validate;
-class Index extends BaseController
+class Login extends BaseController
 {
-    public function index()
-    {
-        return View::fetch();
+    public function index(){
+        return View::fetch("uname");
     }
+    //暂时存放此处
     public function magiccude()
     {
         return View::fetch();
     }
-    public function resetkey()
-    {
+    public function login(){
         return View::fetch();
     }
-    public function login()
-    {
+    public function emaillogin(){
         return View::fetch();
     }
-    public function signin()
-    {
-        return View::fetch();
-    }
-    public function emaillogin()
-    {
-        return View::fetch();
-    }
-    public function resource()
-    {
+    public function signin(){
         return View::fetch();
     }
     public function get_login()
@@ -56,16 +45,18 @@ class Index extends BaseController
         //利用token检查用户登录状态
         $token = "";
         $result = [];
-        if (array_key_exists($data[0]['uname'], $_COOKIE)) {
-            $token = $_COOKIE[$data[0]['uname']];
+        if (array_key_exists("token", $_COOKIE)) {
+            $token = $_COOKIE["token"];
             $result = Db::table("user")->where("token", $token)->findOrEmpty();
         }
         if (count($result) == 0) { //表示用户未登录，（cookie过期）
             //检测邮箱号或用户名是否存在
             if (count($data) > 0) { //如果存在,那么取出密码，跟post的密码对照
                 if ($data[0]['upsw'] == $_POST['upsw']) { //密码一致，更新token值，返回登录成功消息
-                    $token = md5($data[0]['uname'] . date("Y-m-d", time()) . $_POST['upsw']);
-                    setcookie($data[0]['uname'], $token, time() + 3600, "/");
+                    $token = md5($data[0]['uname'] . time() . $_POST['upsw']);
+                    setcookie("token", $token, time() + 3600, "/");
+                    //更新user表token值
+                    Db::table("user")->where("uname",$data[0]['uname'])->update(["token"=>$token]);
                     if ($_POST['rmpsw'] == 1) {
                         setcookie("uname", $data[0]['uname'], time() + 7 * 24 * 60 * 60, "/");
                         setcookie("uemail", $data[0]['uemail'], time() + 7 * 24 * 60 * 60, "/");
@@ -120,7 +111,7 @@ class Index extends BaseController
             ];
             //在user表中增加该用户记录，返回插入条数及状态相关信息
             $result = Db::table("user")->insert($data);
-            setcookie($_POST['uname'], $token, time() + 3600, "/");
+            setcookie("token", $token, time() + 3600, "/");
             if ($result == 0) {
                 return json(["count" => $result, "errMsg" => "注册失败"]);
             } else {
@@ -238,43 +229,5 @@ class Index extends BaseController
         mailto($_POST['mail_to'], "用户", "教材宝典", "尊敬的用户，您好！您的验证码是" . $code);
         $_SESSION['mailCode'] = $code;
         return "邮件发送成功";
-    }
-    public function upload() //资源上传接口
-    {
-        $_POST = Request::post();
-        var_dump($_POST);
-        // 获取表单上传文件
-        $files = request()->file("files");
-        var_dump($files);
-        try {
-            validate(['files' => 'filesize:102400000|fileExt:jpg,gif,pdf,jpeg,png,mp3,mp4'])
-                ->check($files);
-            //验证通过，将资源存放到服务器
-            $savename = [];
-            foreach ($files as $file) {
-                $savename[] = \think\facade\Filesystem::putFile('topic', $file);
-            }
-            //在数据库中添加该资源的信息，包括作者，来源，类型，标签，存储路径等等
-            
-        } catch (\think\exception\ValidateException $e) {
-            echo $e->getMessage();
-        }
-    }
-    public function upload_cover(){
-        //上传封面
-        $image = request()->file();
-        try {
-            validate(['image'=>'fileExt:jpg,png,gif,jpeg'])
-                ->check($image);
-            $savename = \think\facade\Filesystem::disk('public')->putFile('cover', $image['image']);
-        } catch (\think\exception\ValidateException $e) {
-            echo $e->getMessage();
-        }
-    }
-    public function get_label(){
-        $data = Db::table("label")->where("lclass",1)->select();
-        $root = array();
-        recurGetLabels($data,$root);
-        return json($root);
     }
 }

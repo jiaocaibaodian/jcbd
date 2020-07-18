@@ -144,6 +144,26 @@ var app = new Vue({
                     return res.data;
                 })
         },
+        login_check() {
+            //检测用户是否已经注册
+            register.dialogVisible = true;
+            return axios({
+                    method: 'post',
+                    url: "/index/login_check",
+                    data: {
+                        uemail: this.register.uemail
+                    }
+                })
+                .then((res) => {
+                    console.log(res.data);
+                    if (res.data) {
+                        $(".login_check_tip").css("display", "none");
+                    } else {
+                        $(".login_check_tip").css("display", "inline");
+                    }
+                    return res.data;
+                })
+        },
         get_register() {
             //this.register.dialogVisible = false;
             var flag = this.email_check() && this.psw_check();
