@@ -33,3 +33,7 @@ body {
     height: 178px;
     display: block;
 }
+
+.el-container .el-main .el-row .el-col div {
+    background: red;
+}
