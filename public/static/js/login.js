@@ -1,3 +1,12 @@
+//事件绑定
+$(function() {
+    $("body").keydown(function() {
+        var event = window.event;
+        if (event.keyCode == 13) {
+            $("#login").click();
+        }
+    })
+})
 var app = new Vue({
     el: "#app",
     data() {
