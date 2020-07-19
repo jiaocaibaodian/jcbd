@@ -209,6 +209,7 @@ html {
 .code_check_tip,
 .psw_check_tip,
 .checkpsw_check_tip,
+.login_check_tip,
 .email_check_tip {
     display: none;
     margin-top: 50px;

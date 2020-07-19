@@ -9,7 +9,7 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/static/css/styles.css">
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
-    <title>注册</title>
+    <title>重置密码</title>
 </head>
 
 <body>
@@ -17,16 +17,20 @@
         <div class="logo">
             <div class="logo1"></div>
             <div class="logo2"></div>
-        </div>
+       </div>
         <h3 class="login-title">欢迎</h3>
         <el-form>
             <el-form-item>
                 <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @change="email_check()">
-                    <template slot="prepend">邮箱号</template>
+                    <template slot="prepend">注册邮箱号</template>
                 </el-input>
                 <span class="email_check_tip">
                         <i class="el-icon-warning"></i>
                         <span>邮箱名不合法</span>
+                </span>
+                <span class="login_check_tip">
+                    <i class="el-icon-warning"></i>
+                    <span>您还未注册</span>
                 </span>
             </el-form-item>
             <el-form-item>
@@ -47,17 +51,7 @@
                         <span>两次密码不一致</span>
                 </span>
             </el-form-item>
-            <el-form-item>
-                <el-input v-model="register.uname" placeholder="用户名" @change="uname_check()">
-                    <template slot="prepend">用户名</template>
-                </el-input>
-                <span class="name_check_tip">
-                        <i class="el-icon-warning"></i>
-                        <span>用户名已被占用</span>
-                </span>
-                <img src="/static/img/random.png" alt="随机生成" class="random-img" @click="get_uname()">
-            </el-form-item>
-            <el-button id="login" style="width:100%" type="primary" @click="register.dialogVisible = true">注册</el-button>
+            <el-button id="login" style="width:100%" type="primary" @click="login_check()">重置</el-button>
         </el-form>
         <el-dialog title="邮件验证" :visible.sync="register.dialogVisible" width="300px" height="300px">
             <el-form>
@@ -91,19 +85,5 @@
     <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
     <script src="/static/js/login.js"></script>
 </body>
-<script type="text/javascript">
-    $('.random-img').click(function(event) {
-        $('.random-img').addClass('shake-opacity');
-        var gxg1 = 0;
-        var gxg = setInterval(function() {
-            gxg1 = gxg1 + 1;
-            if (gxg1 == 1) {
-                $('.random-img').removeClass('shake-opacity');
-                clearInterval(gxg);
-            }
-        }, 300)
-
-    });
-</script>
 
 </html>

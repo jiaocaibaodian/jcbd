@@ -11,6 +11,15 @@ class Login extends BaseController
     public function index(){
         return View::fetch("uname");
     }
+    //暂时存放此处
+    public function magiccude()
+    {
+        return View::fetch();
+    }
+    public function resetkey()
+    {
+        return View::fetch();
+    }
     public function uname(){
         return View::fetch();
     }

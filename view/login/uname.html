@@ -42,18 +42,16 @@
             </span>
             <el-button id="login" style="width:100%" type="primary" @click="get_login()">登录</el-button>
             <div class="psw_rm">
+                <el-form style="font-size: 14px;color:#409EFF;margin-top:3%;">记住密码</el-form>
                 <el-form>
-                    <el-form-item label="记住密码">
-                        <el-switch active-color="#00BFFF" inactive-color="#CDC9C9" v-model="login.rmpsw"></el-switch>
-                    </el-form-item>
+                    <el-switch style=" margin-top:10%;" active-color="#00BFFF" inactive-color="#CDC9C9" v-model="login.rmpsw"></el-switch>
                 </el-form>
                 <el-form>
-                    <el-link href="/login/email" type="primary" style=" margin-top:10%;margin-left:10px">邮箱名登录</el-link>
+                    <el-link href="/login/email" type="primary" style=" margin-top:10%;">邮箱登录</el-link>
                 </el-form>
-                <div class="psw_fg">
-                    <el-button type="text" href="">忘记密码</el-button>
-                    <i class="el-icon-arrow-right"></i>
-                </div>
+                <el-form class="psw_fg">
+                    <el-link href="resetkey" type="primary" style=" margin-top:10%;margin-left:10px">忘记密码</el-link>
+                </el-form>
             </div>
         </el-form>
         <el-form class="bg-bubbles">
