@@ -34,6 +34,37 @@ body {
     display: block;
 }
 
-.el-container .el-main .el-row .el-col div {
-    background: red;
+.el-main .el-collapse {
+    width: 400px;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard img {
+    width: 20%;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard .book-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 1%;
+    width: 70%;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard .book-content span .el-link {
+    width: 100%;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard .book-content span {
+    white-space: nowrap;
+}
+
+.el-main .el-collapse .el-collapse-item .bookcard .book-content span .el-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

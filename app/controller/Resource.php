@@ -8,7 +8,6 @@ use think\facade\View;
 use think\Validate;
 class Resource extends BaseController
 {
-    private $imageSrc = "";
     public function index(){
         if (!array_key_exists('token',$_COOKIE))
             return redirect('/login');
@@ -16,11 +15,15 @@ class Resource extends BaseController
             return View::fetch();
     }
     public function upload(){
-        return View::fetch();
+        if (!array_key_exists('token',$_COOKIE))
+            return redirect('/login');
+        else   
+            return View::fetch();
     }
     public function uploadFile() //资源上传接口
     {
         $_POST = Request::post();
+        \session_start();
         // 获取表单上传文件
         $files = request()->file("files");
         $uname = \getUnameByToken();
@@ -33,10 +36,11 @@ class Resource extends BaseController
                 $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
+                
                 $data = [
                     "rid"=>$rid,
                     "rname"=>$_POST['rname'],
-                    "rcover"=>"/storage/".$this->imageSrc,
+                    "rcover"=>"/storage/".$_SESSION['imageSrc'],
                     "rtype"=>$_POST['rtype'],
                     "rsrc"=>"/storage/".$savename[count($savename)-1],
                     "rorigin"=>$_POST['rorigin'],
@@ -73,7 +77,7 @@ class Resource extends BaseController
                 Db::table("upload")->replace()->insert($data);
             }
             //删除资源组表中建表时的默认资源
-            Db::table("rgroup")->where('rid',"000001")->where('rgid',$_POST['rgid'])->delete();
+            Db::table("rgroup")->where(['rid'=>"000001",'rgid'=>$_POST['rgid']])->delete();
             return json(["code"=>1,"msg"=>"上传成功"]);
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
@@ -86,7 +90,8 @@ class Resource extends BaseController
             validate(['image'=>'fileExt:jpg,png,gif,jpeg'])
                 ->check($image);
             $savename = \think\facade\Filesystem::disk('public')->putFile('cover', $image['image']);
-            $this->imageSrc = $savename;
+            \session_start();
+            $_SESSION['imageSrc']=$savename;
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
@@ -126,5 +131,38 @@ class Resource extends BaseController
             "rgid"=>$rgid,
             "rgname"=>$rgname
         ]);
+    }
+    public function get_resource(){
+        //分页查询，视图查询，双表连接查询
+        $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+        ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
+        ->order('rid','desc')->paginate(20)->toArray();
+        $rids = [];
+        $result = [];
+        $j=0;
+        for ($i=0;$i<count($data['data']);$i++){
+            $index = array_search($data['data'][$i]['rid'],$rids);
+            if ($index===false){
+                $result[$j] = [
+                    'rname' => $data['data'][$i]['rname'],
+                    'rcover' => $data['data'][$i]['rcover'],
+                    'rsrc' => $data['data'][$i]['rsrc'],
+                    'rorigin' => $data['data'][$i]['rorigin'],
+                    'rauthor' => $data['data'][$i]['rauthor'],
+                    'labels' => array($data['data'][$i]['lname'])
+                ];
+                $rids[$j] = $data['data'][$i]['rid'];
+                $j++;
+            }else{
+                $result[$index]['labels'][]=$data['data'][$i]['lname'];
+            }
+        }
+        $data['data'] = $result;
+        return json($data);
+    }
+    public function search_resource(){
+        $query = Request::post("query");
+        $result = Db::table("resource")->where("rname|rauthor|keywords","like","%$query%");
+        return json($result);
     }
 }

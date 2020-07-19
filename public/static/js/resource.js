@@ -1,5 +1,6 @@
-var app = new Vue({
-    el: "#app",
+//upload 页面对应js
+var uploadPage = new Vue({
+    el: "#upload",
     data() {
         return {
             activeIndex: '4',
@@ -85,6 +86,7 @@ var app = new Vue({
                     console.log(err);
                 })
         },
+
         //上传封面
         handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
@@ -116,7 +118,7 @@ var app = new Vue({
                 this.fileData.append("labels", fieldData.selectedLabels);
                 this.fileData.append("rtype", fieldData.type);
                 this.fileData.append("rgid", fieldData.selectedGroup.id)
-                this.fileData.append("rgname", fieldData.selectedGroup.id);
+                this.fileData.append("rgname", fieldData.selectedGroup.value);
                 this.fileData.append("rauthor", fieldData.author)
                 this.fileData.append("rorigin", fieldData.rorigin)
                 this.fileData.append("rname", fieldData.rname)
@@ -146,5 +148,42 @@ var app = new Vue({
             }
             this.fileList = fileList;
         },
+    }
+})
+
+//index 页面对应js
+var indexPage = new Vue({
+    el: "#index",
+    data() {
+        return {
+            activeIndex: '4',
+            types: ['视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
+            resources: [{
+                rname: "计算机组成原理",
+                rauthor: "魏风起",
+                rcover: "https://pic3.zhimg.com/v2-9cdbe04508b8ab89b34be51dcd1ca695_b.jpg",
+                rorigin: "https://www.runoob.com/php/php-ajax-php.html",
+                labels: ["计算机", "人工智能", "机器学习"]
+            }]
+        }
+    },
+    created: function() {
+        //分页获取资源
+        this.getResource();
+    },
+    methods: {
+        getResource() {
+            axios.get("/resource/get_resource")
+                .then(res => {
+                    console.log(res.data);
+                    this.resources.push.apply(this.resources, res.data.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
+        searchResource() {
+
+        }
     }
 })
