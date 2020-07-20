@@ -157,18 +157,32 @@ var indexPage = new Vue({
     data() {
         return {
             activeIndex: '4',
-            types: ['视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
+            types: ['全部', '视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
+            selectedType: "全部",
             resources: [{
                 rname: "计算机组成原理",
                 rauthor: "魏风起",
                 rcover: "https://pic3.zhimg.com/v2-9cdbe04508b8ab89b34be51dcd1ca695_b.jpg",
                 rorigin: "https://www.runoob.com/php/php-ajax-php.html",
                 labels: ["计算机", "人工智能", "机器学习"]
-            }]
+            }],
+            labels: [],
+            selectedLabels: [],
+            query: "",
+            searchResults: [],
+            mode: "none"
         }
     },
     created: function() {
-        //分页获取资源
+        axios.get("/resource/get_label")
+            .then(res => {
+                console.log(res.data);
+                this.labels = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            //分页获取资源
         this.getResource();
     },
     methods: {
@@ -183,7 +197,18 @@ var indexPage = new Vue({
                 })
         },
         searchResource() {
-
+            axios.get("/resource/search_resource?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
+                .then(res => {
+                    console.log(res.data);
+                    // this.searchResults = res.data;
+                    // this.mode = "block";
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
+        toSearchResults() {
+            window.location.href = "/resource/searchResults?query=" + this.query + "&labels=" + this.selectedlabels + "&type=" + this.selectedType;
         }
     }
 })

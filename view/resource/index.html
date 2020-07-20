@@ -38,6 +38,19 @@
             </el-menu>
         </el-header>
         <el-main>
+            <el-cascader @change="searchResource" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签"></el-cascader>
+            <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @input="searchResource">
+                <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="searchResource">
+                    <el-option v-for="type in types" :value="type"></el-option>
+                </el-select>
+                <el-button slot="append" icon="el-icon-search" @click="toSearchResults"></el-button>
+            </el-input>
+            <el-card :style="'display:'+ mode+';'">
+                <span slot="header">搜索结果</span>
+                <div v-for="item in searchResults">
+                    {{item.rname}};
+                </div>
+            </el-card>
             <el-collapse accordion>
                 <el-collapse-item :title="res.rname" v-for="res in resources">
                     <div class="bookcard">

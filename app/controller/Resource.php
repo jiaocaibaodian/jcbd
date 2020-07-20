@@ -6,21 +6,29 @@ use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 use think\Validate;
+
 class Resource extends BaseController
 {
-    public function index(){
-        if (!array_key_exists('token',$_COOKIE))
+    public function index()
+    {
+        if (!array_key_exists('token', $_COOKIE)) {
             return redirect('/login');
-        else   
+        } else {
             return View::fetch();
+        }
+
     }
-    public function upload(){
-        if (!array_key_exists('token',$_COOKIE))
+    public function upload()
+    {
+        if (!array_key_exists('token', $_COOKIE)) {
             return redirect('/login');
-        else   
+        } else {
             return View::fetch();
+        }
+
     }
     public function uploadFile() //资源上传接口
+
     {
         $_POST = Request::post();
         \session_start();
@@ -36,133 +44,162 @@ class Resource extends BaseController
                 $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
-                
+
                 $data = [
-                    "rid"=>$rid,
-                    "rname"=>$_POST['rname'],
-                    "rcover"=>"/storage/".$_SESSION['imageSrc'],
-                    "rtype"=>$_POST['rtype'],
-                    "rsrc"=>"/storage/".$savename[count($savename)-1],
-                    "rorigin"=>$_POST['rorigin'],
-                    "rauthor"=>$_POST['rauthor'],
-                    "keywords"=>$_POST['keywords']
+                    "rid" => $rid,
+                    "rname" => $_POST['rname'],
+                    "rcover" => "/storage/" . $_SESSION['imageSrc'],
+                    "rtype" => $_POST['rtype'],
+                    "rsrc" => "/storage/" . $savename[count($savename) - 1],
+                    "rorigin" => $_POST['rorigin'],
+                    "rauthor" => $_POST['rauthor'],
+                    "keywords" => $_POST['keywords'],
                 ];
                 Db::table("resource")->replace()->insert($data);
                 //更新资源标签表
-                $labels = explode(",",$_POST['labels']);
-                foreach($labels as $item){
+                $labels = explode(",", $_POST['labels']);
+                foreach ($labels as $item) {
                     $data = [
-                        "rid"=>$rid,
-                        "lname"=>$item
+                        "rid" => $rid,
+                        "lname" => $item,
                     ];
                     Db::table("res_lab")->replace()->insert($data);
                 }
                 //更新资源组表，插入新增资源组记录
-                if ($_POST['rgid']!=""){
+                if ($_POST['rgid'] != "") {
                     $data = [
-                        "rgid"=>$_POST['rgid'],
-                        "rgname"=>$_POST['rgname'],
-                        "rid"=>$rid,
-                        "uname"=>$uname
+                        "rgid" => $_POST['rgid'],
+                        "rgname" => $_POST['rgname'],
+                        "rid" => $rid,
+                        "uname" => $uname,
                     ];
                     Db::table("rgroup")->replace()->insert($data);
                 }
                 //更新upload表，插入用户上传记录
                 $data = [
-                    "uname"=>$uname,
-                    "rid"=>$rid,
-                    "rname"=>$_POST['rname'],
-                    "rsrc"=>"/storage/".$savename[count($savename)-1]
+                    "uname" => $uname,
+                    "rid" => $rid,
+                    "rname" => $_POST['rname'],
+                    "rsrc" => "/storage/" . $savename[count($savename) - 1],
                 ];
                 Db::table("upload")->replace()->insert($data);
             }
             //删除资源组表中建表时的默认资源
-            Db::table("rgroup")->where(['rid'=>"000001",'rgid'=>$_POST['rgid']])->delete();
-            return json(["code"=>1,"msg"=>"上传成功"]);
+            Db::table("rgroup")->where(['rid' => "000001", 'rgid' => $_POST['rgid']])->delete();
+            return json(["code" => 1, "msg" => "上传成功"]);
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
     }
-    public function upload_cover(){
+    public function upload_cover()
+    {
         //上传封面
         $image = request()->file();
         try {
-            validate(['image'=>'fileExt:jpg,png,gif,jpeg'])
+            validate(['image' => 'fileExt:jpg,png,gif,jpeg'])
                 ->check($image);
             $savename = \think\facade\Filesystem::disk('public')->putFile('cover', $image['image']);
             \session_start();
-            $_SESSION['imageSrc']=$savename;
+            $_SESSION['imageSrc'] = $savename;
         } catch (\think\exception\ValidateException $e) {
             echo $e->getMessage();
         }
     }
-    public function get_label(){
-        $data = Db::table("label")->where("lclass",1)->select();
+    public function get_label()
+    {
+        $data = Db::table("label")->where("lclass", 1)->select();
         $root = array();
-        recurGetLabels($data,$root);
+        recurGetLabels($data, $root);
         return json($root);
     }
-    public function get_group(){
+    public function get_group()
+    {
         //根据token取得用户名
         $uname = getUnameByToken();
         //获得该用户的资源组数据
-        $data = Db::table("rgroup")->where("uname",$uname)->select();
+        $data = Db::table("rgroup")->where("uname", $uname)->select();
         //转换数据格式
         $need = [];
-        foreach ($data as $key=>$item){
+        foreach ($data as $key => $item) {
             $need[$key]["id"] = $item['rgid'];
             $need[$key]["value"] = $item["rgname"];
         }
         return json($need);
     }
-    public function create_group(){
+    public function create_group()
+    {
         //插入一条记录
         $rgname = Request::post("rgname");
         //根据token拿到用户名
         $uname = \getUnameByToken();
         $rgid = \uniqid();
         Db::table("rgroup")->insert([
-            "rgid"=>$rgid,
-            "rgname"=>$rgname,
-            "rid"=>"000001",
-            "uname"=>$uname
+            "rgid" => $rgid,
+            "rgname" => $rgname,
+            "rid" => "000001",
+            "uname" => $uname,
         ]);
         return json([
-            "rgid"=>$rgid,
-            "rgname"=>$rgname
+            "rgid" => $rgid,
+            "rgname" => $rgname,
         ]);
     }
-    public function get_resource(){
+    public function get_resource()
+    {
         //分页查询，视图查询，双表连接查询
         $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
-        ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
-        ->order('rid','desc')->paginate(20)->toArray();
+            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
+            ->order('rid', 'desc')->paginate(20)->toArray();
         $rids = [];
         $result = [];
-        $j=0;
-        for ($i=0;$i<count($data['data']);$i++){
-            $index = array_search($data['data'][$i]['rid'],$rids);
-            if ($index===false){
+        $j = 0;
+        for ($i = 0; $i < count($data['data']); $i++) {
+            $index = array_search($data['data'][$i]['rid'], $rids);
+            if ($index === false) {
                 $result[$j] = [
                     'rname' => $data['data'][$i]['rname'],
                     'rcover' => $data['data'][$i]['rcover'],
                     'rsrc' => $data['data'][$i]['rsrc'],
                     'rorigin' => $data['data'][$i]['rorigin'],
                     'rauthor' => $data['data'][$i]['rauthor'],
-                    'labels' => array($data['data'][$i]['lname'])
+                    'labels' => array($data['data'][$i]['lname']),
                 ];
                 $rids[$j] = $data['data'][$i]['rid'];
                 $j++;
-            }else{
-                $result[$index]['labels'][]=$data['data'][$i]['lname'];
+            } else {
+                $result[$index]['labels'][] = $data['data'][$i]['lname'];
             }
         }
         $data['data'] = $result;
         return json($data);
     }
-    public function search_resource(){
-        $query = Request::post("query");
-        $result = Db::table("resource")->where("rname|rauthor|keywords","like","%$query%");
+    public function search_resource()
+    {
+        $query = input("param.query");
+        $labels = input("param.labels");
+        $type = input("param.type");
+        $rawSql = "select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\"";
+        $typeSql = $rawSql;
+        if ($type != "全部") {
+            $typeSql = "select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource where rawResource.rtype=\"" . $type . "\"";
+        }
+        $labelSql=$typeSql;
+        if ($labels != "") {
+            $max = 0;
+            $labs = \explode(",", $labels);
+            //找到级别最高(lclass最高)的标签
+            foreach ($labs as $key => $lab) {
+                $lclass = Db::table("label")->where("lname", $lab)->value("lclass");
+                if ($lclass > $max) {
+                    $max = $key;
+                }
+            }
+            if ($type=="全部")
+                $labelSql = "select * from (select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource ) typeResource,res_lab where typeResource.rid=res_lab.rid and res_lab.lname=\"" . $labs[$max] . "\"";
+            else
+                $labelSql = "select * from (select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource where rawResource.rtype=\"" . $type . "\") typeResource,res_lab where typeResource.rid=res_lab.rid and res_lab.lname=\"" . $labs[$max] . "\"";
+        }
+        $result = Db::query($labelSql);
         return json($result);
     }
 }
