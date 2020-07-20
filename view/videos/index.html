@@ -19,8 +19,7 @@
             <ul>
                 <li><a href="#">首页</a></li>
                 <li><a href="#">收藏夹</a></li>
-            </ul>
-        </div>
+            </ul>        </div>
         <!-- 搜索模块 -->
         <div class="search">
             <input type="text" value="输入关键词">
@@ -29,24 +28,23 @@
     </div>
     <!-- 主体部分 -->
     <div class="box w">
-        <ul>
-            <li>
+        <ul id='ul'>
+            <!-- <li>
                 <img src="imges/logo.png" alt="">
                 <h4>
-                    说明
+                    啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
                 </h4>
-            </li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            </li> -->
         </ul>
     </div>
+    <script>
+        var ul = document.getElementById('ul');
+        for (var i = 0; i < 10; i++) {
+            li = document.createElement("li");
+            li.innerHTML = '<a href="https://www.bilibili.com/"><img src="imges/logo.png" alt=""></a>   <h4> 视频标题 </h4>'
+            ul.appendChild(li);
+        }
+    </script>
 </body>
 
-</html>
+</html> 
