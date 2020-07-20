@@ -66,21 +66,21 @@ class Resource extends BaseController
                     Db::table("res_lab")->replace()->insert($data);
                 }
                 //更新资源组表，插入新增资源组记录
-                if ($_POST['rgid'] != "") {
+                if ($_POST['rgid']!=""){
                     $data = [
-                        "rgid" => $_POST['rgid'],
-                        "rgname" => $_POST['rgname'],
-                        "rid" => $rid,
-                        "uname" => $uname,
+                        "rgid"=>$_POST['rgid'],
+                        "rgname"=>$_POST['rgname'],
+                        "rid"=>$rid,
+                        "uname"=>$uname
                     ];
                     Db::table("rgroup")->replace()->insert($data);
                 }
                 //更新upload表，插入用户上传记录
                 $data = [
-                    "uname" => $uname,
-                    "rid" => $rid,
-                    "rname" => $_POST['rname'],
-                    "rsrc" => "/storage/" . $savename[count($savename) - 1],
+                    "uname"=>$uname,
+                    "rid"=>$rid,
+                    "rname"=>$_POST['rname'],
+                    "rsrc"=>"/storage/".$savename[count($savename)-1]
                 ];
                 Db::table("upload")->replace()->insert($data);
             }
@@ -126,8 +126,7 @@ class Resource extends BaseController
         }
         return json($need);
     }
-    public function create_group()
-    {
+    public function create_group(){
         //插入一条记录
         $rgname = Request::post("rgname");
         //根据token拿到用户名
