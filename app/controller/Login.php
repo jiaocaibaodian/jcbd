@@ -10,7 +10,7 @@ class Login extends BaseController
 {
 
     public function index(){
-        return View::fetch();
+        return View::fetch("uname");
     }
     
     public function resetkey(){
