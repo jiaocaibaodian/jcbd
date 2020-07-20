@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" href="/static/css/login.css">
+<link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
 <title>教材宝典</title>
 <style>
 body
@@ -23,15 +25,10 @@ p
 
 <body>
 <el-container>
-  <el-header>
 	  <h1>个人中心</h1>
-  </el-header>
-  <el-main>
-	  <el-header>
-		  <p>昵称</p>
-		  <img border="" src="/" alt="头像" width="100" height="100">
-	</el-header>
-	<el-main>
+		  <p>昵称<br>
+		  <img border="" src="/" alt="头像" width="100" height="100"></p>
+    <el-main>
     <el-col :span="12">
     <el-menu
       default-active="2"
@@ -55,7 +52,6 @@ p
       </el-menu-item>
     </el-menu>
   </el-col>  
-  </el-main>
   </el-main>
 </el-container>
 </body>
