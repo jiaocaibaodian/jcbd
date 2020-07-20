@@ -8,14 +8,22 @@ use think\facade\View;
 use think\Validate;
 class Login extends BaseController
 {
+
     public function index(){
-        return View::fetch("uname");
+        return View::fetch();
+    }
+    
+    public function resetkey(){
+        return View::fetch();
     }
     //暂时存放此处
+    public function touziplay(){
+        return View::fetch();
+    }//掷骰子小游戏
     public function magiccude()
     {
         return View::fetch();
-    }
+    }//魔方小游戏
     public function login(){
         return View::fetch();
     }
