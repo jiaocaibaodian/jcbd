@@ -35,8 +35,28 @@
                     <el-menu-item index="5-5">个人主页</el-menu-item>
                 </el-submenu>
             </el-menu>
-            <div class="container">
+            <div id="lll">
+                <template>
+                  <el-carousel indicator-position="outside"  height="200px">
+                    <el-carousel-item v-for="item in 4" :key="item">
+                        <img src="/static/img/轮播图1.jpg" v-if="item == 1" class="bannerImg" />
+                        <img src="/static/img/轮播图2.jpg" v-if="item == 2" class="bannerImg" />
+                        <img src="/static/img/轮播图3.jpg" v-if="item == 3" class="bannerImg" />
+                        <img src="/static/img/轮播图4.jpg" v-if="item == 4" class="bannerImg" />
+                    </el-carousel-item>
+                  </el-carousel>
+                </template>
+                </div>
             <div class="container1">
+                    <el-container >
+                      <el-header>
+                         <img src="/static/img/资源.png" alt="进入游戏" style="width:60px;margin-top:1%;">
+                        </el-header>
+                      <el-main>
+                        
+                      </el-main>
+                    </el-container>
+        
                 <el-container>
                   <el-header>
                      <img src="/static/img/游戏.png" alt="进入游戏" style="width:60px;margin-top:2%;">
@@ -47,13 +67,58 @@
                   </el-main>
                 </el-container>
                 
-                <el-container>
-                </div>
             </div>
-        <el-footer>
-
-        </el-footer>
+            <div class="container2">
+                <el-container >
+                  <el-header>
+                     <img src="/static/img/资源.png" alt="进入游戏" style="width:60px;margin-top:1%;">
+                    </el-header>
+                  <el-main>
+                    
+                  </el-main>
+                </el-container>
+    
+            <el-container>
+              <el-header>
+                 <img src="/static/img/游戏.png" alt="进入游戏" style="width:60px;margin-top:2%;">
+                </el-header>
+              <el-main>
+                <a href="/login/magiccude" style="margin-right:150px;"><img src="/static/img/魔方.png" alt="进入魔方小游戏" style="width:100px;"></a>
+                <a href="/login/touziplay" style="margin-top:10px;margin-right:100px;"><img src="/static/img/掷骰子.png" alt="进入掷骰子小游戏" style="width:100px;"></a>
+              </el-main>
+            </el-container>
+            
+        </div>
+            <div class="footer" > 
+                <div class="footer_bottom">
+                    <div class="wrap clearfix">
+                        <div class="bottom_left">
+                            <div class="footer_logo table_box">
+                                <div class="table_cell">
+                                    <div class="logo">
+                                        <div class="logo1"></div>
+                                        <div class="logo2"></div>
+                                   </div>
+                                </div>
+                            </div>
+                            
+                            <div class="company_info">
+                                教材宝典<br>
+                                联系人：教材宝典<br>
+                                电话：教材宝典<br>
+                                邮箱：教材宝典<br>
+                                网址：教材宝典<br>
+                                地址：教材宝典<br>
+                            </div>
+                        </div>
+                        <div class="bottom_right">
+                            
+                        </div>
+                    </div>
+                </div>  
+            </div> 
     </el-container>
+    
     <div id="midground" class="wall"></div>
     <div id="foreground" class="wall"></div>
     <div id="top" class="wall"></div>
