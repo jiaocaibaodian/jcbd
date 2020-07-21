@@ -19,7 +19,8 @@
             <ul>
                 <li><a href="#">首页</a></li>
                 <li><a href="#">收藏夹</a></li>
-            </ul>        </div>
+            </ul>
+        </div>
         <!-- 搜索模块 -->
         <div class="search">
             <input type="text" value="输入关键词">
@@ -39,12 +40,19 @@
     </div>
     <script>
         var ul = document.getElementById('ul');
-        for (var i = 0; i < 10; i++) {
-            li = document.createElement("li");
-            li.innerHTML = '<a href="https://www.bilibili.com/"><img src="imges/logo.png" alt=""></a>   <h4> 视频标题 </h4>'
-            ul.appendChild(li);
+        var li = {
+            lianjie: '<a href="https://www.bilibili.com/"><img src="imges/logo.png" alt=""></a>  ',
+            biaoti: '<h4> 视频标题 </h4>'
+        }
+        var lis = new Array();
+        console.log(lis);
+        for (var i = 0; i < 4; i++) {
+            lis[i] = document.createElement("li");
+            // li.innerHTML = '<a href="https://www.bilibili.com/"><img src="imges/logo.png" alt=""></a>   <h4> 视频标题 </h4>'
+            console.log(lis[i].biaoti);
+            ul.appendChild(lis[i]);
         }
     </script>
 </body>
 
-</html> 
+</html>
