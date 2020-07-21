@@ -159,21 +159,24 @@ var indexPage = new Vue({
             activeIndex: '4',
             types: ['全部', '视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
             selectedType: "全部",
-            resources: [{
-                rname: "计算机组成原理",
-                rauthor: "魏风起",
-                rcover: "https://pic3.zhimg.com/v2-9cdbe04508b8ab89b34be51dcd1ca695_b.jpg",
-                rorigin: "https://www.runoob.com/php/php-ajax-php.html",
-                labels: ["计算机", "人工智能", "机器学习"]
-            }],
+            resources: [],
             labels: [],
-            selectedLabels: [],
+            selectedLabels: "",
             query: "",
             searchResults: [],
-            mode: "none"
+            mode: "none",
+            detail: {
+                dialogVisible: false,
+                resource: {
+                    rname: ""
+                }
+            }
         }
     },
     created: function() {
+        if (localStorage.getItem("query")) {
+            this.getSearchResource();
+        }
         axios.get("/resource/get_label")
             .then(res => {
                 console.log(res.data);
@@ -182,15 +185,17 @@ var indexPage = new Vue({
             .catch(err => {
                 console.log(err);
             })
-            //分页获取资源
-        this.getResource();
     },
     methods: {
-        getResource() {
-            axios.get("/resource/get_resource")
+        getSearchResource() {
+            axios.get("/resource/get_search_resource?query=" + localStorage.query + "&labels=" + localStorage.selectedLabels + "&type=" + localStorage.selectedType + "&pageIndex=1")
                 .then(res => {
                     console.log(res.data);
                     this.resources.push.apply(this.resources, res.data.data);
+                    for (let i = 0; i < this.resources.length; i++) {
+                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
+                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
+                    }
                 })
                 .catch(err => {
                     console.error(err);
@@ -199,16 +204,34 @@ var indexPage = new Vue({
         searchResource() {
             axios.get("/resource/search_resource?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
                 .then(res => {
-                    console.log(res.data);
-                    // this.searchResults = res.data;
-                    // this.mode = "block";
+                    this.searchResults = res.data;
+                    var reg = new RegExp(this.query);
+                    console.log(reg);
+                    for (let i = 0; i < this.searchResults.length; i++) {
+                        this.searchResults[i].rname = this.searchResults[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
+                        this.searchResults[i].rauthor = this.searchResults[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
+                    }
+                    this.mode = "block";
                 })
                 .catch(err => {
                     console.error(err);
                 })
         },
         toSearchResults() {
-            window.location.href = "/resource/searchResults?query=" + this.query + "&labels=" + this.selectedlabels + "&type=" + this.selectedType;
+            window.location.href = "/resource/searchResults";
+            localStorage.setItem("query", this.query);
+            localStorage.setItem("selectedType", this.selectedType);
+            localStorage.setItem("selectedLabels", this.selectedLabels);
+        },
+        handleClose(done) {
+            done();
+        },
+        showDetail(item) {
+            console.log(item);
+            this.detail.resource = item;
+            this.detail.resource.rname = item.rname.replace(/<strong.*>.*<\/strong>/, this.query);
+            this.detail.resource.rauthor = item.rauthor.replace(/<strong.*>.*<\/strong>/, this.query);
+            this.detail.dialogVisible = true;
         }
     }
 })
