@@ -49,10 +49,9 @@ class Resource extends BaseController
                 $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
-
                 $data = [
                     "rid" => $rid,
-                    "rname" => $_POST['rname'],
+                    "rname" => $file->getOriginalName(),
                     "rcover" => "/storage/" . $_SESSION['imageSrc'],
                     "rtype" => $_POST['rtype'],
                     "rsrc" => "/storage/" . $savename[count($savename) - 1],
@@ -170,19 +169,19 @@ class Resource extends BaseController
         $temp = mb_substr($temp,0,\mb_strlen($temp)-1).")";
         $data = [];
         if ($type=="全部"&&$labels==""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }elseif($type=="全部"&&$labels!=""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }elseif($type!="全部"&&$labels==""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype=\"$type\"")->where("rname|rauthor|keywords","like","%$query%")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }else{
-            $data =  Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data =  Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }
@@ -203,19 +202,19 @@ class Resource extends BaseController
         $temp = mb_substr($temp,0,\mb_strlen($temp)-1).")";
         $data = [];
         if ($type=="全部"&&$labels==""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")
             ->select()->toArray();
         }elseif($type=="全部"&&$labels!=""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
             ->select()->toArray();
         }elseif($type!="全部"&&$labels==""){
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype=\"$type\"")->where("rname|rauthor|keywords","like","%$query%")
             ->select()->toArray();
         }else{
-            $data =  Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            $data =  Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
             ->select()->toArray();
         }

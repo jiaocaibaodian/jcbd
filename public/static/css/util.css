@@ -68,3 +68,12 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.videocard .video-content span {
+    white-space: nowrap;
+}
+
+.videocard .video-content span .el-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -90,6 +90,7 @@ function data_format(&$data,$limit=10000){
         if ($index === false) {
             $result[$j] = [
                 'rname' => $data[$i]['rname'],
+                'rtype' => $data[$i]['rtype'],
                 'rcover' => $data[$i]['rcover'],
                 'rsrc' => $data[$i]['rsrc'],
                 'rorigin' => $data[$i]['rorigin'],

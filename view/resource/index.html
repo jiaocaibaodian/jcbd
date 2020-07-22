@@ -47,14 +47,14 @@
             <el-card :style="'display:'+ mode+';'">
                 <ul class="infinite-list" style="overflow:auto">
                     <li v-for="item in searchResults" class="infinite-list-item" @mousedown="showDetail(item)">
-                        <span v-html="item.rname+' --'+item.rauthor+'著'"></span>
+                        <span v-html="item.rname+' --'+item.rauthor"></span>
                         <i class="el-icon-arrow-right"></i>
                     </li>
                 </ul>
             </el-card>
         </el-main>
         <el-footer>
-            <el-dialog :title="detail.resource.rname" :visible.sync="detail.dialogVisible" width="50%" :before-close="handleClose" :close-on-click-modal="false">
+            <el-dialog v-if="detail.resource.rtype=='电子书籍'" :title="detail.resource.rname" :visible.sync="detail.dialogVisible" width="50%" :before-close="handleClose" :close-on-click-modal="false">
                 <div class="bookcard">
                     <img :src="detail.resource.rcover" class="book-cover">
                     <div class="book-content">
@@ -70,6 +70,30 @@
                         <div>
                             <el-button type="primary">加入书架</el-button>
                             <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openFile()">阅读</el-button>
+                        </div>
+                    </div>
+                </div>
+            </el-dialog>
+            <el-dialog v-if="detail.resource.rtype=='视频'" :title="detail.resource.rname" :visible.sync="detail.dialogVisible" width="50%" :before-close="handleClose" :close-on-click-modal="false">
+                <div class="videocard">
+                    <video :src="detail.resource.rsrc" type="video/mp4" controls style="width:100%"></video>
+                    <div class="video-content">
+                        <div>
+                            <span>作者: {{detail.resource.rauthor}}</span>
+                            <span>标签:
+                            <span v-for="label in detail.resource.labels">{{label}}/</span>
+                            </span>
+                        </div>
+                        <div>
+                            <span>原址:
+                                <el-tooltip class="item" effect="dark" :content="detail.resource.rorigin" placement="top-start">
+                                    <el-link :href="detail.resource.rorigin" >{{detail.resource.rorigin}}</el-link>
+                                </el-tooltip>
+                            </span>
+                        </div>
+                        <div>
+                            <el-button type="primary">加入视频库</el-button>
+                            <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openVideo()">视频主页</el-button>
                         </div>
                     </div>
                 </div>

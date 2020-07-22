@@ -27,7 +27,6 @@ var uploadPage = new Vue({
                 rgname: "",
                 author: "",
                 rorigin: "",
-                rname: "",
                 keywords: ""
             },
             imageUrl: ''
@@ -129,7 +128,6 @@ var uploadPage = new Vue({
                 this.fileData.append("rgname", fieldData.selectedGroup.value);
                 this.fileData.append("rauthor", fieldData.author)
                 this.fileData.append("rorigin", fieldData.rorigin)
-                this.fileData.append("rname", fieldData.rname)
                 this.fileData.append("keywords", fieldData.keywords)
                 axios.post("/resource/uploadFile", this.fileData).then((res) => {
                     console.log(res.data);
@@ -252,6 +250,9 @@ var indexPage = new Vue({
             }
             console.log(url);
             window.open("pdf.js/web/viewer.html?file=" + url);
+        },
+        openVideo() {
+            //前往视频详情页面
         }
     }
 })
