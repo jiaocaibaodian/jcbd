@@ -37,9 +37,9 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-cascader @change="searchResource" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
-            <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="searchResource" @input="searchResource" @blur="mode='none'">
-                <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="searchResource">
+            <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
+            <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults" @blur="mode='none'">
+                <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="getTempSearchResults">
                     <el-option v-for="type in types" :value="type"></el-option>
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" @click="toSearchResults"></el-button>
@@ -69,7 +69,7 @@
                         </span>
                         <div>
                             <el-button type="primary">加入书架</el-button>
-                            <el-button type="success">阅读</el-button>
+                            <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openFile()">阅读</el-button>
                         </div>
                     </div>
                 </div>

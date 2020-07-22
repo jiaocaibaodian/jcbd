@@ -80,3 +80,27 @@ function getUnameByToken(){
     $data = Db::table("user")->where("token",$token)->find();
     return $data['uname'];
 }
+
+function data_format(&$data,$limit=10000){
+    $rids = [];
+    $result = [];
+    $j = 0;
+    for ($i = 0; $i < count($data); $i++) {
+        $index = array_search($data[$i]['rid'], $rids);
+        if ($index === false) {
+            $result[$j] = [
+                'rname' => $data[$i]['rname'],
+                'rcover' => $data[$i]['rcover'],
+                'rsrc' => $data[$i]['rsrc'],
+                'rorigin' => $data[$i]['rorigin'],
+                'rauthor' => $data[$i]['rauthor'],
+                'labels' => array($data[$i]['lname']),
+            ];
+            $rids[$j] = $data[$i]['rid'];
+            $j++;
+        } else {
+            $result[$index]['labels'][] = $data[$i]['lname'];
+        }
+    }
+    $data = array_splice($result,0,$limit);
+}

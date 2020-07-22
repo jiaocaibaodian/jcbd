@@ -122,7 +122,7 @@ class Resource extends BaseController
         //根据token取得用户名
         $uname = getUnameByToken();
         //获得该用户的资源组数据
-        $data = Db::table("rgroup")->where("uname", $uname)->select();
+        $data = Db::table("rgroup")->where("uname", $uname)->group("rgid")->select();
         //转换数据格式
         $need = [];
         foreach ($data as $key => $item) {
@@ -148,48 +148,27 @@ class Resource extends BaseController
             "rgname" => $rgname,
         ]);
     }
-    public function get_resource()      //资源页面的查询
+   public function get_resource()      //资源页面的查询
     {
         //分页查询，视图查询，双表连接查询
         $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
             ->order('rid', 'desc')->paginate(20)->toArray();
-        $rids = [];
-        $result = [];
-        $j = 0;
-        for ($i = 0; $i < count($data['data']); $i++) {
-            $index = array_search($data['data'][$i]['rid'], $rids);
-            if ($index === false) {
-                $result[$j] = [
-                    'rname' => $data['data'][$i]['rname'],
-                    'rcover' => $data['data'][$i]['rcover'],
-                    'rsrc' => $data['data'][$i]['rsrc'],
-                    'rorigin' => $data['data'][$i]['rorigin'],
-                    'rauthor' => $data['data'][$i]['rauthor'],
-                    'labels' => array($data['data'][$i]['lname']),
-                ];
-                $rids[$j] = $data['data'][$i]['rid'];
-                $j++;
-            } else {
-                $result[$index]['labels'][] = $data['data'][$i]['lname'];
-            }
-        }
-        $data['data'] = $result;
+        data_format($data['data']);
         return json($data);
     }
-    public function get_search_resource(){      //资源搜索结果页面的查询
+    public function get_search_results(){      //资源搜索结果页面的查询
         $query = input("param.query");
         $labels = input("param.labels");
         $type = input("param.type");
-        $pageIndex = input("param.pageIndex");
-        // $pageSize = input("param.pageSize");
-        $pageSize = 20;
+        $pageSize = input("param.pageSize");
         $labs = \explode(",", $labels);
         $temp = "(";
         for ($i=0;$i<count($labs);$i++){
             $temp=$temp."\"".$labs[$i]."\",";
         }
         $temp = mb_substr($temp,0,\mb_strlen($temp)-1).")";
+        $data = [];
         if ($type=="全部"&&$labels==""){
             $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")
@@ -207,56 +186,40 @@ class Resource extends BaseController
             ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }
-        $rids = [];
-        $result = [];
-        $j = 0;
-        for ($i = 0; $i < count($data['data']); $i++) {
-            $index = array_search($data['data'][$i]['rid'], $rids);
-            if ($index === false) {
-                $result[$j] = [
-                    'rname' => $data['data'][$i]['rname'],
-                    'rcover' => $data['data'][$i]['rcover'],
-                    'rsrc' => $data['data'][$i]['rsrc'],
-                    'rorigin' => $data['data'][$i]['rorigin'],
-                    'rauthor' => $data['data'][$i]['rauthor'],
-                    'labels' => array($data['data'][$i]['lname']),
-                ];
-                $rids[$j] = $data['data'][$i]['rid'];
-                $j++;
-            } else {
-                $result[$index]['labels'][] = $data['data'][$i]['lname'];
-            }
-        }
-        $data['data'] = $result;
+        data_format($data['data']);
         return json($data);
     }
-    public function search_resource()   //资源页面的临时搜索
+    public function get_temp_search_results()   //资源页面的临时搜索
     {
         $query = input("param.query");
         $labels = input("param.labels");
         $type = input("param.type");
-        $rawSql = "select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" limit 5";
-        $typeSql = $rawSql;
-        if ($type != "全部") {
-            $typeSql = "select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource where rawResource.rtype=\"" . $type . "\" limit 5";
+        $pageSize = input("param.pageSize");
+        $labs = \explode(",", $labels);
+        $temp = "(";
+        for ($i=0;$i<count($labs);$i++){
+            $temp=$temp."\"".$labs[$i]."\",";
         }
-        $labelSql=$typeSql;
-        if ($labels != "") {
-            $max = 0;
-            $labs = \explode(",", $labels);
-            //找到级别最高(lclass最高)的标签
-            foreach ($labs as $key => $lab) {
-                $lclass = Db::table("label")->where("lname", $lab)->value("lclass");
-                if ($lclass > $max) {
-                    $max = $key;
-                }
-            }
-            if ($type=="全部")
-                $labelSql = "select * from (select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource ) typeResource,res_lab where typeResource.rid=res_lab.rid and res_lab.lname=\"" . $labs[$max] . "\" limit 5";
-            else
-                $labelSql = "select * from (select * from (select * from resource where rname like \"%" . $query . "%\" or rauthor like \"%" . $query . "%\" or keywords like \"%" . $query . "%\" ) rawResource where rawResource.rtype=\"" . $type . "\") typeResource,res_lab where typeResource.rid=res_lab.rid and res_lab.lname=\"" . $labs[$max] . "\" limit 5";
+        $temp = mb_substr($temp,0,\mb_strlen($temp)-1).")";
+        $data = [];
+        if ($type=="全部"&&$labels==""){
+            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")
+            ->select()->toArray();
+        }elseif($type=="全部"&&$labels!=""){
+            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
+            ->select()->toArray();
+        }elseif($type!="全部"&&$labels==""){
+            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype=\"$type\"")->where("rname|rauthor|keywords","like","%$query%")
+            ->select()->toArray();
+        }else{
+            $data =  Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+            ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords","like","%$query%")->where("res_lab.lname in $temp")
+            ->select()->toArray();
         }
-        $result = Db::query($labelSql);
-        return json($result);
+        data_format($data,5);
+        return json($data);
     }
 }

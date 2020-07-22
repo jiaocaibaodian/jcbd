@@ -39,7 +39,10 @@
         </el-header>
         <el-main>
             <el-collapse accordion>
-                <el-collapse-item :title="res.rname" v-for="res in resources">
+                <el-collapse-item v-for="res in resources">
+                    <template slot="title">
+                        <span v-html="res.rname"></span>
+                    </template>
                     <div class="bookcard">
                         <img :src="res.rcover" class="book-cover">
                         <div class="book-content">

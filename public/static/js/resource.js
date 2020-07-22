@@ -1,4 +1,12 @@
 //upload 页面对应js
+$(function() {
+    $("body").keydown(function() {
+        var event = window.event;
+        if (event.keyCode == 13) {
+            $(".el-main .el-input .el-button").click();
+        }
+    })
+})
 var uploadPage = new Vue({
     el: "#upload",
     data() {
@@ -188,21 +196,22 @@ var indexPage = new Vue({
     },
     methods: {
         getSearchResource() {
-            axios.get("/resource/get_search_resource?query=" + localStorage.query + "&labels=" + localStorage.selectedLabels + "&type=" + localStorage.selectedType + "&pageIndex=1")
+            axios.get("/resource/get_search_results?query=" + localStorage.query + "&labels=" + localStorage.selectedLabels + "&type=" + localStorage.selectedType + "&pageIndex=1")
                 .then(res => {
                     console.log(res.data);
+                    var reg = new RegExp(localStorage.query);
                     this.resources.push.apply(this.resources, res.data.data);
                     for (let i = 0; i < this.resources.length; i++) {
-                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
-                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
+                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + localStorage.query + "</strong>");
+                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + localStorage.query + "</strong>")
                     }
                 })
                 .catch(err => {
                     console.error(err);
                 })
         },
-        searchResource() {
-            axios.get("/resource/search_resource?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
+        getTempSearchResults() {
+            axios.get("/resource/get_temp_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
                 .then(res => {
                     this.searchResults = res.data;
                     var reg = new RegExp(this.query);
@@ -232,6 +241,17 @@ var indexPage = new Vue({
             this.detail.resource.rname = item.rname.replace(/<strong.*>.*<\/strong>/, this.query);
             this.detail.resource.rauthor = item.rauthor.replace(/<strong.*>.*<\/strong>/, this.query);
             this.detail.dialogVisible = true;
+        },
+        openFile() {
+            //判断 
+            var event = window.event;
+            console.log(event);
+            var url = event.target.parentNode.dataset.rsrc;
+            if (url == undefined) {
+                url = event.target.dataset.rsrc;
+            }
+            console.log(url);
+            window.open("pdf.js/web/viewer.html?file=" + url);
         }
     }
 })
