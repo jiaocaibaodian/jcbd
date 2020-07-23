@@ -7,7 +7,7 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/resource.css">
     <title>首页</title>
 </head>
 
@@ -42,6 +42,7 @@
                 <el-form-item label="标签">
                     <!-- 通过级联的方式选择资源的各级标签 -->
                     <el-cascader placeholder="试试搜索：Java" change-on-select filterable :options="fieldData.labels" v-model="fieldData.selectedLabels"></el-cascader>
+                    <el-button type="primary" @click="labelDialog.dialogVisible = true">创建标签</el-button>
                 </el-form-item>
                 <el-form-item label="类型">
                     <el-select v-model="fieldData.type" placeholder="请选择">
@@ -91,7 +92,23 @@
             </el-form>
         </el-main>
         <el-footer>
-
+            <el-dialog title="创建标签" :visible.sync="labelDialog.dialogVisible" width="50%" :close-on-click-modal="false">
+                <el-cascader :options="fieldData.labels" v-model="labelDialog.parentLabel.lname" style="width: 200px;" placeholder="请选择父标签" clearable :props="{ checkStrictly: true }" @active-item-change="handleLabelChange"></el-cascader>
+                <el-button @click="labelDialog.showAll=!labelDialog.showAll;">展开</el-button>
+                <el-row gutter="20" v-if="labelDialog.showAll">
+                    <el-col v-for="labelitem in labelDialog.labels" :span="4">
+                        <div :style="'background-color: '+getRandomBgColor()+';color:white;'" class="tag" @click="labelDialog.parentLabel=labelitem">{{labelitem.lname}}</div>
+                    </el-col>
+                </el-row>
+                <el-form style="margin-top: 20px;">
+                    <el-form-item>
+                        <el-input placeholder="请输入新的标签名" v-model="labelDialog.newlname">
+                            <template slot="prepend">标签名</template>
+                            <el-button slot="append" @click="createLabel()">点击创建</el-button>
+                        </el-input>
+                    </el-form-item>
+                </el-form>
+            </el-dialog>
         </el-footer>
         <el-form class="bg-bubbles">
             <li></li>

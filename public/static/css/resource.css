@@ -1,0 +1,110 @@
+@import url(/static/css/util.css);
+
+/* index页面 */
+
+.el-container {
+    height: 100%;
+}
+
+.el-main .el-form .el-form-item .el-card {
+    display: block;
+    width: 400px;
+    position: absolute;
+    left: 0;
+    top: 40px;
+}
+
+.el-main .el-form .el-form-item .el-card__body {
+    padding: 0;
+}
+
+.bookcard {
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+}
+
+.bookcard img {
+    width: 20%;
+}
+
+.bookcard .book-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 1%;
+    width: 70%;
+}
+
+.bookcard .book-content span .el-link {
+    width: 100%;
+}
+
+.bookcard .book-content span {
+    white-space: nowrap;
+}
+
+.bookcard .book-content span .el-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.videocard .video-content span {
+    white-space: nowrap;
+}
+
+.videocard .video-content span .el-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.el-dialog .el-row .el-col div.tag {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+
+/* 搜索结果页面 */
+
+ul.infinite-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    border-bottom: 0.1px solid #e5e5e6;
+}
+
+ul.infinite-list li.infinite-list-item {
+    height: 30px;
+    border-bottom: 0.1px solid #f4f4f4;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 5px 5px 20px;
+}
+
+ul.infinite-list li.infinite-list-item:hover {
+    background: #e6e5e5;
+}
+
+ul.infinite-list li.infinite-list-item span {
+    flex: 1;
+}
+
+.highlight {
+    color: red;
+}
+
+
+/* upload页面 */
+
+.input-box {
+    width: 500px;
+    padding: 30px;
+}
+
+.el-main {
+    overflow: initial;
+}

@@ -7,7 +7,7 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/resource.css">
     <title>首页</title>
 </head>
 
@@ -38,84 +38,26 @@
         </el-header>
         <el-main>
             <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
-            <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults" @blur="mode='none'">
-                <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="getTempSearchResults">
-                    <el-option v-for="type in types" :value="type"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search" @click="toSearchResults"></el-button>
-            </el-input>
-            <el-button type="primary" @click="labelDialog.dialogVisible = true">创建标签</el-button>
-            <el-card :style="'display:'+ mode+';'">
-                <ul class="infinite-list" style="overflow:auto">
-                    <li v-for="item in searchResults" class="infinite-list-item" @mousedown="showDetail(item)">
-                        <span v-html="item.rname+' --'+item.rauthor"></span>
-                        <i class="el-icon-arrow-right"></i>
-                    </li>
-                </ul>
-            </el-card>
+            <el-form>
+                <el-form-item>
+                    <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults" @blur="mode='none'">
+                        <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="getTempSearchResults">
+                            <el-option v-for="type in types" :value="type"></el-option>
+                        </el-select>
+                        <el-button slot="append" icon="el-icon-search" @click="toSearchResults"></el-button>
+                    </el-input>
+                    <el-card :style="'display:'+ mode+';'">
+                        <ul class="infinite-list" style="overflow:auto">
+                            <li v-for="item in searchResults" class="infinite-list-item" @mousedown="showDetail(item)">
+                                <span v-html="item.rname+' --'+item.rauthor"></span>
+                                <i class="el-icon-arrow-right"></i>
+                            </li>
+                        </ul>
+                    </el-card>
+                </el-form-item>
+            </el-form>
         </el-main>
         <el-footer>
-            <el-dialog v-if="detail.resource.rtype=='电子书籍'" :title="detail.resource.rname" :visible.sync="detail.dialogVisible" width="50%" :before-close="handleClose" :close-on-click-modal="false">
-                <div class="bookcard">
-                    <img :src="detail.resource.rcover" class="book-cover">
-                    <div class="book-content">
-                        <span>作者: {{detail.resource.rauthor}}</span>
-                        <span>标签:
-                            <span v-for="label in detail.resource.labels">{{label}}/</span>
-                        </span>
-                        <span>原址:
-                            <el-tooltip class="item" effect="dark" :content="detail.resource.rorigin" placement="top-start">
-                                <el-link :href="detail.resource.rorigin" >{{detail.resource.rorigin}}</el-link>
-                            </el-tooltip>
-                        </span>
-                        <div>
-                            <el-button type="primary" @click="addToShelf()">加入书架</el-button>
-                            <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openFile()">阅读</el-button>
-                        </div>
-                    </div>
-                </div>
-            </el-dialog>
-            <el-dialog v-if="detail.resource.rtype=='视频'" :title="detail.resource.rname" :visible.sync="detail.dialogVisible" width="50%" :before-close="handleClose" :close-on-click-modal="false">
-                <div class="videocard">
-                    <video :src="detail.resource.rsrc" type="video/mp4" controls style="width:100%"></video>
-                    <div class="video-content">
-                        <div>
-                            <span>作者: {{detail.resource.rauthor}}</span>
-                            <span>标签:
-                            <span v-for="label in detail.resource.labels">{{label}}/</span>
-                            </span>
-                        </div>
-                        <div>
-                            <span>原址:
-                                <el-tooltip class="item" effect="dark" :content="detail.resource.rorigin" placement="top-start">
-                                    <el-link :href="detail.resource.rorigin" >{{detail.resource.rorigin}}</el-link>
-                                </el-tooltip>
-                            </span>
-                        </div>
-                        <div>
-                            <el-button type="primary" @click="addToShelf()">加入视频库</el-button>
-                            <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openVideo()">视频主页</el-button>
-                        </div>
-                    </div>
-                </div>
-            </el-dialog>
-            <el-dialog title="创建标签" :visible.sync="labelDialog.dialogVisible" width="50%" :close-on-click-modal="false">
-                <el-cascader change-on-select :options="labels" v-model="labelDialog.parentLabel.lname" style="width: 200px;" placeholder="请选择父标签" clearable></el-cascader>
-                <el-button @click="labelDialog.showAll=!labelDialog.showAll;">展开</el-button>
-                <el-row gutter="20" v-if="labelDialog.showAll">
-                    <el-col v-for="labelitem in labelDialog.labels" :span="4">
-                        <div :style="'background-color: '+getRandomBgColor()+';color:white;'" class="tag" @click="labelDialog.parentLabel=labelitem">{{labelitem.lname}}</div>
-                    </el-col>
-                </el-row>
-                <el-form style="margin-top: 20px;">
-                    <el-form-item>
-                        <el-input placeholder="请输入新的标签名" v-model="labelDialog.newlname">
-                            <template slot="prepend">标签名</template>
-                            <el-button slot="append" @click="createLabel()">点击创建</el-button>
-                        </el-input>
-                    </el-form-item>
-                </el-form>
-            </el-dialog>
         </el-footer>
     </el-container>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>

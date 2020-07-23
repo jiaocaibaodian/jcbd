@@ -7,7 +7,7 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="/static/css/resource.css">
     <title>首页</title>
 </head>
 
@@ -38,31 +38,21 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-collapse accordion>
-                <el-collapse-item v-for="res in resources">
-                    <template slot="title">
-                        <span v-html="res.rname"></span>
-                    </template>
-                    <div class="bookcard">
-                        <img :src="res.rcover" class="book-cover">
-                        <div class="book-content">
-                            <span v-html="'作者:'+res.rauthor"></span>
-                            <span>标签:
-                                <span v-for="label in res.labels">{{label}}/</span>
-                            </span>
-                            <span>原址:
-                                <el-tooltip class="item" effect="dark" :content="res.rorigin" placement="top-start">
-                                    <el-link :href="res.rorigin" >{{res.rorigin}}</el-link>
-                                </el-tooltip>
-                            </span>
-                            <div>
-                                <el-button type="primary">加入书架</el-button>
-                                <el-button type="success">阅读</el-button>
-                            </div>
-                        </div>
-                    </div>
-                </el-collapse-item>
-            </el-collapse>
+            <!-- 对资源进行分类显示 -->
+            <div id="textbooks"></div>
+            <div id="answers"></div>
+            <div id="videos"></div>
+            <div id="books"></div>
+            <div id="articles"></div>
+            <div id="links"></div>
+            <ul class="col-nav">
+                <li><a href="#textbooks">教材</a></li>
+                <li><a href="#answers">答案</a></li>
+                <li><a href="#videos">视频</a></li>
+                <li><a href="#books">电子书籍</a></li>
+                <li><a href="#articles">短篇博客</a></li>
+                <li><a href="#links">链接</a></li>
+            </ul>
         </el-main>
         <el-footer>
 

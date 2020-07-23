@@ -1,10 +1,18 @@
-a {
-    text-decoration: none;
+html {
+    height: 100%;
+    background-image: url("/static/img/preview.jpg");
+    background-size: cover;
+    overflow-x: hidden;
 }
 
 body {
     margin: 0;
     padding: 0;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
 }
 
 .avatar-uploader .el-upload {
@@ -38,50 +46,141 @@ body {
     width: 400px;
 }
 
-.bookcard {
-    width: 400px;
-    display: flex;
-    flex-direction: row;
-}
-
-.bookcard img {
-    width: 20%;
-}
-
-.bookcard .book-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin-left: 1%;
-    width: 70%;
-}
-
-.bookcard .book-content span .el-link {
-    width: 100%;
-}
-
-.bookcard .book-content span {
-    white-space: nowrap;
-}
-
-.bookcard .book-content span .el-link span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.videocard .video-content span {
-    white-space: nowrap;
-}
-
-.videocard .video-content span .el-link span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.el-dialog .el-row .el-col div.tag {
+.el-header {
+    padding: 0;
     border-radius: 10px;
-    margin-bottom: 10px;
+    background-color: #b5d0f3;
+    color: #333;
     text-align: center;
-    line-height: 30px;
-    cursor: pointer;
+    line-height: 60px;
+}
+
+.el-header .el-menu {
+    display: flex;
+}
+
+.el-header .el-menu .el-menu-item:first-child {
+    flex: 1;
+}
+
+
+/* 实现logo效果 */
+
+.logo {
+    top: 5px;
+    left: 5px;
+    position: relative;
+}
+
+.logo1 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url(/static/img/jiaocaibaodian1.png);
+    background-size: 50px 50px;
+    z-index: 2;
+}
+
+.logo2 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url(/static/img/jiaocaibaodian2.png);
+    background-size: 50px 50px;
+    z-index: 3;
+    animation: haha1 2s linear infinite;
+    -webkit-animation: haha1 2s linear infinite;
+    -moz-animation: haha1 2s linear infinite;
+    -ms-animation: haha1 2s linear infinite;
+    -o-animation: haha1 2s linear infinite;
+}
+
+@keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-ms-keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes haha1 {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

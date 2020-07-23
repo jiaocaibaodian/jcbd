@@ -29,7 +29,18 @@ var uploadPage = new Vue({
                 rorigin: "",
                 keywords: ""
             },
-            imageUrl: ''
+            imageUrl: '',
+            labelDialog: {
+                dialogVisible: false,
+                parentLabel: {
+                    lname: "",
+                    lclass: 1,
+                    attachl: ""
+                },
+                labels: [],
+                showAll: false,
+                newlname: ""
+            }
         }
     },
     created: function() {
@@ -47,6 +58,15 @@ var uploadPage = new Vue({
             .then(res => {
                 console.log(res.data);
                 this.fieldData.group = res.data;
+            })
+            .catch(err => {
+                console.error(err);
+            })
+            //获取无组织形式的标签书架
+        axios.get("/resource/getUnorgLabels")
+            .then(res => {
+                console.log(res);
+                this.labelDialog.labels = res.data;
             })
             .catch(err => {
                 console.error(err);
@@ -154,6 +174,73 @@ var uploadPage = new Vue({
             }
             this.fileList = fileList;
         },
+        handleLabelChange(val) {
+            console.log(val);
+            for (let i = 0; i < this.labelDialog.labels.length; i++) {
+                if (this.labelDialog.labels[i].lname == val[val.length - 1]) {
+                    this.labelDialog.parentLabel = this.labelDialog.labels[i];
+                    return;
+                }
+            }
+        },
+        createLabel() {
+            //检查父标签时候为空，如果为空那么标签等级未为1
+            $lclass = this.labelDialog.parentLabel.lclass + 1;
+            if (this.labelDialog.parentLabel.lname == "") {
+                this.$confirm('父标签为空，确认创建一级标签吗', '提醒', {
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then((res) => {
+                    $lclass = 1;
+                }).catch(() => {});
+            }
+
+            //检测是否输入新标签名
+            if (this.labelDialog.newlname == "") {
+                this.$message({
+                    message: "标签名不能为空",
+                    type: 'warning'
+                })
+                return;
+            }
+
+            //创建标签
+            axios({
+                    method: 'post',
+                    url: "/resource/createLabel",
+                    data: {
+                        attachl: this.labelDialog.parentLabel.lname,
+                        lname: this.labelDialog.newlname,
+                        lclass: $lclass
+                    }
+                })
+                .then(res => {
+                    console.log(res.data);
+                    this.fieldData.labels = res.data;
+                    axios.get("/resource/getUnorgLabels")
+                        .then(res => {
+                            console.log(res);
+                            this.labelDialog.labels = res.data;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        getRandomBgColor() {
+            str = '0123456789ABCDEF';
+            estr = '#';
+            len = str.length;
+            for (let i = 1; i <= 6; i++) {
+                $num = Math.floor(Math.random() * len);
+                estr = estr + str[$num];
+            }
+            return estr;
+        }
     }
 })
 
@@ -176,13 +263,6 @@ var indexPage = new Vue({
                 resource: {
                     rname: ""
                 }
-            },
-            labelDialog: {
-                dialogVisible: false,
-                parentLabel: "",
-                labels: [],
-                showAll: false,
-                newlname: ""
             }
         }
     },
@@ -197,15 +277,6 @@ var indexPage = new Vue({
             })
             .catch(err => {
                 console.log(err);
-            })
-            //获取无组织形式的标签书架
-        axios.get("/resource/getUnorgLabels")
-            .then(res => {
-                console.log(res);
-                this.labelDialog.labels = res.data;
-            })
-            .catch(err => {
-                console.error(err);
             })
     },
     methods: {
@@ -265,7 +336,8 @@ var indexPage = new Vue({
                 url = event.target.dataset.rsrc;
             }
             console.log(url);
-            window.open("pdf.js/web/viewer.html?file=" + url);
+            window.open("/pdf.js/web/viewer.html?file=" + url);
+            //前往电子书籍详情页面
         },
         openVideo() {
             //前往视频详情页面
@@ -285,64 +357,6 @@ var indexPage = new Vue({
                 })
                 .catch(err => {
                     console.error(err);
-                })
-        },
-        getRandomBgColor() {
-            str = '0123456789ABCDEF';
-            estr = '#';
-            len = str.length;
-            for (let i = 1; i <= 6; i++) {
-                $num = Math.floor(Math.random() * len);
-                estr = estr + str[$num];
-            }
-            return estr;
-        },
-        createLabel() {
-            //检查父标签时候为空，如果为空那么标签等级未为1
-            $lclass = this.labelDialog.parentLabel.lclass + 1;
-            if (this.labelDialog.parentLabel == "") {
-                this.$confirm('父标签为空，确认创建一级标签吗', '提醒', {
-                    confirmButtonText: '确认',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then((res) => {
-                    $lclass = 1;
-                }).catch(() => {});
-            }
-
-            //检测是否输入新标签名
-            if (this.labelDialog.newlname == "") {
-                this.$message({
-                    message: "标签名不能为空",
-                    type: 'warning'
-                })
-                return;
-            }
-
-            //创建标签
-            axios({
-                    method: 'post',
-                    url: "/resource/createLabel",
-                    data: {
-                        attachl: this.labelDialog.parentLabel.lname,
-                        lname: this.labelDialog.newlname,
-                        lclass: $lclass
-                    }
-                })
-                .then(res => {
-                    console.log(res.data);
-                    this.labels = res.data;
-                    axios.get("/resource/getUnorgLabels")
-                        .then(res => {
-                            console.log(res);
-                            this.labelDialog.labels = res.data;
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        })
-                })
-                .catch(err => {
-                    console.log(err);
                 })
         }
     }
