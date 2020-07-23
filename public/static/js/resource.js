@@ -185,17 +185,20 @@ var uploadPage = new Vue({
         },
         createLabel() {
             //检查父标签时候为空，如果为空那么标签等级未为1
-            $lclass = this.labelDialog.parentLabel.lclass + 1;
             if (this.labelDialog.parentLabel.lname == "") {
                 this.$confirm('父标签为空，确认创建一级标签吗', '提醒', {
                     confirmButtonText: '确认',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then((res) => {
-                    $lclass = 1;
+                    console.log(res);
+                    this.createLabelFunc(1);
                 }).catch(() => {});
+            } else {
+                this.createLabelFunc(this.labelDialog.parentLabel.lclass + 1);
             }
-
+        },
+        createLabelFunc($lclass) {
             //检测是否输入新标签名
             if (this.labelDialog.newlname == "") {
                 this.$message({
@@ -204,7 +207,6 @@ var uploadPage = new Vue({
                 })
                 return;
             }
-
             //创建标签
             axios({
                     method: 'post',
@@ -220,7 +222,7 @@ var uploadPage = new Vue({
                     this.fieldData.labels = res.data;
                     axios.get("/resource/getUnorgLabels")
                         .then(res => {
-                            console.log(res);
+                            console.log(res.data);
                             this.labelDialog.labels = res.data;
                         })
                         .catch(err => {
@@ -257,19 +259,11 @@ var indexPage = new Vue({
             selectedLabels: "",
             query: "",
             searchResults: [],
-            mode: "none",
-            detail: {
-                dialogVisible: false,
-                resource: {
-                    rname: ""
-                }
-            }
+            mode: "none"
         }
     },
     created: function() {
-        if (localStorage.getItem("query")) {
-            this.getSearchResource();
-        }
+        this.getResource();
         axios.get("/resource/get_label")
             .then(res => {
                 console.log(res.data);
@@ -280,15 +274,25 @@ var indexPage = new Vue({
             })
     },
     methods: {
-        getSearchResource() {
-            axios.get("/resource/get_search_results?query=" + localStorage.query + "&labels=" + localStorage.selectedLabels + "&type=" + localStorage.selectedType + "&pageIndex=1")
+        getResource() {
+            axios.get("/resource/get_resource")
                 .then(res => {
                     console.log(res.data);
-                    var reg = new RegExp(localStorage.query);
+                    this.resources.push.apply(this.resources, res.data.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
+        getSearchResults() {
+            axios.get("/resource/get_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType + "&pageIndex=1")
+                .then(res => {
+                    console.log(res.data);
+                    var reg = new RegExp(this.query);
                     this.resources.push.apply(this.resources, res.data.data);
                     for (let i = 0; i < this.resources.length; i++) {
-                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + localStorage.query + "</strong>");
-                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + localStorage.query + "</strong>")
+                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
+                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
                     }
                 })
                 .catch(err => {
@@ -311,21 +315,8 @@ var indexPage = new Vue({
                     console.error(err);
                 })
         },
-        toSearchResults() {
-            window.location.href = "/resource/searchResults";
-            localStorage.setItem("query", this.query);
-            localStorage.setItem("selectedType", this.selectedType);
-            localStorage.setItem("selectedLabels", this.selectedLabels);
-        },
         handleClose(done) {
             done();
-        },
-        showDetail(item) {
-            console.log(item);
-            this.detail.resource = item;
-            this.detail.resource.rname = item.rname.replace(/<strong.*>.*<\/strong>/, this.query);
-            this.detail.resource.rauthor = item.rauthor.replace(/<strong.*>.*<\/strong>/, this.query);
-            this.detail.dialogVisible = true;
         },
         openFile() {
             //判断 

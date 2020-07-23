@@ -83,7 +83,7 @@ class Resource extends BaseController
                 $data = [
                     "uname"=>$uname,
                     "rid"=>$rid,
-                    "rname"=>$_POST['rname'],
+                    "rname"=>$file->getOriginalName(),
                     "rsrc"=>"/storage/".$savename[count($savename)-1]
                 ];
                 Db::table("upload")->replace()->insert($data);
@@ -154,9 +154,9 @@ class Resource extends BaseController
    public function get_resource()      //资源页面的查询
     {
         //分页查询，视图查询，双表连接查询
-        $data = Db::view('resource', 'rid,rname,rcover,rsrc,rorigin,rauthor')
+        $data = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
             ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
-            ->order('rid', 'desc')->paginate(20)->toArray();
+            ->order('rid', 'desc')->paginate(100)->toArray();
         data_format($data['data']);
         return json($data);
     }
