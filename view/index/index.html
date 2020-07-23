@@ -6,13 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/static/js/fontscroll.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css">
+    <!-- 控制文字行滚动 -->
+    <script type="text/javascript">
+      $(function(){
+          $('#FontScroll').FontScroll({time: 1000,num: 1});
+          $('#FontScrolls').FontScroll({time: 1000,num:1});
+      });
+      </script>
+      <script type="text/javascript">
+        $(function(){
+      //默认状态下左右滚动
+      $("#s1").xslider({
+        unitdisplayed:4,
+        movelength:1,
+        unitlen:176,
+        autoscroll:3000
+      });
+    })
+    </script>
     <title>首页</title>
 </head>
 
 <body>
     <el-container id="app">
+      <div style="width: 100%;height: 100%;">
+        <el-backtop :bottom="60"></el-backtop>
+      <div>
         <el-header>
             <div class="logo">
                 <div class="logo1"></div>
@@ -35,7 +57,7 @@
                     <el-menu-item index="5-5">个人主页</el-menu-item>
                 </el-submenu>
             </el-menu>
-            <div id="lll">
+    </el-container>
                 <template>
                   <el-carousel indicator-position="outside"  height="200px">
                     <el-carousel-item v-for="item in 4" :key="item">
@@ -46,23 +68,35 @@
                     </el-carousel-item>
                   </el-carousel>
                 </template>
-                </div>
+          <div class="container">
             <div class="container1">
                     <el-container >
                       <el-header>
-                         <img src="/static/img/资源.png" alt="进入游戏" style="width:60px;margin-top:1%;">
+                         <img src="/static/img/资源.png" alt="进入资源" style="width:150px;margin-top:-2%;">
                         </el-header>
                       <el-main>
-                        
+                        <div id="FontScrolls">
+                          <ul>
+                              <li><a href="#">此处是资源文字描述1</a></li>
+                              <li><a href="#">此处是资源文字描述2</a></li>
+                              <li><a href="#">此处是资源文字描述3</a></li>
+                              <li><a href="#">此处是资源文字描述4</a></li>
+                              <li><a href="#">此处是资源文字描述5</a></li>
+                              <li><a href="#">此处是资源文字描述6</a></li>
+                              <li><a href="#">此处是资源文字描述7</a></li>
+                              <li><a href="#">此处是资源文字描述8</a></li>
+                              <li><a href="#">此处是资源文字描述9</a></li>
+                          </ul>
+                      </div>
                       </el-main>
                     </el-container>
         
                 <el-container>
                   <el-header>
-                     <img src="/static/img/游戏.png" alt="进入游戏" style="width:60px;margin-top:2%;">
+                     <img src="/static/img/游戏.png" alt="进入游戏" style="width:150px;margin-top:-2%;">
                     </el-header>
                   <el-main>
-                    <a href="/login/magiccude" style="margin-right:150px;"><img src="/static/img/魔方.png" alt="进入魔方小游戏" style="width:100px;"></a>
+                    <a href="/login/magiccude" style="margin-right:15px;"><img src="/static/img/魔方.png" alt="进入魔方小游戏" style="width:100px;"></a>
                     <a href="/login/touziplay" style="margin-top:10px;margin-right:100px;"><img src="/static/img/掷骰子.png" alt="进入掷骰子小游戏" style="width:100px;"></a>
                   </el-main>
                 </el-container>
@@ -71,24 +105,73 @@
             <div class="container2">
                 <el-container >
                   <el-header>
-                     <img src="/static/img/资源.png" alt="进入游戏" style="width:60px;margin-top:1%;">
+                     <img src="/static/img/视频.png" alt="进入视频" style="width:130px;margin-top:-1%;">
                     </el-header>
                   <el-main>
-                    
+                    <template>
+                      <el-carousel indicator-position="outside"  width="500px" height="200px">
+                        <el-carousel-item v-for="item in 4" :key="item">
+                          <video v-if="item == 1" width="100%;" height="200" controls autoplay="autoplay" loop="loop" controlsList=“nodownload” muted="muted"> 
+                            <source src="https://www.nio.cn/ecs/prod/s3fs-public/inline-images/nio-ec6/ec6-preview.mp4" type="video/mp4" />  
+                          </video>  
+                          <video v-if="item == 2" width="100%;" height="200" controls autoplay="autoplay" loop="loop" controlsList=“nodownload” muted="muted">  
+                            <source src="https://www.nio.cn/ecs/prod/s3fs-public/inline-images/nio-ec6/ec6-preview.mp4" type="video/mp4" />  
+                          </video>
+                          <video v-if="item == 3" width="100%;" height="200" controls autoplay="autoplay" loop="loop" controlsList=“nodownload” muted="muted"> 
+                            <source src="https://www.nio.cn/ecs/prod/s3fs-public/inline-images/nio-ec6/ec6-preview.mp4" type="video/mp4" />  
+                          </video>
+                          <video v-if="item == 4" width="100%;" height="200" controls autoplay="autoplay" loop="loop" controlsList=“nodownload” muted="muted"> 
+                            <source src="https://www.nio.cn/ecs/prod/s3fs-public/inline-images/nio-ec6/ec6-preview.mp4" type="video/mp4" />  
+                          </video>  
+                        </el-carousel-item>
+                      </el-carousel>
+                    </template>
                   </el-main>
                 </el-container>
     
             <el-container>
               <el-header>
-                 <img src="/static/img/游戏.png" alt="进入游戏" style="width:60px;margin-top:2%;">
+                 <img src="/static/img/讨论.png" alt="进入讨论" style="width:130px;margin-top:-1%;">
                 </el-header>
               <el-main>
-                <a href="/login/magiccude" style="margin-right:150px;"><img src="/static/img/魔方.png" alt="进入魔方小游戏" style="width:100px;"></a>
-                <a href="/login/touziplay" style="margin-top:10px;margin-right:100px;"><img src="/static/img/掷骰子.png" alt="进入掷骰子小游戏" style="width:100px;"></a>
+                <div id="FontScroll">
+                  <ul>
+                      <li><a href="#">此处是讨论文字描述1</a></li>
+                      <li><a href="#">此处是讨论文字描述2</a></li>
+                      <li><a href="#">此处是讨论文字描述3</a></li>
+                      <li><a href="#">此处是讨论文字描述4</a></li>
+                      <li><a href="#">此处是讨论文字描述5</a></li>
+                      <li><a href="#">此处是讨论文字描述6</a></li>
+                      <li><a href="#">此处是讨论文字描述7</a></li>
+                      <li><a href="#">此处是讨论文字描述8</a></li>
+                      <li><a href="#">此处是讨论文字描述9</a></li>
+                  </ul>
+              </div>
               </el-main>
-            </el-container>
+            </el-container> 
             
         </div>
+      </div>
+      <div class="bottomlunbo1">
+        <el-carousel indicator-position="outside"  height="200px">
+          <el-carousel-item v-for="item in 4" :key="item">
+              <img src="/static/img/轮播图1.jpg" v-if="item == 1" class="bannerImg" />
+              <img src="/static/img/轮播图2.jpg" v-if="item == 2" class="bannerImg" />
+              <img src="/static/img/轮播图3.jpg" v-if="item == 3" class="bannerImg" />
+              <img src="/static/img/轮播图4.jpg" v-if="item == 4" class="bannerImg" />
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="bottomlunbo2">
+        <el-carousel indicator-position="outside"  height="200px">
+          <el-carousel-item v-for="item in 4" :key="item">
+              <img src="/static/img/轮播图1.jpg" v-if="item == 1" class="bannerImg" />
+              <img src="/static/img/轮播图2.jpg" v-if="item == 2" class="bannerImg" />
+              <img src="/static/img/轮播图3.jpg" v-if="item == 3" class="bannerImg" />
+              <img src="/static/img/轮播图4.jpg" v-if="item == 4" class="bannerImg" />
+          </el-carousel-item>
+        </el-carousel>
+      </div>
             <div class="footer" > 
                 <div class="footer_bottom">
                     <div class="wrap clearfix">
@@ -117,17 +200,29 @@
                     </div>
                 </div>  
             </div> 
-    </el-container>
+            
     
-    <div id="midground" class="wall"></div>
-    <div id="foreground" class="wall"></div>
-    <div id="top" class="wall"></div>
+    <el-form class="bg-bubbles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+  </el-form>
+
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <script src="https://cdn.bootcss.com/element-ui/2.12.0/index.js"></script>
     <script src="/static/js/index.js"></script>
+    
     <!-- 下方是绑定菜单链接的jquery代码引入 -->
     <script src="/static/js/bindlinks.js"></script>
+    
 </body>
 
 </html>
