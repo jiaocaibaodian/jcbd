@@ -23,10 +23,11 @@
         </div>
         <!-- 搜索模块 -->
         <div class="search">
-            <input type="text" value="输入关键词" id="searchCon">
+            <input type="text" placeholder="输入关键词" id="search">
             <button id="search"></button>
         </div>
     </div>
+    <hr>
     <!-- 主体部分 -->
     <div class="box w">
         <ul id='ul'>
@@ -35,22 +36,17 @@
     <script>
         var ul = document.getElementById('ul');
         var li = {
-            lianjie: '<a href="https://www.bilibili.com/"><img src="imges/logo.png" alt=""></a>  ',
+            lianjie: '<img src="imges/logo.png" alt=""> ',
             biaoti: '<h4> 视频标题 </h4>'
         }
         var lis = new Array();
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 10; i++) {
             lis[i] = document.createElement("li");
             ul.appendChild(lis[i]);
         }
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 10; i++) {
+            lis[i].innerHTML = '<a href="https://www.bilibili.com/"></a>';
             lis[i].innerHTML = '<a href="https://www.baidu.com/"><img src="imges/logo.png" alt=""></a>   <h4> 标题 </h4>'
-            console.log(lis[i].biaoti);
-        }
-        document.getElementById("search").onclick = function() {
-            //获取搜素模式
-            var searchCon = document.getElementById("searchCon").value;
-            var re = new RegExp(searchCon, "g");
         }
     </script>
 </body>
