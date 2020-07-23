@@ -116,6 +116,10 @@ class Resource extends BaseController
         recurGetLabels($data, $root);
         return json($root);
     }
+    public function getUnorgLabels(){
+        $data = Db::table("label")->group("lname")->select();
+        return json($data);
+    }
     public function get_group()
     {
         //根据token取得用户名
@@ -220,5 +224,35 @@ class Resource extends BaseController
         }
         data_format($data,5);
         return json($data);
+    }
+    public function addToShelf(){
+        //加入书架（视频库）
+        //先获取uname
+        $uname = \getUnameByToken();
+        $rid = Request::post("rid");
+        $result = Db::table("user_shelf")->replace()->insert([
+            "uname"=>$uname,
+            "rid"=>$rid
+        ]);
+        if ($result){
+            return json([
+                "count"=>$result,
+                "msg"=>"加入成功"
+            ]);
+        }else{
+            return json([
+                "count"=>$result,
+                "errMsg"=>"加入失败"
+            ]); 
+        }
+    }
+    public function createLabel(){
+        $_POST = Request::post();
+        Db::table("label")->replace()->insert([
+            "lname"=>$_POST['lname'],
+            "attachl"=>$_POST['attachl'],
+            "lclass"=>$_POST['lclass']
+        ]);
+        return $this->get_label();
     }
 }

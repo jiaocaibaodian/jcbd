@@ -44,6 +44,7 @@
                 </el-select>
                 <el-button slot="append" icon="el-icon-search" @click="toSearchResults"></el-button>
             </el-input>
+            <el-button type="primary" @click="labelDialog.dialogVisible = true">创建标签</el-button>
             <el-card :style="'display:'+ mode+';'">
                 <ul class="infinite-list" style="overflow:auto">
                     <li v-for="item in searchResults" class="infinite-list-item" @mousedown="showDetail(item)">
@@ -68,7 +69,7 @@
                             </el-tooltip>
                         </span>
                         <div>
-                            <el-button type="primary">加入书架</el-button>
+                            <el-button type="primary" @click="addToShelf()">加入书架</el-button>
                             <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openFile()">阅读</el-button>
                         </div>
                     </div>
@@ -92,11 +93,28 @@
                             </span>
                         </div>
                         <div>
-                            <el-button type="primary">加入视频库</el-button>
+                            <el-button type="primary" @click="addToShelf()">加入视频库</el-button>
                             <el-button type="success" :data-rsrc="detail.resource.rsrc" @click="openVideo()">视频主页</el-button>
                         </div>
                     </div>
                 </div>
+            </el-dialog>
+            <el-dialog title="创建标签" :visible.sync="labelDialog.dialogVisible" width="50%" :close-on-click-modal="false">
+                <el-cascader change-on-select :options="labels" v-model="labelDialog.parentLabel.lname" style="width: 200px;" placeholder="请选择父标签" clearable></el-cascader>
+                <el-button @click="labelDialog.showAll=!labelDialog.showAll;">展开</el-button>
+                <el-row gutter="20" v-if="labelDialog.showAll">
+                    <el-col v-for="labelitem in labelDialog.labels" :span="4">
+                        <div :style="'background-color: '+getRandomBgColor()+';color:white;'" class="tag" @click="labelDialog.parentLabel=labelitem">{{labelitem.lname}}</div>
+                    </el-col>
+                </el-row>
+                <el-form style="margin-top: 20px;">
+                    <el-form-item>
+                        <el-input placeholder="请输入新的标签名" v-model="labelDialog.newlname">
+                            <template slot="prepend">标签名</template>
+                            <el-button slot="append" @click="createLabel()">点击创建</el-button>
+                        </el-input>
+                    </el-form-item>
+                </el-form>
             </el-dialog>
         </el-footer>
     </el-container>

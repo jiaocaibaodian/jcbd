@@ -77,3 +77,11 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.el-dialog .el-row .el-col div.tag {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}

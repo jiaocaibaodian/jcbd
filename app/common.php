@@ -89,6 +89,7 @@ function data_format(&$data,$limit=10000){
         $index = array_search($data[$i]['rid'], $rids);
         if ($index === false) {
             $result[$j] = [
+                'rid' => $data[$i]['rid'],
                 'rname' => $data[$i]['rname'],
                 'rtype' => $data[$i]['rtype'],
                 'rcover' => $data[$i]['rcover'],
