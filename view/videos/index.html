@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="videos.css ">
 </head>
 
 <body>
@@ -23,10 +23,32 @@
         </div>
         <!-- 搜索模块 -->
         <div class="search">
-            <input type="text" value="输入关键词">
-            <button id="button"></button>
+            <input type="text" placeholder="输入关键词" id="search">
+            <button id="search"></button>
         </div>
     </div>
+    <hr>
+    <!-- 主体部分 -->
+    <div class="box w">
+        <ul id='ul'>
+        </ul>
+    </div>
+    <script>
+        var ul = document.getElementById('ul');
+        var li = {
+            lianjie: '<img src="imges/logo.png" alt=""> ',
+            biaoti: '<h4> 视频标题 </h4>'
+        }
+        var lis = new Array();
+        for (var i = 0; i < 10; i++) {
+            lis[i] = document.createElement("li");
+            ul.appendChild(lis[i]);
+        }
+        for (var i = 0; i < 10; i++) {
+            lis[i].innerHTML = '<a href="https://www.bilibili.com/"></a>';
+            lis[i].innerHTML = '<a href="https://www.baidu.com/"><img src="imges/logo.png" alt=""></a>   <h4> 标题 </h4>'
+        }
+    </script>
 </body>
 
 </html>
