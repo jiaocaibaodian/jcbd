@@ -33,6 +33,12 @@ class Resource extends BaseController
             return View::fetch();
         }
     }
+    public function book_detail(){
+        return View::fetch();
+    }
+    public function video_detail(){
+        return View::fetch();
+    }
     public function uploadFile() //资源上传接口
     {
         $_POST = Request::post();
@@ -254,5 +260,14 @@ class Resource extends BaseController
             "lclass"=>$_POST['lclass']
         ]);
         return $this->get_label();
+    }
+    public function getRgroupById(){
+        $rid = \input("param.rid");
+        $rgroup = Db::table("rgroup")->field("rgid,rgname")->where("rid",$rid)->find();
+        $result = Db::view("rgroup")->view("resource","rid,rname,rtype,rcover,rsrc,rorigin,rauthor","resource.rid=rgroup.rid")->where("rgid",$rgroup['rgid'])->select();
+        return json([
+            "rgroup"=>$rgroup,
+            "resources"=>$result
+        ]);
     }
 }

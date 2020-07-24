@@ -318,20 +318,13 @@ var indexPage = new Vue({
         handleClose(done) {
             done();
         },
-        openFile() {
-            //判断 
-            var event = window.event;
-            console.log(event);
-            var url = event.target.parentNode.dataset.rsrc;
-            if (url == undefined) {
-                url = event.target.dataset.rsrc;
-            }
-            console.log(url);
-            window.open("/pdf.js/web/viewer.html?file=" + url);
+        openFile(rid, url) {
             //前往电子书籍详情页面
+            window.open("/resource/book_detail?url=" + url + "&rid=" + rid)
         },
-        openVideo() {
+        openVideo(url, rid) {
             //前往视频详情页面
+            window.open("/resource/video_detail?url=" + url + "&rid=" + rid)
         },
         addToShelf() {
             //加入书架
