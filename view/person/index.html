@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,12 +23,11 @@
         nav div {
             width: 1000px;
             height: 64px;
-            /*块元素居中*/
             margin: 0 auto;
         }
         
         #logo {
-            width: 216px;
+            width: 50px;
             position: relative;
             top: 7px;
             left: 15px;
@@ -77,9 +77,16 @@
             color: brown;
         }
         
+        h3 {
+            color: brown;
+            position: fixed;
+            left: 350px;
+            top: 0px;
+        }
+        
         #booook {
             width: 1000px;
-            height: 100px;
+            height: 300px;
             background-image: url('personage/classmates.jpg');
             background-size: 1000px 630px;
             position: relative;
@@ -87,48 +94,46 @@
         
         #booook img {
             border: 2px white solid;
-            border-radius: 50%;
+            border-radius: 10%;
             position: absolute;
         }
         
         #booook img:nth-child(1) {
-            width: 200px;
-            top: 100px;
+            width: 250px;
+            top: 30px;
             left: 100px;
         }
         
         #booook img:nth-child(2) {
-            width: 270px;
-            top: 260px;
-            left: 360px;
+            width: 250px;
+            top: 30px;
+            left: 400px;
         }
         
         #booook img:nth-child(3) {
-            width: 230px;
-            top: 100px;
-            right: 60px;
+            width: 250px;
+            top: 30px;
+            left: 700px;
         }
     </style>
 </head>
 
 <body>
-    <audio src="" autoplay></audio>
-    <video src=""></video>
 
     <nav>
         <div>
-            <img id="logo" src="" alt="三本书">
+            <img id="logo" src="/static/img/logo.jpg" alt="头像">
+            <h3>SUPER_CAIJI</h3>
             <ul>
                 <li><a href="#header">首页</a></li>
-                <li><a href="#html5">还没想好</a></li>
-                <li><a href="#books">我的书架</a></li>
+                <li><a href="#html5">我的书架</a></li>
                 <li><a href="#star">我的收藏</a></li>
                 <li><a href="#history">历史记录</a></li>
                 <li><a href="#myself">关于我</a></li>
             </ul>
         </div>
     </nav>
-    <img id="header" src="/static/img/scene.jpg" alt="风景">
+    <img id="header" src="/static/img/background.jpg" alt="风景">
     <main>
         <p>“我爱读书，读书使我快乐”</p>
         <section id="html5">
@@ -139,9 +144,9 @@
         <section id="books">
             <h2>我的书架</h2>
             <div id="booook">
-                <img src="" alt="">
-                <img src="" alt="">
-                <img src="" alt="">
+                <img src="/static/img/BOOK1.jpg" alt="book">
+                <img src="/static/img/BOOK2.jpg" alt="book">
+                <img src="/static/img/BOOK3.jpg" alt="book">
             </div>
             <p>“我爱读书，读书使我快乐”</p>
         </section>
