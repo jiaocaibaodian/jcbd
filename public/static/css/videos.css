@@ -9,14 +9,18 @@
     margin: auto;
 }
 
+body {
+    background-color: #f3f5f7;
+}
+
 li {
     list-style: none;
 }
 
 .header {
     height: 45px;
-    background-color: rgb(230, 233, 82);
-    margin: 30px auto;
+    /* background-color: rgb(230, 233, 82); */
+    margin: 40px auto;
 }
 
 .logo {
@@ -38,7 +42,7 @@ li {
 
 .nav ul li a {
     display: block;
-    height: 50px;
+    height: 46px;
     padding: 0 13px;
     line-height: 50px;
     font-size: 18px;
@@ -57,9 +61,9 @@ li {
 .search {
     float: left;
     width: 412px;
-    height: 45px;
+    height: 43px;
     background-color: skyblue;
-    margin-left: 330px;
+    margin-left: 380px;
 }
 
 .search input {
@@ -68,7 +72,7 @@ li {
     height: 43px;
     border: 1px solid #00a4ff;
     border-right: none;
-    color: #bfbfbf;
+    color: #555666;
     font-size: 16px;
     padding-left: 15px;
 }
@@ -76,8 +80,37 @@ li {
 .search button {
     float: left;
     width: 50px;
-    height: 45px;
-    background-color: blue; 
+    height: 44px;
+    /* background-color: blue; */
     border: none;
-    /* background: url(imges/搜索.png); */
+    background: url(imges/搜索.png);
+}
+
+.box {
+    margin-top: 45px;
+}
+
+.box ul {
+    width: 1225px;
+}
+
+.box ul li {
+    float: left;
+    width: 210px;
+    height: 260px;
+    background-color: #fff;
+    margin-right: 25px;
+    margin-bottom: 30px;
+}
+
+.box ul li img {
+    width: 100%;
+    height: 70%;
+}
+
+.box ul li h4 {
+    margin: 20px 20px 20px 25px;
+    font-size: 14px;
+    color: #050505;
+    font-weight: 400;
 }
