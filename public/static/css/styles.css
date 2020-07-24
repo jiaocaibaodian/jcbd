@@ -1,3 +1,4 @@
+@import url(util.css);
 html {
     height: 100%;
     background-image: url("/static/img/preview.jpg");
@@ -15,6 +16,10 @@ html {
     &:last-child {
         margin-bottom: 0;
     }
+}
+
+.el-form-item__content {
+    display: flex;
 }
 
 .login-box {
@@ -36,10 +41,6 @@ html {
     text-align: center;
     color: #e2233d;
     font-size: 30px;
-}
-
-body {
-    background-color: #f3f5f7;
 }
 
 li {
