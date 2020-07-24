@@ -1,5 +1,4 @@
 $(function() {
-    // var header = "http://www.rcloud.cn";
     $(".el-header .el-menu .el-menu-item:eq(1)").click(function() {
         window.location.href = "/index";
     })
