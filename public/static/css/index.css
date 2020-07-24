@@ -1,63 +1,64 @@
 @import "util.css";
 html {
     height: 100%;
-    background-image:#fff;
+    background-image: #fff;
     background-size: cover;
     overflow-x: hidden;
 }
+
 .el-header {
     padding: 0;
     border-radius: 10px;
-    background-color:#e9ebef;
+    background-color: #e9ebef;
     color: #333;
     text-align: center;
     line-height: 60px;
 }
 
 .el-main {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  background-color: rgba(255,255,255, 0.5);
-  /* line-height: 160px; */
-  margin-bottom: 10px;
-  border-bottom: 1px solid #e2e2e2;
-  float:left;
-}
-.container{
-  width:80%;
-  max-height:1920px;
-  margin:0 auto;
-  background-color:rgba(255,255,255);
-  display:block;
-  position:static;
-}
-.container1{
-  width:40%;
-  max-height:1920px;
-  margin-top: 20px;
-  margin-bottom: 200px;
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
-  padding: 35px;
-  background-color:rgba(255,255,255);
-  float: left;
-  display:block；
-}
-.container2{
-  width:40%;
-  max-height:1920px;
-  margin-top: 20px;
-  margin-bottom: 200px;
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
-  padding: 35px;
-  background-color:rgba(255,255,255);
-  float: right;
-  display:block；
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    /* line-height: 160px; */
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e2e2e2;
+    float: left;
 }
 
+.container {
+    width: 80%;
+    max-height: 1920px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255);
+    display: block;
+    position: static;
+}
 
+.container1 {
+    width: 40%;
+    max-height: 1920px;
+    margin-top: 20px;
+    margin-bottom: 200px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding: 35px;
+    background-color: rgba(255, 255, 255);
+    float: left;
+    display: block；
+}
 
+.container2 {
+    width: 40%;
+    max-height: 1920px;
+    margin-top: 20px;
+    margin-bottom: 200px;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding: 35px;
+    background-color: rgba(255, 255, 255);
+    float: right;
+    display: block；
+}
 
 .el-header .el-menu {
     display: flex;
@@ -66,147 +67,10 @@ html {
 .el-header .el-menu .el-menu-item:first-child {
     flex: 1;
 }
-.input-box{
-    width: 500px;
-    padding: 30px;
-}
 
-/* 实现logo效果 */
-.logo{
-    top:5px;
-    left:5px;
-    position: relative;
-}
-.logo1{
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-image:url(/static/img/jiaocaibaodian1.png);
-    background-size:50px 50px;
-    z-index: 2;
-}
-.logo2{
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-image:url(/static/img/jiaocaibaodian2.png);
-    background-size:50px 50px;
-    z-index:3;
-    animation: haha1 2s linear infinite;
-    -webkit-animation: haha1 2s linear infinite;
-    -moz-animation: haha1 2s linear infinite;
-    -ms-animation: haha1 2s linear infinite;
-    -o-animation: haha1 2s linear infinite;
-}
-@keyframes haha1 {
-    0% {
-        transform: rotate(0deg);
-      }
-    
-      25% {
-        transform: rotate(90deg);
-      }
-    
-      50% {
-        transform: rotate(180deg);
-      }
-    
-      75% {
-        transform: rotate(270deg);
-      }
-    
-      100% {
-        transform: rotate(360deg);
-      }
-}
-  
-  @-webkit-keyframes haha1 {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    25% {
-      transform: rotate(90deg);
-    }
-  
-    50% {
-      transform: rotate(180deg);
-    }
-  
-    75% {
-      transform: rotate(270deg);
-    }
-  
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  @-moz-keyframes haha1 {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    25% {
-      transform: rotate(90deg);
-    }
-  
-    50% {
-      transform: rotate(180deg);
-    }
-  
-    75% {
-      transform: rotate(270deg);
-    }
-  
-    100% {
-      transform: rotate(360deg);
-    }
-}
 
-@-ms-keyframes haha1 {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    25% {
-      transform: rotate(90deg);
-    }
-  
-    50% {
-      transform: rotate(180deg);
-    }
-  
-    75% {
-      transform: rotate(270deg);
-    }
-  
-    100% {
-      transform: rotate(360deg);
-    }
-}
-
-@-o-keyframes haha1 {
-    0% {
-      transform: rotate(0deg);
-    }
-  
-    25% {
-      transform: rotate(90deg);
-    }
-  
-    50% {
-      transform: rotate(180deg);
-    }
-  
-    75% {
-      transform: rotate(270deg);
-    }
-  
-    100% {
-      transform: rotate(360deg);
-    }
-}
 /* 实现背景气泡效果 */
+
 .bg-bubbles {
     position: absolute;
     top: 0;
@@ -222,8 +86,8 @@ html {
     display: block;
     width: 40px;
     height: 40px;
-    border-radius:100%;
-    background-color: rgba(187,255,255, 0.8);
+    border-radius: 100%;
+    background-color: rgba(187, 255, 255, 0.8);
     bottom: -160px;
     -webkit-animation: square 25s infinite;
     animation: square 25s infinite;
@@ -257,7 +121,7 @@ html {
     height: 60px;
     -webkit-animation-duration: 22s;
     animation-duration: 22s;
-    background-color: rgba(187,255,255, 0.2);
+    background-color: rgba(187, 255, 255, 0.2);
 }
 
 .bg-bubbles li:nth-child(5) {
@@ -270,7 +134,7 @@ html {
     height: 120px;
     -webkit-animation-delay: 3s;
     animation-delay: 3s;
-    background-color: rgba(187,255,255, 0.3);
+    background-color: rgba(187, 255, 255, 0.3);
 }
 
 .bg-bubbles li:nth-child(7) {
@@ -299,7 +163,7 @@ html {
     animation-delay: 2s;
     -webkit-animation-duration: 40s;
     animation-duration: 40s;
-    background-color: rgba(187,255,255, 0.5);
+    background-color: rgba(187, 255, 255, 0.5);
 }
 
 .bg-bubbles li:nth-child(10) {
@@ -331,50 +195,122 @@ html {
         transform: translateY(-700px) rotate(600deg);
     }
 }
-/*轮播图 */
-.bannerImg{
-  width:100%;
-  height:100%;
-  border-radius: 5px;
-}
-/*底部*/
-.footer{
-  float:left;
-  /* margin-top: 100%; */
-  width:100%;
-  height: 200px;
-  background-color: rgba(4, 182, 253, 0.5);
-}
-.footer .footer_top { margin-top: 30px; padding-top: 30px;  }
-.footer .footer_top .friend-ico { float: left; width: auto; }
-.footer .footer_top .top_right {color: #222222;font-size: 12px; text-align: right; }
-.footer .footer_top .top_right li { display: inline-block; }
-.footer .footer_top .top_right li a { color: #222222; }
-.footer .footer_top .top_right li a:hover { color: rgb(34, 34, 34); }
-.footer .footer_top .top_right span { display: inline-block; padding: 0px 5px; }
-.footer .footer_top .top_right p { display: inline-block; margin: 5px 0px 5px 8px; }
-.footer_bottom{width: 100%;background: url(../bg_footer.jpg) no-repeat;background-size: 100% 100%;padding:20px 0;}
-.bottom_left{float: left;width: 50%;}
-.footer_logo{float: left;height: 150px;}
-.company_info{font-size: 14px;color: #fff;line-height: 25px; float: left;margin-left: 40px;padding-left:42px;background:url(../foot_line.png) no-repeat left center;}
-.bottom_right{float: right;width: 50%;text-align: right;}
 
-ul li{list-style:none;}
-#FontScroll{width:100%;height:90px;line-height:30px;overflow:Hidden;padding:5px 0;margin:0 auto;}
-#FontScroll a{color:rgb(119, 117, 117);}
-#FontScroll .line{text-align:left;width:100%;}
-#FontScroll .fontColor a{color:red;}
-ul li{list-style:none;}
-#FontScrolls{width:100%;height:90px;line-height:30px;overflow:Hidden;padding:5px 0;margin:0 auto;}
-#FontScrolls a{color:rgb(119, 117, 117);}
-#FontScrolls .line{text-align:left;width:100%;}
-#FontScrolls .fontColor a{color:red;}
-/* 底部图片切换 */
-.bottomlunbo1{
-  float:left;
-  width:100%;
+
+/*轮播图 */
+
+.bannerImg {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
 }
-.bottomlunbo2{
-  float:left;
-  width:100%;
+
+
+/*底部*/
+
+.footer {
+    float: left;
+    /* margin-top: 100%; */
+    width: 100%;
+    height: 200px;
+    background-color: rgba(4, 182, 253, 0.5);
+}
+
+.footer .footer_top {
+    margin-top: 30px;
+    padding-top: 30px;
+}
+
+.footer .footer_top .friend-ico {
+    float: left;
+    width: auto;
+}
+
+.footer .footer_top .top_right {
+    color: #222222;
+    font-size: 12px;
+    text-align: right;
+}
+
+.footer .footer_top .top_right li {
+    display: inline-block;
+}
+
+.footer .footer_top .top_right li a {
+    color: #222222;
+}
+
+.footer .footer_top .top_right li a:hover {
+    color: rgb(34, 34, 34);
+}
+
+.footer .footer_top .top_right span {
+    display: inline-block;
+    padding: 0px 5px;
+}
+
+.footer .footer_top .top_right p {
+    display: inline-block;
+    margin: 5px 0px 5px 8px;
+}
+
+.footer_bottom {
+    width: 100%;
+    background: url(../bg_footer.jpg) no-repeat;
+    background-size: 100% 100%;
+    padding: 20px 0;
+}
+
+.bottom_left {
+    float: left;
+    width: 50%;
+}
+
+.footer_logo {
+    float: left;
+    height: 150px;
+}
+
+.company_info {
+    font-size: 14px;
+    color: #fff;
+    line-height: 25px;
+    float: left;
+    margin-left: 40px;
+    padding-left: 42px;
+    background: url(../foot_line.png) no-repeat left center;
+}
+
+.bottom_right {
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+
+li {
+    list-style: none;
+    margin: 0 auto;
+}
+
+
+a {
+    color: rgb(119, 117, 117);
+
+}
+
+/* 底部图片切换 */
+
+.bottomlunbo1 {
+    float: left;
+    width: 100%;
+}
+
+.bottomlunbo2 {
+    float: left;
+    width: 100%;
+}
+/* 视频 */
+.videoone{
+  border:5px solid #98c391;
+  border-radius: 10px;
 }

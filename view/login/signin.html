@@ -17,11 +17,11 @@
         <div class="logo">
             <div class="logo1"></div>
             <div class="logo2"></div>
-       </div>
+        </div>
         <h3 class="login-title">欢迎</h3>
         <el-form>
             <el-form-item>
-                <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @change="email_check()">
+                <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @focus="restore" @blur="email_check()">
                     <template slot="prepend">邮箱号</template>
                 </el-input>
                 <span class="email_check_tip">
@@ -30,7 +30,7 @@
                 </span>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="register.upsw" type="password" placeholder="密码" @change="psw_check()" maxlength="16">
+                <el-input v-model="register.upsw" type="password" placeholder="密码" @focus="restore" @blur="psw_check()" maxlength="16">
                     <template slot="prepend">密码</template>
                 </el-input>
                 <span class="psw_check_tip">
@@ -39,7 +39,7 @@
                 </span>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="register.checkpsw" type="password" placeholder="确认密码" @change="psw_check()">
+                <el-input v-model="register.checkpsw" type="password" placeholder="确认密码" @focus="restore" @blur="psw_check()">
                     <template slot="prepend">确认密码</template>
                 </el-input>
                 <span class="checkpsw_check_tip">
@@ -48,7 +48,7 @@
                 </span>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="register.uname" placeholder="用户名" @change="uname_check()">
+                <el-input v-model="register.uname" placeholder="用户名" @focus="restore" @blur="uname_check">
                     <template slot="prepend">用户名</template>
                 </el-input>
                 <span class="name_check_tip">
@@ -92,18 +92,18 @@
     <script src="/static/js/login.js"></script>
 </body>
 <script type="text/javascript">
-    $('.random-img').click(function(event){
+    $('.random-img').click(function(event) {
         $('.random-img').addClass('shake-opacity');
-        var gxg1=0;
-        var gxg= setInterval(function(){
-            gxg1=gxg1+1;
-            if(gxg1==1)
-            {
-            $('.random-img').removeClass('shake-opacity');
-            clearInterval(gxg);
+        var gxg1 = 0;
+        var gxg = setInterval(function() {
+            gxg1 = gxg1 + 1;
+            if (gxg1 == 1) {
+                $('.random-img').removeClass('shake-opacity');
+                clearInterval(gxg);
             }
-        },300)
+        }, 300)
 
     });
-    </script>
+</script>
+
 </html>

@@ -1,0 +1,161 @@
+@import url(/static/css/util.css);
+
+/* index页面 */
+
+.el-container {
+    height: 100%;
+}
+
+.el-container .el-main {
+    padding: 0;
+}
+
+.el-container .el-main .el-form .el-form-item {
+    background: whitesmoke;
+    padding: 10px;
+}
+
+.el-dialog .el-row .el-col div.tag {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.highlight {
+    color: red;
+}
+
+.container div span.title {
+    padding-left: 20px;
+    color: white;
+    font-size: 20px;
+    border-bottom: 0.1px solid lightgrey;
+}
+
+ul.col-nav {
+    list-style: none;
+    width: 80px;
+    margin: 0;
+    background: whitesmoke;
+    color: white;
+    position: fixed;
+    text-align: center;
+    padding: 0;
+    border-radius: 5px;
+    left: 1400px;
+    top: 250px;
+}
+
+ul.col-nav li {
+    width: 80px;
+    height: 40px;
+    margin: 0;
+    line-height: 40px;
+}
+
+ul.col-nav li a {
+    color: black;
+}
+
+ul.infinite-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    border-bottom: 0.1px solid #e5e5e6;
+}
+
+ul.infinite-list li.infinite-list-item {
+    height: 30px;
+    border-bottom: 0.1px solid #f4f4f4;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 5px 5px 20px;
+}
+
+ul.infinite-list li.infinite-list-item:hover {
+    background: #e6e5e5;
+}
+
+ul.infinite-list li.infinite-list-item span {
+    flex: 1;
+}
+
+.el-main .el-form .el-form-item .el-card {
+    display: block;
+    width: 400px;
+    position: absolute;
+    left: 205px;
+    top: 40px;
+}
+
+.el-main .el-form .el-form-item .el-card__body {
+    padding: 0;
+}
+
+.el-form-item {
+    margin-bottom: 0;
+}
+
+.container .el-card {
+    height: 500px;
+    min-height: 500px;
+    overflow: scroll;
+}
+
+.container .el-card .el-row .el-col div.resource-item {
+    height: 300px;
+    margin: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px lightgrey;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.imgdiv {
+    width: 100%;
+    height: 60%;
+    background: #e1e1fb;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.imgdiv .media {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.resource-info {
+    margin: 10px;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.resource-info div {
+    display: flex;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link {
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    white-space: nowrap;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container .el-card .el-row .el-col div.resource-item div.resource-btn {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+/* upload页面 */
+
+.input-box {
+    width: 500px;
+    padding: 30px;
+}
+
+.el-main {
+    overflow: initial;
+}

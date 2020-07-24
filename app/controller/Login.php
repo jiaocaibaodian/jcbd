@@ -10,7 +10,7 @@ class Login extends BaseController
 {
 
     public function index(){
-        return View::fetch();
+        return View::fetch("uname");
     }
     
     public function resetkey(){
@@ -23,11 +23,11 @@ class Login extends BaseController
     public function magiccude()
     {
         return View::fetch();
-    }//魔方小游戏
-    public function login(){
+    }
+    public function uname(){
         return View::fetch();
     }
-    public function emaillogin(){
+    public function email(){
         return View::fetch();
     }
     public function signin(){
@@ -62,7 +62,7 @@ class Login extends BaseController
             if (count($data) > 0) { //如果存在,那么取出密码，跟post的密码对照
                 if ($data[0]['upsw'] == $_POST['upsw']) { //密码一致，更新token值，返回登录成功消息
                     $token = md5($data[0]['uname'] . time() . $_POST['upsw']);
-                    setcookie("token", $token, time() + 3600, "/");
+                    setcookie("token", $token, time() + 3600*24, "/");
                     //更新user表token值
                     Db::table("user")->where("uname",$data[0]['uname'])->update(["token"=>$token]);
                     if ($_POST['rmpsw'] == 1) {
@@ -119,7 +119,7 @@ class Login extends BaseController
             ];
             //在user表中增加该用户记录，返回插入条数及状态相关信息
             $result = Db::table("user")->insert($data);
-            setcookie("token", $token, time() + 3600, "/");
+            setcookie("token", $token, time() + 3600*24, "/");
             if ($result == 0) {
                 return json(["count" => $result, "errMsg" => "注册失败"]);
             } else {
@@ -237,5 +237,34 @@ class Login extends BaseController
         mailto($_POST['mail_to'], "用户", "教材宝典", "尊敬的用户，您好！您的验证码是" . $code);
         $_SESSION['mailCode'] = $code;
         return "邮件发送成功";
+    }
+    public function get_ResetKey(){
+        session_start();
+        $_POST = Request::post();
+        //检查验证码
+        if ($_SESSION['mailCode'] != $_POST['mailCode']) {
+            return json(["code" => 0, "errMsg" => "验证码输入错误"]);
+        }
+        //检查该邮箱或用户名是否存在
+        $data1 = Db::table("user")->where("uemail", $_POST['uemail'])->select();
+        if (count($data1) == 0) {
+            return json(['code'=>0,'errMsg'=>"不存在该用户,请检查您是否输入错误"]);
+        }else{
+            //根据邮箱号找到用户,拿到用户名
+            $user = Db::table("user")->where("uemail",$_POST['uemail'])->find();
+            $uname = $user['uname'];
+            //重新生成token
+            $token = md5($uname . time() . $_POST['upsw']);
+            //更新用户密码和token
+            Db::table("user")->where("uemail",$_POST['uemail'])->update(["upsw"=>$_POST['upsw'],"token"=>$token]);
+            //更新cookie中的token
+            setcookie("token", $token, time() + 3600*24, "/");
+            return json(['code'=>1,"msg"=>"重置密码完整，请重新登录"]);
+        }
+    }
+    public function register_check(){
+        $uemail = input("param.uemail");
+        $data = Db::table("user")->where("uemail", $uemail)->select();
+        return count($data)==0;
     }
 }

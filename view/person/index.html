@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>个人主页</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 楷体;
+        }
+        
+        nav {
+            width: 100%;
+            height: 64px;
+            position: fixed;
+            top: 0;
+            background-color: white;
+            z-index: 1000;
+        }
+        
+        nav div {
+            width: 1000px;
+            height: 64px;
+            margin: 0 auto;
+        }
+        
+        #logo {
+            width: 50px;
+            position: relative;
+            top: 7px;
+            left: 15px;
+        }
+        
+        ul {
+            float: right;
+            margin: 0;
+            padding-left: 0;
+        }
+        
+        li {
+            float: left;
+            list-style: none;
+            margin-right: 30px;
+        }
+        
+        li a {
+            line-height: 64px;
+            text-decoration: none;
+            color: black;
+        }
+        
+        li a:hover {
+            color: brown;
+        }
+        
+        #header {
+            width: 100%;
+        }
+        
+        main {
+            width: 1000px;
+            margin: 0 auto;
+        }
+        
+        section>img {
+            width: 1000px;
+        }
+        
+        p {
+            color: brown;
+            text-indent: 2em;
+        }
+        
+        h2 {
+            color: brown;
+        }
+        
+        h3 {
+            color: brown;
+            position: fixed;
+            left: 350px;
+            top: 0px;
+        }
+        
+        #booook {
+            width: 1000px;
+            height: 300px;
+            background-image: url('personage/classmates.jpg');
+            background-size: 1000px 630px;
+            position: relative;
+        }
+        
+        #booook img {
+            border: 2px white solid;
+            border-radius: 10%;
+            position: absolute;
+        }
+        
+        #booook img:nth-child(1) {
+            width: 250px;
+            top: 30px;
+            left: 100px;
+        }
+        
+        #booook img:nth-child(2) {
+            width: 250px;
+            top: 30px;
+            left: 400px;
+        }
+        
+        #booook img:nth-child(3) {
+            width: 250px;
+            top: 30px;
+            left: 700px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div>
+            <img id="logo" src="/static/img/logo.jpg" alt="头像">
+            <h3>SUPER_CAIJI</h3>
+            <ul>
+                <li><a href="#header">首页</a></li>
+                <li><a href="#html5">我的书架</a></li>
+                <li><a href="#star">我的收藏</a></li>
+                <li><a href="#history">历史记录</a></li>
+                <li><a href="#myself">关于我</a></li>
+            </ul>
+        </div>
+    </nav>
+    <img id="header" src="/static/img/background.jpg" alt="风景">
+    <main>
+        <p>“我爱读书，读书使我快乐”</p>
+        <section id="html5">
+            <img src="" alt="">
+            <p>“我爱读书，读书使我快乐”</p>
+        </section>
+
+        <section id="books">
+            <h2>我的书架</h2>
+            <div id="booook">
+                <img src="/static/img/BOOK1.jpg" alt="book">
+                <img src="/static/img/BOOK2.jpg" alt="book">
+                <img src="/static/img/BOOK3.jpg" alt="book">
+            </div>
+            <p>“我爱读书，读书使我快乐”</p>
+        </section>
+
+        <section id="star">
+            <h2>我的收藏</h2>
+            <img src="" alt="">
+            <p>我爱读书，读书使我快乐。</p>
+        </section>
+
+        <section id="history">
+            <h2>历史记录</h2>
+            <img src="" alt="">
+            <p>我爱读书，读书使我快乐</p>
+        </section>
+
+    </main>
+    <hr>
+    <p id="myself" style="text-align: center;">&copy;教材宝典</p>
+
+</body>
+
+</html>

@@ -17,24 +17,20 @@
         <div class="logo">
             <div class="logo1"></div>
             <div class="logo2"></div>
-       </div>
+        </div>
         <h3 class="login-title">欢迎</h3>
         <el-form>
             <el-form-item>
-                <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @change="email_check()">
+                <el-input v-model="register.uemail" type="text" placeholder="邮箱号" @focus="restore" @blur="register_check" @change="email_check()">
                     <template slot="prepend">注册邮箱号</template>
                 </el-input>
                 <span class="email_check_tip">
                         <i class="el-icon-warning"></i>
                         <span>邮箱名不合法</span>
                 </span>
-                <span class="login_check_tip">
-                    <i class="el-icon-warning"></i>
-                    <span>您还未注册</span>
-                </span>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="register.upsw" type="password" placeholder="密码" @change="psw_check()" maxlength="16">
+                <el-input v-model="register.upsw" type="password" placeholder="密码" @focus="restore" @change="psw_check()" maxlength="16">
                     <template slot="prepend">密码</template>
                 </el-input>
                 <span class="psw_check_tip">
@@ -43,7 +39,7 @@
                 </span>
             </el-form-item>
             <el-form-item>
-                <el-input v-model="register.checkpsw" type="password" placeholder="确认密码" @change="psw_check()">
+                <el-input v-model="register.checkpsw" type="password" placeholder="确认密码" @focus="restore" @change="psw_check()">
                     <template slot="prepend">确认密码</template>
                 </el-input>
                 <span class="checkpsw_check_tip">
@@ -51,7 +47,7 @@
                         <span>两次密码不一致</span>
                 </span>
             </el-form-item>
-            <el-button id="login" style="width:100%" type="primary" @click="login_check()">重置</el-button>
+            <el-button id="login" style="width:100%" type="primary" @click="register.dialogVisible=true">重置</el-button>
         </el-form>
         <el-dialog title="邮件验证" :visible.sync="register.dialogVisible" width="300px" height="300px">
             <el-form>
@@ -62,7 +58,7 @@
             </el-form>
             <span slot="footer" class="dialog-footer">
         <el-button @click="register.dialogVisible = false">取 消</el-button>
-        <el-button  type="primary" @click="get_register()">确 定</el-button>
+        <el-button  type="primary" @click="get_ResetKey()">确 定</el-button>
     </span>
         </el-dialog>
 
@@ -78,7 +74,6 @@
             <li></li>
             <li></li>
         </el-form>
-
     </div>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="videos.css ">
+</head>
+
+<body>
+    <div class="header w">
+        <!-- logo部分 -->
+        <div class="logo">
+            <img src="imges/logo.png" width="45" height="45" alt="">
+        </div>
+        <!-- 导航栏部分 -->
+        <div class="nav">
+            <ul>
+                <li><a href="#">首页</a></li>
+                <li><a href="#">收藏夹</a></li>
+            </ul>
+        </div>
+        <!-- 搜索模块 -->
+        <div class="search">
+            <input type="text" placeholder="输入关键词" id="search">
+            <button id="search"></button>
+        </div>
+    </div>
+    <hr>
+    <!-- 主体部分 -->
+    <div class="box w">
+        <ul id='ul'>
+        </ul>
+    </div>
+    <script>
+        var ul = document.getElementById('ul');
+        var li = {
+            lianjie: '<img src="imges/logo.png" alt=""> ',
+            biaoti: '<h4> 视频标题 </h4>'
+        }
+        var lis = new Array();
+        for (var i = 0; i < 10; i++) {
+            lis[i] = document.createElement("li");
+            ul.appendChild(lis[i]);
+        }
+        for (var i = 0; i < 10; i++) {
+            lis[i].innerHTML = '<a href="https://www.bilibili.com/"></a>';
+            lis[i].innerHTML = '<a href="https://www.baidu.com/"><img src="imges/logo.png" alt=""></a>   <h4> 标题 </h4>'
+        }
+    </script>
+</body>
+
+</html>

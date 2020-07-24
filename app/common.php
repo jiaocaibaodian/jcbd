@@ -75,3 +75,34 @@ function recurGetLabels($data,&$root){
         }
     }
 }
+function getUnameByToken(){
+    $token = $_COOKIE['token'];
+    $data = Db::table("user")->where("token",$token)->find();
+    return $data['uname'];
+}
+
+function data_format(&$data,$limit=10000){
+    $rids = [];
+    $result = [];
+    $j = 0;
+    for ($i = 0; $i < count($data); $i++) {
+        $index = array_search($data[$i]['rid'], $rids);
+        if ($index === false) {
+            $result[$j] = [
+                'rid' => $data[$i]['rid'],
+                'rname' => $data[$i]['rname'],
+                'rtype' => $data[$i]['rtype'],
+                'rcover' => $data[$i]['rcover'],
+                'rsrc' => $data[$i]['rsrc'],
+                'rorigin' => $data[$i]['rorigin'],
+                'rauthor' => $data[$i]['rauthor'],
+                'labels' => array($data[$i]['lname']),
+            ];
+            $rids[$j] = $data[$i]['rid'];
+            $j++;
+        } else {
+            $result[$index]['labels'][] = $data[$i]['lname'];
+        }
+    }
+    $data = array_splice($result,0,$limit);
+}
