@@ -48,7 +48,7 @@
                     </el-input>
                     <el-card :style="'display:'+ mode+';'">
                         <ul class="infinite-list" style="overflow:auto">
-                            <li v-for="item in searchResults" class="infinite-list-item" @mousedown="showDetail(item)">
+                            <li v-for="item in searchResults" class="infinite-list-item" @mousedown="item.rtype=='视频'?openVideo(item.rsrc,item.rid):openFile(item.rid,item.rsrc)">
                                 <span v-html="item.rname+' --'+item.rauthor"></span>
                                 <i class="el-icon-arrow-right"></i>
                             </li>

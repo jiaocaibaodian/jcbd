@@ -14,6 +14,11 @@
     padding: 1%;
 }
 
+.el-main .el-row .el-col .el-card {
+    height: 100%;
+    overflow: scroll;
+}
+
 .el-main .el-row .el-col {
     height: 100%;
 }

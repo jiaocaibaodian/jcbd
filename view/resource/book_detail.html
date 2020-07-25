@@ -38,17 +38,19 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-row class="resource" type="flex" justify="space-around">
+            <el-row class="resource">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20"><iframe :src="filesrc" frameborder="0"></iframe></el-col>
                 <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="4" v-if="currentRes.ingroup">
                     <el-card>
                         <span slot="header">{{rgroup.rgname}}</span>
                         <el-menu :default-active="currentRes.rid">
-                            <el-menu-item-group>
-                                <el-menu-item v-for="res in resources" :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
-                                    {{res.rname}}
-                                </el-menu-item>
-                            </el-menu-item-group>
+                            <el-row>
+                                <el-col :xs="8" :sm="24" :md="24" :lg="24" :xl="24" v-for="res in resources">
+                                    <el-menu-item :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
+                                        {{res.rname}}
+                                    </el-menu-item>
+                                </el-col>
+                            </el-row>
                         </el-menu>
                     </el-card>
                 </el-col>

@@ -89,6 +89,7 @@ ul.infinite-list li.infinite-list-item span {
     position: absolute;
     left: 205px;
     top: 40px;
+    z-index: 10;
 }
 
 .el-main .el-form .el-form-item .el-card__body {
