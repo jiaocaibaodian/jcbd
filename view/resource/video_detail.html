@@ -8,6 +8,7 @@
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/book_detail.css">
+    <link rel="stylesheet" href="/static/css/el-video.css">
     <title>视频主页</title>
 </head>
 
@@ -38,19 +39,37 @@
             </el-menu>
         </el-header>
         <el-main>
-            <div class="resource">
-                <video :src="currentRes.rsrc" type="video/mp4" controls></video>
-                <el-card>
-                    <span slot="header">{{rgroup.rgname}}</span>
-                    <el-menu :default-active="currentRes.rid">
-                        <el-menu-item-group>
-                            <el-menu-item v-for="res in resources" :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
-                                {{res.rname}}
-                            </el-menu-item>
-                        </el-menu-item-group>
-                    </el-menu>
-                </el-card>
-            </div>
+            <el-row gutter="20" class="resource">
+                <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20">
+                    <div class="el-video" @mouseenter="changeShow()" @mouseleave="changeShow()">
+                        <video id="media" preload :src="currentRes.rsrc" controls controlslist="nodownload"></video>
+                        <div class="el-video-control-btn" v-if="show">
+                            <el-popover placement="top" width="50" trigger="hover">
+                                <ul>
+                                    <li @click="handleChangeSpeed(0.5)">0.5</li>
+                                    <li @click="handleChangeSpeed(1.0)">1.0</li>
+                                    <li @click="handleChangeSpeed(1.25)">1.25</li>
+                                    <li @click="handleChangeSpeed(1.5)">1.5</li>
+                                    <li @click="handleChangeSpeed(2.0)">2.0</li>
+                                </ul>
+                                <el-button type="text" slot="reference">倍速</el-button>
+                            </el-popover>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="4" v-if="currentRes.ingroup">
+                    <el-card>
+                        <span slot="header">{{rgroup.rgname}}</span>
+                        <el-menu :default-active="currentRes.rid">
+                            <el-menu-item-group>
+                                <el-menu-item v-for="res in resources" :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
+                                    {{res.rname}}
+                                </el-menu-item>
+                            </el-menu-item-group>
+                        </el-menu>
+                    </el-card>
+                </el-col>
+            </el-row>
             <el-button icon="el-icon-caret-top" @click="drawer = true">评论区</el-button>
             <el-drawer title="评论" :visible.sync="drawer" :with-header="false" direction="btt">
 
@@ -71,15 +90,14 @@
                 return {
                     filesrc: "",
                     drawer: false,
+                    show: true,
                     activeIndex: '0',
-                    currentRes: {
-                        rid: "",
-                        rsrc: ""
-                    },
+                    currentRes: [],
                     rgroup: {
                         rgid: "",
                         rgname: ""
                     },
+                    speed: 1.0,
                     resources: []
                 }
             },
@@ -93,6 +111,21 @@
                 this.getRgroupById(rid);
             },
             methods: {
+                handleChangeSpeed($speed) {
+                    var oMedia = document.getElementById("media");
+                    oMedia.playbackRate = $speed;
+                    $(".el-video ul li").css("color", "black");
+                    var event = window.event;
+                    $(event.target).css("color", "#7bace5");
+                },
+                changeShow() {
+                    var oMedia = document.getElementById("media");
+                    if (oMedia.paused) {
+                        this.show = true;
+                    } else {
+                        this.show = !this.show;
+                    }
+                },
                 //根据rid获取所在组rgid,rgname
                 getRgroupById($rid) {
                     axios({
@@ -105,6 +138,14 @@
                         console.log(res.data);
                         this.rgroup = res.data.rgroup;
                         this.resources = res.data.resources;
+                        for (let i = 0; i < this.resources.length; i++) {
+                            if (this.resources[i].rid == $rid) {
+                                this.currentRes = this.resources[i];
+                                break;
+                            }
+                        }
+                        this.currentRes.ingroup = res.data.ingroup;
+                        console.log(this.currentRes);
                     }).catch(err => {
                         console.error(err);
                     })

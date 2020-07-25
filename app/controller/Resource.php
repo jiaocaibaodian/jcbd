@@ -263,9 +263,15 @@ class Resource extends BaseController
     }
     public function getRgroupById(){
         $rid = \input("param.rid");
-        $rgroup = Db::table("rgroup")->field("rgid,rgname")->where("rid",$rid)->find();
+        $rgroup = Db::table("rgroup")->field("rgid,rgname")->where("rid",$rid)->findOrEmpty();
+        if (empty($rgroup)){
+            return json([
+                'ingroup'=>false
+            ]);
+        }
         $result = Db::view("rgroup")->view("resource","rid,rname,rtype,rcover,rsrc,rorigin,rauthor","resource.rid=rgroup.rid")->where("rgid",$rgroup['rgid'])->select();
         return json([
+            "ingroup"=>true,
             "rgroup"=>$rgroup,
             "resources"=>$result
         ]);
