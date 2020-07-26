@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/book_detail.css">
     <title>电子书籍主页</title>
@@ -55,9 +56,50 @@
                     </el-card>
                 </el-col>
             </el-row>
-            <el-button icon="el-icon-caret-top" @click="drawer = true">评论区</el-button>
-            <el-drawer title="评论" :visible.sync="drawer" :with-header="false" direction="btt">
-
+            <el-button icon="el-icon-caret-top" @click="drawer.visible = true">评论区</el-button>
+            <el-drawer :visible.sync="drawer.visible" direction="btt" size="70%">
+                <template slot="title">
+                    <span>评论区</span>
+                    <el-button type="text" @click="drawer.innerCommentDrawer = true">参与评论</el-button>
+                </template>
+                <el-card v-for="(comment,index) in comments" class="comment-item" v-if="index<comments.length-1">
+                    <template slot="header">
+                        <img :src="comment.uavator"></img>
+                        <span>{{comment.uname}}</span>
+                        <el-button type="text" @click="drawer.innerReplyDrawer = true;user_reply.replyTouname=comment.uname;user_reply.replyToid=comment.id">回复</el-button>
+                    </template>
+                    <div>
+                        <span>{{comment.content}}</span>
+                        <div class="replies" v-if="comment.replies.length>0">
+                            <div class="reply-item" v-for="reply in comment.replies">
+                                <div class="reply-item-header">
+                                    <span class="reply-item-header-text">
+                                        <span style="color: #ff9552;">{{reply.uname}}</span>
+                                    <span>@</span>
+                                    <span style="color: lightblue;">{{reply.replyTouname}}:</span>
+                                    <span v-if="reply.replyCollapse">{{reply.content.substring(0,70)}}<span v-if="reply.content.length>=70">...</span></span>
+                                    </span>
+                                    <el-button type="text" @click="reply.replyCollapse = false" v-if="reply.replyCollapse&&reply.content.length>=70">展开</el-button>
+                                    <el-button type="text" @click="reply.replyCollapse = true" v-if="!reply.replyCollapse">收起</el-button>
+                                    <el-button type="text" @click="drawer.innerReplyDrawer = true;user_reply.replyTouname=reply.uname;user_reply.replyToid=comment.id">回复</el-button>
+                                </div>
+                                <div class="reply-item-content" v-if="!reply.replyCollapse">
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;{{reply.content}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-card>
+                <el-drawer title="评论" :append-to-body="true" :visible.sync="drawer.innerCommentDrawer" direction="btt">
+                    <el-input v-model="user_comment.content" placeholder="请输入评论内容">
+                        <el-button slot="append" @click="addComment()">发布</el-button>
+                    </el-input>
+                </el-drawer>
+                <el-drawer title="回复" :append-to-body="true" :visible.sync="drawer.innerReplyDrawer" direction="btt">
+                    <el-input v-model="user_reply.content" placeholder="请输入回复内容">
+                        <el-button slot="append" @click="addReply()">发布</el-button>
+                    </el-input>
+                </el-drawer>
             </el-drawer>
         </el-main>
         <el-footer>
@@ -74,18 +116,34 @@
             data() {
                 return {
                     filesrc: "",
-                    drawer: false,
-                    activeIndex: '0',
-                    currentRes: {
-                        rid: "",
-                        rsrc: "",
-                        ingroup: false
+                    drawer: {
+                        visible: false,
+                        innerCommentDrawer: false,
+                        innerReplyDrawer: false
                     },
+                    activeIndex: '0',
+                    currentRes: {},
                     rgroup: {
                         rgid: "",
                         rgname: ""
                     },
-                    resources: []
+                    resources: [],
+                    comments: [{
+                        content: "你好,这是示例",
+                        id: 11,
+                        replies: [],
+                        rid: "5351f6d028c7e4db1c94ec669a50e1d1",
+                        uavator: "/static/img/default-avator.jpeg",
+                        uname: "slc805"
+                    }],
+                    user_comment: {
+                        content: ""
+                    },
+                    user_reply: {
+                        replyToid: 0,
+                        replyTouname: "",
+                        content: ""
+                    }
                 }
             },
             created: function() {
@@ -96,6 +154,7 @@
                 this.currentRes.rsrc = url;
                 this.filesrc = "/pdf.js/web/viewer.html?file=" + url;
                 this.getRgroupById(rid);
+                this.getUserComments();
             },
             methods: {
                 //根据rid获取所在组rgid,rgname
@@ -108,20 +167,100 @@
                         }
                     }).then(res => {
                         console.log(res.data);
-                        this.currentRes.ingroup = res.data.ingroup;
                         this.rgroup = res.data.rgroup;
                         this.resources = res.data.resources;
+                        for (let i = 0; i < this.resources.length; i++) {
+                            if (this.resources[i].rid == $rid) {
+                                this.currentRes = this.resources[i];
+                                break;
+                            }
+                        }
+                        this.currentRes.ingroup = res.data.ingroup;
+                        console.log(this.currentRes);
                     }).catch(err => {
                         console.error(err);
                     })
-                }
+                },
                 //从后端获取评论内容
-
-
+                getUserComments() {
+                    axios.get("/resource/getUserComments?rid=" + this.currentRes.rid)
+                        .then(res => {
+                            console.log(res.data);
+                            this.comments = res.data;
+                            this.comments.push({
+                                content: "你好,这是示例",
+                                id: 11,
+                                replies: [],
+                                rid: "5351f6d028c7e4db1c94ec669a50e1d1",
+                                uavator: "/static/img/default-avator.jpeg",
+                                uname: "slc805"
+                            });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                },
                 //发表评论
-
-
-                //w
+                addComment() {
+                    this.checkLoginState();
+                    console.log(this.user_comment);
+                    axios({
+                            method: 'post',
+                            url: "/resource/addUserComment",
+                            data: {
+                                replyToid: 0,
+                                replyTouname: "",
+                                rid: this.currentRes.rid,
+                                content: this.user_comment.content
+                            }
+                        })
+                        .then(res => {
+                            console.log(res.data);
+                            //清空输入框
+                            this.user_comment.content = "";
+                            //关闭drawer
+                            this.comments.unshift(res.data);
+                            this.drawer.innerCommentDrawer = false;
+                        });
+                },
+                //回复
+                addReply() {
+                    this.checkLoginState();
+                    console.log(this.user_reply);
+                    axios({
+                            method: 'post',
+                            url: "/resource/addUserComment",
+                            data: {
+                                replyToid: this.user_reply.replyToid,
+                                replyTouname: this.user_reply.replyTouname,
+                                rid: this.currentRes.rid,
+                                content: this.user_reply.content
+                            }
+                        })
+                        .then(res => {
+                            console.log(res.data);
+                            this.comments.forEach(element => {
+                                if (element.id == this.user_reply.replyToid) {
+                                    element.replies.unshift(res.data);
+                                }
+                            });
+                        });
+                    //清空输入框
+                    this.user_reply.content = "";
+                    //关闭drawer
+                    this.drawer.innerReplyDrawer = false;
+                },
+                checkLoginState() {
+                    if ($.cookie("token") === undefined) {
+                        this.$confirm('您还未登录，是否立即前往', '提醒', {
+                            confirmButtonText: '确认',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            window.location.href = "/login";
+                        }).catch(() => {});
+                    }
+                }
             }
         });
     </script>

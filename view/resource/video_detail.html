@@ -218,7 +218,7 @@
                 },
                 //从后端获取评论内容
                 getUserComments() {
-                    axios.get("/resource/getUserComments")
+                    axios.get("/resource/getUserComments?rid=" + this.currentRes.rid)
                         .then(res => {
                             console.log(res.data);
                             this.comments = res.data;

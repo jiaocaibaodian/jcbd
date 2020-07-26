@@ -279,6 +279,7 @@ class Resource extends BaseController
         if (empty($rgroup)) {
             return json([
                 'ingroup' => false,
+                'resources'=>[]
             ]);
         }
         $result = Db::view("rgroup")->view("resource", "rid,rname,rtype,rcover,rsrc,rorigin,rauthor", "resource.rid=rgroup.rid")->where("rgid", $rgroup['rgid'])->select();
@@ -328,7 +329,8 @@ class Resource extends BaseController
         }
     }
     public function getUserComments(){
-        $data = Db::view("user_comment","id,uname,rid,content,replyTouname,replyToid")->view("user","uavator","user.uname=user_comment.uname")->select();
+        $rid = input("param.rid");
+        $data = Db::view("user_comment","id,uname,rid,content,replyTouname,replyToid")->view("user","uavator","user.uname=user_comment.uname")->where("rid",$rid)->select();
         $fdata = comment_data_format($data);
         return json($fdata);
     }
