@@ -38,7 +38,7 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-row class="resource">
+            <el-row class="resource" :type="!currentRes.ingroup?'flex':''" justify="space-around">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20"><iframe :src="filesrc" frameborder="0"></iframe></el-col>
                 <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="4" v-if="currentRes.ingroup">
                     <el-card>

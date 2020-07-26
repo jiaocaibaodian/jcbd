@@ -39,7 +39,7 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-row gutter="20" class="resource">
+            <el-row gutter="20" class="resource" :type="!currentRes.ingroup?'flex':''" justify="space-around">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20">
                     <div class="el-video" @mouseenter="changeShow()" @mouseleave="changeShow()">
                         <video id="media" preload :src="currentRes.rsrc" controls controlslist="nodownload"></video>
@@ -72,9 +72,45 @@
                     </el-card>
                 </el-col>
             </el-row>
-            <el-button icon="el-icon-caret-top" @click="drawer = true">评论区</el-button>
-            <el-drawer title="评论" :visible.sync="drawer" :with-header="false" direction="btt">
-
+            <el-button icon="el-icon-caret-top" @click="drawer.visible = true">评论区</el-button>
+            <el-drawer :visible.sync="drawer.visible" direction="btt" size="70%">
+                <template slot="title">
+                    <span>评论区</span>
+                    <el-button type="text" @click="drawer.innerDrawer = true">参与评论</el-button>
+                </template>
+                <el-card v-for="comment in comments" class="comment-item">
+                    <template slot="header">
+                        <img :src="comment.uavator"></img>
+                        <span>{{comment.uname}}</span>
+                        <el-button type="text" @click="drawer.innerDrawer = true">回复</el-button>
+                    </template>
+                    <div>
+                        <span>{{comment.content}}</span>
+                        <div class="replies">
+                            <div class="reply-item" v-for="reply in comment.replies">
+                                <div class="reply-item-header">
+                                    <span class="reply-item-header-text">
+                                        <span style="color: #ff9552;">{{reply.uname}}</span>
+                                    <span>@</span>
+                                    <span style="color: lightblue;">{{comment.uname}}:</span>
+                                    <span v-if="reply.replyCollapse">{{reply.content.substring(0,70)}}<span v-if="reply.content.length>=70">...</span></span>
+                                    </span>
+                                    <el-button type="text" @click="reply.replyCollapse = false" v-if="reply.replyCollapse&&reply.content.length>=70">展开</el-button>
+                                    <el-button type="text" @click="reply.replyCollapse = true" v-if="!reply.replyCollapse">收起</el-button>
+                                    <el-button type="text" @click="drawer.innerDrawer = true">回复</el-button>
+                                </div>
+                                <div class="reply-item-content" v-if="!reply.replyCollapse">
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;{{reply.content}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-card>
+                <el-drawer title="评论或回复" :append-to-body="true" :visible.sync="drawer.innerDrawer" direction="btt">
+                    <el-input v-model="user_comment" placeholder="请输入评论内容">
+                        <el-button slot="append" @click="addComment()">发布</el-button>
+                    </el-input>
+                </el-drawer>
             </el-drawer>
         </el-main>
         <el-footer>
@@ -91,7 +127,10 @@
             data() {
                 return {
                     filesrc: "",
-                    drawer: false,
+                    drawer: {
+                        visible: false,
+                        innerDrawer: false
+                    },
                     show: true,
                     activeIndex: '0',
                     currentRes: [],
@@ -100,7 +139,105 @@
                         rgname: ""
                     },
                     speed: 1.0,
-                    resources: []
+                    resources: [],
+                    comments: [{
+                        uavator: "/static/img/default-avator.jpeg",
+                        uname: "嵩鼠一只",
+                        rid: "",
+                        content: "这本书五星好评",
+                        replies: [{
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }]
+                    }, {
+                        uavator: "/static/img/default-avator.jpeg",
+                        uname: "嵩鼠一只",
+                        rid: "",
+                        content: "这本书五星好评",
+                        replies: [{
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }]
+                    }, {
+                        uavator: "/static/img/default-avator.jpeg",
+                        uname: "嵩鼠一只",
+                        rid: "",
+                        content: "这本书五星好评",
+                        replies: [{
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }]
+                    }, {
+                        uavator: "/static/img/default-avator.jpeg",
+                        uname: "嵩鼠一只",
+                        rid: "",
+                        content: "这本书五星好评",
+                        replies: [{
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }, {
+                            uavator: "/static/img/default-avator.jpeg",
+                            uname: "嵩鼠两只",
+                            replyCollapse: true,
+                            rid: "",
+                            content: "确实值得五星好评"
+                        }]
+                    }],
+                    user_comment: ""
                 }
             },
             created: function() {
@@ -151,14 +288,17 @@
                     }).catch(err => {
                         console.error(err);
                     })
-                }
+                },
                 //从后端获取评论内容
+                getComments() {
 
+                },
 
                 //发表评论
+                addComment() {
 
+                }
 
-                //w
             }
         });
     </script>

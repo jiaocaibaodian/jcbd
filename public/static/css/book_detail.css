@@ -42,3 +42,46 @@ video {
     display: block;
     left: 10%;
 }
+
+.el-drawer {
+    overflow: scroll;
+}
+
+.el-drawer .el-card .el-card__header,
+.reply-item-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.el-drawer .el-card .el-card__header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.el-drawer .el-card .el-card__header span,
+.reply-item-header .reply-item-header-text {
+    flex: 1;
+}
+
+.el-drawer .el-card .replies {
+    background: grey;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.el-drawer .el-card .replies .reply-item {
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px;
+}
+
+.el-drawer .el-card .replies .reply-item-content span {}
+
+.el-card.comment-item.is-always-shadow {
+    margin: 10px;
+}
