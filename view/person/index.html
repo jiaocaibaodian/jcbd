@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,15 +13,18 @@
         nav {
             width: 100%;
             height: 64px;
+
             position: fixed;
             top: 0;
             background-color: white;
             z-index: 1000;
         }
+
         
         nav div {
             width: 1000px;
             height: 64px;
+
             margin: 0 auto;
         }
         
@@ -39,14 +41,16 @@
             padding-left: 0;
         }
         
-        li {
+        ul li {
             float: left;
+
             list-style: none;
             margin-right: 30px;
         }
         
         li a {
             line-height: 64px;
+
             text-decoration: none;
             color: black;
         }
@@ -99,35 +103,21 @@
             position: absolute;
         }
 
-        
-        #booook img:nth-child(1) {
-            width: 250px;
-            top: 30px;
-            left: 100px;
-        }
-
-        
-        #booook img:nth-child(2) {
-            width: 250px;
-            top: 30px;
-            left: 400px;
-        }
-
-        
-        #booook img:nth-child(3) {
-            width: 250px;
-            top: 30px;
-            left: 700px;
-        }
     </style>
 </head>
 
 <body>
 
+    <audio src="" autoplay></audio>
+
+    <video src=""></video>
+
+
     <nav>
         <div>
             <img id="logo" src="/static/img/logo.jpg" alt="头像">
             <h3>SUPER_CAIJI</h3>
+
             <ul>
                 <li><a href="#header">首页</a></li>
                 <li><a href="#html5">我的书架</a></li>
@@ -138,8 +128,11 @@
         </div>
     </nav>
     <img id="header" src="/static/img/background.jpg" alt="风景">
+
     <main>
+
         <p>“我爱读书，读书使我快乐”</p>
+
         <section id="html5">
             <img src="" alt="">
             <p>“我爱读书，读书使我快乐”</p>
@@ -148,11 +141,10 @@
         <section id="books">
             <h2>我的书架</h2>
             <div id="booook">
-                <img src="/static/img/BOOK1.jpg" alt="book">
-                <img src="/static/img/BOOK2.jpg" alt="book">
-                <img src="/static/img/BOOK3.jpg" alt="book">
+                <a href="https://www.bilibili.com"><img src="/static/img/BOOK1.jpg" alt="book" width="250px" style="margin-top: 30px; margin-left: 100px;"></a>
+                <a href="https://www.bilibili.com"><img src="/static/img/BOOK2.jpg" alt="book" width="250px" style="margin-top: 30px; margin-left: 400px;"></a>
+                <a href="https://www.bilibili.com"><img src="/static/img/BOOK3.jpg" alt="book" width="250px" style="margin-top: 30px; margin-left: 700px;"></a>
             </div>
-            <p>“我爱读书，读书使我快乐”</p>
         </section>
 
         <section id="star">
@@ -163,10 +155,14 @@
 
         <section id="history">
             <h2>历史记录</h2>
-            <img src="" alt="">
-            <p>我爱读书，读书使我快乐</p>
+            <ui>
+                <li><a href="https://www.baidu.com/?tn=44004473_2_oem_dg">高数A上册</a></li>
+                <li><a href="https://www.baidu.com/?tn=44004473_2_oem_dg">视听说英语上册</a></li>
+                <li><a href="https://www.baidu.com/?tn=44004473_2_oem_dg">LZX的时间管理教程</a></li>
+                <li><a href="https://www.baidu.com/?tn=44004473_2_oem_dg">全国富婆通讯录</a></li>
+            </ui>
+            <br><br><br><br>
         </section>
-
     </main>
     <hr>
     <p id="myself" style="text-align: center;">&copy;教材宝典</p>
