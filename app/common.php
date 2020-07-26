@@ -106,3 +106,28 @@ function data_format(&$data,$limit=10000){
     }
     $data = array_splice($result,0,$limit);
 }
+function comment_data_format($data){        //格式化评论数据
+    $commentids = [];
+    $result = [];
+    $j = 0;
+    for ($i = 0; $i < count($data); $i++) {
+        $index = array_search($data[$i]["replyToid"],$commentids);
+        if ($data[$i]['replyTouname']=="") {
+            $result[$j] = [
+                'id' => $data[$i]['id'],
+                'rid' => $data[$i]['rid'],
+                'uname' => $data[$i]['uname'],
+                'content' => $data[$i]['content'],
+                'uavator' => $data[$i]['uavator'],
+                'replies' => [],
+            ];
+            $commentids[$j] = $data[$i]['id'];
+            $j++;
+        } else {
+            $temp = $data[$i];
+            $temp['replyCollapse'] = true;
+            $result[$index]['replies'][] = $temp;
+        }
+    }
+    return $result;
+}
