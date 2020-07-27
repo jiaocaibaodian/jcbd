@@ -80,7 +80,9 @@ var app = new Vue({
                         return;
                     }
                     //跳转到首页
-                    window.location.href = "/index/";
+                    document.referrer === '' ?
+                        window.location.href = 'http://m2.paipai.com/index.shtml' :
+                        window.history.back();
                 })
                 .catch(err => {
                     console.log(err);

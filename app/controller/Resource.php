@@ -334,4 +334,53 @@ class Resource extends BaseController
         $fdata = comment_data_format($data);
         return json($fdata);
     }
+    public function getLikes(){
+        $rid = input("param.rid");
+        $playnum = Db::table("user_like")->where("rid",$rid)->sum("seen");
+        $likenum = Db::table("user_like")->where(["rid"=>$rid,"likes"=>'1'])->count();
+        $dislikenum = Db::table("user_like")->where(["rid"=>$rid,"likes"=>'0'])->count();
+        $currentLike = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->value("likes");
+        return json([
+            "playnum"=>$playnum,
+            "likenum"=>$likenum,
+            "dislikenum"=>$dislikenum,
+            "currentLike"=>$currentLike
+        ]);
+    }
+    public function like(){
+        //插入用户点赞记录
+        $rid = input("param.rid");
+        $likes = input("param.likes");
+        //先查找该记录是否存在
+        $data = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->select();
+        if (count($data)==0){   //不存在则插入记录
+            $result = Db::table("user_like")->insert([
+                "rid"=>$rid,
+                "uname"=>\getUnameByToken(),
+                "likes"=>$likes,
+                "seen"=>false
+            ]);
+        }else{
+            $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->update([
+                "likes"=>$likes
+            ]);
+        }
+    }
+    public function seen(){
+        //插入用户点赞记录
+        $rid = input("param.rid");
+        //先查找该记录是否存在
+        $data = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->select();
+        if (count($data)==0){   //不存在则插入记录
+            $result = Db::table("user_like")->insert([
+                "rid"=>$rid,
+                "uname"=>\getUnameByToken(),
+                "seen"=>true
+            ]);
+        }else{
+            $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->update([
+                "seen"=>true
+            ]);
+        }
+    }
 }
