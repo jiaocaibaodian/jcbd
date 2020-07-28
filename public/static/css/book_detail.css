@@ -59,9 +59,10 @@ video {
 .el-main .el-button {
     position: fixed;
     top: 90%;
-    width: 80%;
+    width: 100%;
     display: block;
-    left: 10%;
+    /* left: 10%; */
+    margin: 0 20px;
 }
 
 .el-drawer {

@@ -252,8 +252,29 @@ var indexPage = new Vue({
     data() {
         return {
             activeIndex: '4',
-            types: ['全部', '视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
-            selectedType: "全部",
+            selectedType: { label: "全部", value: "" },
+            types: [{
+                label: "全部",
+                value: "#"
+            }, {
+                label: "视频",
+                value: "#videos"
+            }, {
+                label: "链接",
+                value: "#links"
+            }, {
+                label: "电子书籍",
+                value: "#books"
+            }, {
+                label: "短篇博客",
+                value: "#articles"
+            }, {
+                label: "教材",
+                value: "#textbooks"
+            }, {
+                label: "答案",
+                value: "#answers"
+            }],
             resources: [],
             labels: [],
             selectedLabels: "",
@@ -284,23 +305,8 @@ var indexPage = new Vue({
                     console.error(err);
                 })
         },
-        getSearchResults() {
-            axios.get("/resource/get_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType + "&pageIndex=1")
-                .then(res => {
-                    console.log(res.data);
-                    var reg = new RegExp(this.query);
-                    this.resources.push.apply(this.resources, res.data.data);
-                    for (let i = 0; i < this.resources.length; i++) {
-                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
-                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                })
-        },
         getTempSearchResults() {
-            axios.get("/resource/get_temp_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
+            axios.get("/resource/get_temp_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType.label)
                 .then(res => {
                     this.searchResults = res.data;
                     var reg = new RegExp(this.query);
@@ -342,6 +348,38 @@ var indexPage = new Vue({
                 .catch(err => {
                     console.error(err);
                 })
-        }
+        },
+        showResults() {
+            //首先检查用户是否有输入查询字段
+            // if (this.query==""){
+            //     this.$message({
+            //         message:
+            //     })
+            // }
+        },
+        handleTypeChange(val) {
+            console.log(val);
+            this.types.forEach(element => {
+                if (element.label == val) {
+                    window.location.href = element.value;
+                    return;
+                }
+            });
+        },
+        getSearchResults() {
+            axios.get("/resource/get_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType.label + "&pageIndex=1")
+                .then(res => {
+                    console.log(res.data);
+                    var reg = new RegExp(this.query);
+                    this.resources.push.apply(this.resources, res.data.data);
+                    for (let i = 0; i < this.resources.length; i++) {
+                        this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
+                        this.resources[i].rauthor = this.resources[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
     }
 })

@@ -1,10 +1,10 @@
 .el-video {
-    position: relative;
+    /* position: relative; */
 }
 
 .el-video-control-btn {
     position: absolute;
-    left: 78%;
+    left: 68%;
     top: 89.1%;
     width: 20px;
     height: 20px;
@@ -19,19 +19,19 @@
     position: relative;
 }
 
-ul {
+.el-popover ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
     text-align: center;
 }
 
-ul li {
+.el-popover ul li {
     padding: 10px 0;
     cursor: pointer;
 }
 
-ul li:hover {
+.el-popover ul li:hover {
     background: #f5f0f0;
 }
 

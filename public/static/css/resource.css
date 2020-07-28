@@ -101,52 +101,24 @@ ul.infinite-list li.infinite-list-item span {
 }
 
 .container .el-card {
-    height: 500px;
-    min-height: 500px;
+    height: 600px;
     overflow: scroll;
 }
 
-.container .el-card .el-row .el-col div.resource-item {
-    height: 300px;
-    margin: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px lightgrey;
+.container .el-card .el-row {
+    height: 10vw;
 }
 
-.container .el-card .el-row .el-col div.resource-item div.imgdiv {
+.container .el-card .el-row .el-col {
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.resource-item {
     width: 100%;
-    height: 60%;
-    background: #e1e1fb;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.imgdiv .media {
-    max-height: 100%;
-    max-width: 100%;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info {
-    margin: 10px;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div {
-    display: flex;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link {
-    width: 80%;
-    display: flex;
-    justify-content: flex-start;
-    white-space: nowrap;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-btn {
-    display: flex;
-    justify-content: space-around;
+    height: 100%;
+    background: #f7f7f7;
+    position: relative;
 }
 
 

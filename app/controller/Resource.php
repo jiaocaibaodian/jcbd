@@ -351,20 +351,9 @@ class Resource extends BaseController
         //插入用户点赞记录
         $rid = input("param.rid");
         $likes = input("param.likes");
-        //先查找该记录是否存在
-        $data = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->select();
-        if (count($data)==0){   //不存在则插入记录
-            $result = Db::table("user_like")->insert([
-                "rid"=>$rid,
-                "uname"=>\getUnameByToken(),
-                "likes"=>$likes,
-                "seen"=>false
-            ]);
-        }else{
-            $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->update([
-                "likes"=>$likes
-            ]);
-        }
+        $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->update([
+            "likes"=>$likes
+        ]);
     }
     public function seen(){
         //插入用户点赞记录
@@ -375,12 +364,14 @@ class Resource extends BaseController
             $result = Db::table("user_like")->insert([
                 "rid"=>$rid,
                 "uname"=>\getUnameByToken(),
-                "seen"=>true
+                "seen"=>1
             ]);
         }else{
-            $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->update([
-                "seen"=>true
-            ]);
+            $result = Db::table("user_like")->where(["rid"=>$rid,"uname"=>\getUnameByToken()])->inc("seen")->update();
         }
+        return json([
+            "code"=>$result,
+            "msg"=>"访问成功"
+        ]);
     }
 }

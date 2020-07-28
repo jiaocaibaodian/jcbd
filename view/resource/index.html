@@ -8,12 +8,12 @@
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/resource.css">
-    <title>首页</title>
+    <title>资源区</title>
 </head>
 
 <body>
     <el-container id="index">
-        <el-header>
+        <el-header id="top">
             <div class="logo">
                 <div class="logo1"></div>
                 <div class="logo2"></div>
@@ -41,10 +41,10 @@
                 <el-form-item>
                     <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
                     <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults" @blur="mode='none'">
-                        <el-select v-model="selectedType" slot="prepend" style="width: 100px;" @change="getTempSearchResults">
-                            <el-option v-for="type in types" :value="type"></el-option>
+                        <el-select v-model="selectedType.label" slot="prepend" style="width: 100px;" @change="handleTypeChange">
+                            <el-option v-for="type in types" :value="type.label"></el-option>
                         </el-select>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                        <el-button slot="append" icon="el-icon-search" @click="showResults()"></el-button>
                     </el-input>
                     <el-card :style="'display:'+ mode+';'">
                         <ul class="infinite-list" style="overflow:auto">
@@ -54,6 +54,7 @@
                             </li>
                         </ul>
                     </el-card>
+                    <el-button class="uploadbtn" @click="window.open('/resource/upload')">上传资源</el-button>
                 </el-form-item>
             </el-form>
             <!-- 对资源进行分类显示 -->
@@ -61,91 +62,36 @@
                 <el-card id="textbooks">
                     <span slot="header">教材</span>
                     <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='教材'">
-                            <div class="resource-item">
-                                <div class="imgdiv"><img :src="res.rcover" :alt="res.rname" class="media"></div>
-                                <div class="resource-info">
-                                    <div>作者:{{res.rauthor}}</div>
-                                    <div>
-                                        <span>原址:</span>
-                                        <el-tooltip class="item" effect="dark" :content="res.rorigin" placement="right">
-                                            <el-link :href="res.rorigin">{{res.rorigin}}</el-link>
-                                        </el-tooltip>
-                                    </div>
-                                </div>
-                                <div class="resource-btn">
-                                    <el-button type="primary" @click="addToShelf()">加入书架</el-button>
-                                    <el-button type="success" @click="openFile(res.rid,res.rsrc)">教材主页</el-button>
-                                </div>
-                            </div>
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='教材'">
+                            <div class="resource-item"></div>
+
                         </el-col>
                     </el-row>
                 </el-card>
                 <el-card id="answers">
                     <span slot="header">答案</span>
                     <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='答案'">
-                            <div class="resource-item">
-                                <div class="imgdiv"><img :src="res.rcover" :alt="res.rname" class="media"></div>
-                                <div class="resource-info">
-                                    <div>作者:{{res.rauthor}}</div>
-                                    <div>
-                                        <span>原址:</span>
-                                        <el-tooltip class="item" effect="dark" :content="res.rorigin" placement="right">
-                                            <el-link :href="res.rorigin">{{res.rorigin}}</el-link>
-                                        </el-tooltip>
-                                    </div>
-                                </div>
-                                <div class="resource-btn">
-                                    <el-button type="primary" @click="addToShelf()">加入书架</el-button>
-                                    <el-button type="success" @click="openFile(res.rid,res.rsrc)">答案主页</el-button>
-                                </div>
-                            </div>
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='答案'">
+                            <div class="resource-item"></div>
+
                         </el-col>
                     </el-row>
                 </el-card>
                 <el-card id="videos">
                     <span slot="header">视频</span>
                     <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='视频'">
-                            <div class="resource-item">
-                                <div class="imgdiv"><video :src="res.rsrc" type="video/mp4" controlslist="nodownload" controls class="media"></video></div>
-                                <div class="resource-info">
-                                    <div>作者:{{res.rauthor}}</div>
-                                    <div>
-                                        <span>原址:</span>
-                                        <el-tooltip class="item" effect="dark" :content="res.rorigin" placement="right">
-                                            <el-link :href="res.rorigin">{{res.rorigin}}</el-link>
-                                        </el-tooltip>
-                                    </div>
-                                </div>
-                                <div class="resource-btn">
-                                    <el-button type="primary" @click="addToShelf()">加入视频库</el-button>
-                                    <el-button type="success" @click="openVideo(res.rsrc,res.rid)">视频主页</el-button>
-                                </div>
-                            </div>
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='视频'">
+                            <div class="resource-item"></div>
+
                         </el-col>
                     </el-row>
                 </el-card>
                 <el-card id="books">
                     <span slot="header">电子书籍</span>
-                    <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='电子书籍'">
+                    <el-row gutter="20">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='电子书籍'">
                             <div class="resource-item">
-                                <div class="imgdiv"><img :src="res.rcover" :alt="res.rname" class="media"></div>
-                                <div class="resource-info">
-                                    <div>作者:{{res.rauthor}}</div>
-                                    <div>
-                                        <span>原址:</span>
-                                        <el-tooltip class="item" effect="dark" :content="res.rorigin" placement="right">
-                                            <el-link :href="res.rorigin">{{res.rorigin}}</el-link>
-                                        </el-tooltip>
-                                    </div>
-                                </div>
-                                <div class="resource-btn">
-                                    <el-button type="primary" @click="addToShelf()">加入书架</el-button>
-                                    <el-button type="success" @click="openFile(res.rid,res.rsrc)">书籍主页</el-button>
-                                </div>
+
                             </div>
                         </el-col>
                     </el-row>
@@ -153,20 +99,24 @@
                 <el-card id="articles">
                     <span slot="header">短篇博客</span>
                     <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='短篇博客'">
-                            <div class="resource-item"></div>
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='短篇博客'">
+                            <div class="resource-item">
+
+                            </div>
                         </el-col>
                     </el-row>
                 </el-card>
                 <el-card id="links">
                     <span slot="header">链接</span>
-                    <el-row>
-                        <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="res in resources" v-if="res.rtype=='链接'">
+                    <el-row gutter="20">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='链接'">
                             <div class="resource-item"></div>
                         </el-col>
                     </el-row>
                 </el-card>
                 <ul class="col-nav">
+                    <li><a href="#"><i class="el-icon-arrow-up"></i></a></a>
+                    </li>
                     <li><a href="#textbooks">教材</a></li>
                     <li><a href="#answers">答案</a></li>
                     <li><a href="#videos">视频</a></li>
