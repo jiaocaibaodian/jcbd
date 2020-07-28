@@ -163,13 +163,26 @@ class Resource extends BaseController
             "rgname" => $rgname,
         ]);
     }
-    public function get_resource() //资源页面的查询
-
+    public function get_resource() //资源页面的加载
     {
-        //分页查询，视图查询，双表连接查询
-        $data = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
-            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')
-            ->order('rid', 'desc')->paginate(100)->toArray();
+        //获取加载资源类型
+        $type = input("param.rtype");
+        $data = [];
+        if ($type=="全部"){
+            //分页查询，视图查询，双表连接查询
+            $types = ['视频','链接','电子书籍','短篇博客','教材','答案'];
+            foreach ($types as $key => $type) {
+                $result = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
+                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rtype",$type)
+                ->order('rid', 'desc')->paginate(20)->toArray();
+                $data= array_merge_recursive($data,$result);
+            }
+        }else{
+            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
+            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rtype",$type)
+            ->order('rid', 'desc')->paginate(20)->toArray();
+        }
+        //每种类型各二十个
         data_format($data['data']);
         return json($data);
     }

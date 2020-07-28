@@ -280,7 +280,7 @@ var indexPage = new Vue({
             selectedLabels: "",
             query: "",
             searchResults: [],
-            mode: "none"
+            // mode: "none"
         }
     },
     created: function() {
@@ -296,7 +296,7 @@ var indexPage = new Vue({
     },
     methods: {
         getResource() {
-            axios.get("/resource/get_resource")
+            axios.get("/resource/get_resource?rtype=" + "全部")
                 .then(res => {
                     console.log(res.data);
                     this.resources.push.apply(this.resources, res.data.data);
@@ -315,7 +315,7 @@ var indexPage = new Vue({
                         this.searchResults[i].rname = this.searchResults[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
                         this.searchResults[i].rauthor = this.searchResults[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
                     }
-                    this.mode = "block";
+                    // this.mode = "block";
                 })
                 .catch(err => {
                     console.error(err);

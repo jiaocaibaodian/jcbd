@@ -83,13 +83,9 @@ ul.infinite-list li.infinite-list-item span {
     flex: 1;
 }
 
-.el-main .el-form .el-form-item .el-card {
-    display: block;
-    width: 400px;
-    position: absolute;
-    left: 205px;
-    top: 40px;
-    z-index: 10;
+.el-main .el-form {
+    white-space: nowrap;
+    overflow: auto;
 }
 
 .el-main .el-form .el-form-item .el-card__body {
@@ -102,11 +98,12 @@ ul.infinite-list li.infinite-list-item span {
 
 .container .el-card {
     height: 600px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .container .el-card .el-row {
     height: 10vw;
+    min-height: 120px;
 }
 
 .container .el-card .el-row .el-col {

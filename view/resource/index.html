@@ -40,20 +40,20 @@
             <el-form>
                 <el-form-item>
                     <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
-                    <el-input placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults" @blur="mode='none'">
-                        <el-select v-model="selectedType.label" slot="prepend" style="width: 100px;" @change="handleTypeChange">
-                            <el-option v-for="type in types" :value="type.label"></el-option>
-                        </el-select>
-                        <el-button slot="append" icon="el-icon-search" @click="showResults()"></el-button>
-                    </el-input>
-                    <el-card :style="'display:'+ mode+';'">
+                    <el-popover placement="bottom" width="400" trigger="focus">
                         <ul class="infinite-list" style="overflow:auto">
                             <li v-for="item in searchResults" class="infinite-list-item" @mousedown="item.rtype=='视频'?openVideo(item.rsrc,item.rid):openFile(item.rid,item.rsrc)">
                                 <span v-html="item.rname+' --'+item.rauthor"></span>
                                 <i class="el-icon-arrow-right"></i>
                             </li>
                         </ul>
-                    </el-card>
+                        <el-input slot="reference" placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults">
+                            <el-select v-model="selectedType.label" slot="prepend" style="width: 100px;" @change="handleTypeChange">
+                                <el-option v-for="type in types" :value="type.label"></el-option>
+                            </el-select>
+                            <el-button slot="append" icon="el-icon-search" @click="showResults()"></el-button>
+                        </el-input>
+                    </el-popover>
                     <el-button class="uploadbtn" @click="window.open('/resource/upload')">上传资源</el-button>
                 </el-form-item>
             </el-form>
@@ -89,7 +89,7 @@
                 <el-card id="books">
                     <span slot="header">电子书籍</span>
                     <el-row gutter="20">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='电子书籍'">
+                        <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='电子书籍'">
                             <div class="resource-item">
 
                             </div>
