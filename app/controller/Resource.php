@@ -43,7 +43,6 @@ class Resource extends BaseController
         return View::fetch();
     }
     public function uploadFile() //资源上传接口
-
     {
         $_POST = Request::post();
         \session_start();
@@ -51,7 +50,7 @@ class Resource extends BaseController
         $files = request()->file("files");
         $uname = \getUnameByToken();
         try {
-            validate(['files' => 'filesize:102400000|fileExt:jpg,gif,pdf,jpeg,png,mp3,mp4'])
+            validate(['files' => 'filesize:104857600|fileExt:jpg,gif,pdf,jpeg,png,mp3,mp4'])
                 ->check($files);
             //验证通过，将资源存放到服务器
             $savename = [];
@@ -59,6 +58,7 @@ class Resource extends BaseController
                 $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
+                $labels = explode(",", $_POST['labels']);
                 $data = [
                     "rid" => $rid,
                     "rname" => $file->getOriginalName(),
@@ -68,10 +68,10 @@ class Resource extends BaseController
                     "rorigin" => $_POST['rorigin'],
                     "rauthor" => $_POST['rauthor'],
                     "keywords" => $_POST['keywords'],
+                    "labels"=> json_encode($labels)
                 ];
                 Db::table("resource")->replace()->insert($data);
                 //更新资源标签表
-                $labels = explode(",", $_POST['labels']);
                 foreach ($labels as $item) {
                     $data = [
                         "rid" => $rid,
@@ -171,19 +171,15 @@ class Resource extends BaseController
         if ($type=="全部"){
             //分页查询，视图查询，双表连接查询
             $types = ['视频','链接','电子书籍','短篇博客','教材','答案'];
-            foreach ($types as $key => $type) {
-                $result = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
-                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rtype",$type)
+            foreach ($types as $key => $value) {
+                $result = Db::table("resource")->where("rtype",$value)->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();
                 $data= array_merge_recursive($data,$result);
             }
         }else{
-            $data = Db::view('resource', 'rid,rname,rcover,rsrc,rtype,rorigin,rauthor')
-            ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rtype",$type)
+            $data = Db::table("resource")->where("rtype",$type)->where("rid","!=","000001")
             ->order('rid', 'desc')->paginate(20)->toArray();
         }
-        //每种类型各二十个
-        data_format($data['data']);
         return json($data);
     }
     public function get_search_results()
@@ -193,64 +189,54 @@ class Resource extends BaseController
         $type = input("param.type");
         $pageSize = input("param.pageSize");
         $labs = \explode(",", $labels);
-        $temp = "(";
-        for ($i = 0; $i < count($labs); $i++) {
-            $temp = $temp . "\"" . $labs[$i] . "\",";
+        $temp = "";
+        foreach ($labs as $key => $value) {
+            $temp = $temp."%".$value."%|";
         }
-        $temp = mb_substr($temp, 0, \mb_strlen($temp) - 1) . ")";
+        $temp = \mb_substr($temp,0,mb_strlen($temp)-1);
         $data = [];
         if ($type == "全部" && $labels == "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords", "like", "%$query%")
+            $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();
         } elseif ($type == "全部" && $labels != "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords", "like", "%$query%")->where("res_lab.lname in $temp")
+            $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();
         } elseif ($type != "全部" && $labels == "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype=\"$type\"")->where("rname|rauthor|keywords", "like", "%$query%")
+            $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();
         } else {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords", "like", "%$query%")->where("res_lab.lname in $temp")
+            $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();
         }
-        data_format($data['data']);
         return json($data);
     }
     public function get_temp_search_results() //资源页面的临时搜索
-
     {
         $query = input("param.query");
         $labels = input("param.labels");
         $type = input("param.type");
         $pageSize = input("param.pageSize");
         $labs = \explode(",", $labels);
-        $temp = "(";
-        for ($i = 0; $i < count($labs); $i++) {
-            $temp = $temp . "\"" . $labs[$i] . "\",";
+        $temp = "";
+        foreach ($labs as $key => $value) {
+            $temp = $temp."%".$value."%|";
         }
-        $temp = mb_substr($temp, 0, \mb_strlen($temp) - 1) . ")";
+        $temp = \mb_substr($temp,0,mb_strlen($temp)-1);
         $data = [];
         if ($type == "全部" && $labels == "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords", "like", "%$query%")
+            $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
                 ->select()->toArray();
         } elseif ($type == "全部" && $labels != "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', 'resource.rid=res_lab.rid')->where("rname|rauthor|keywords", "like", "%$query%")->where("res_lab.lname in $temp")
+            $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
                 ->select()->toArray();
         } elseif ($type != "全部" && $labels == "") {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype=\"$type\"")->where("rname|rauthor|keywords", "like", "%$query%")
+            $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
                 ->select()->toArray();
         } else {
-            $data = Db::view('resource', 'rid,rname,rtype,rcover,rsrc,rorigin,rauthor')
-                ->view('res_lab', 'lname', "resource.rid=res_lab.rid and rtype like \"$type\"")->where("rname|rauthor|keywords", "like", "%$query%")->where("res_lab.lname in $temp")
+            $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
                 ->select()->toArray();
         }
-        data_format($data, 5);
+        // data_format($data, 5);
         return json($data);
     }
     public function addToShelf()
