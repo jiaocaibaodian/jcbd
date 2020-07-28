@@ -3,42 +3,125 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="width=device-width, initial-scale=1.0">
-    <title>教材宝典我的书架</title>
+    <meta name="shelf" content="width=device-width, initial-scale=1.0">
+    <title> 教材宝典我的书架</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript" src="plugins/vue/vue.min.js"></script>
+    <script type="text/javascript" src="plugins/eleme-ui/index.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="plugins/eleme-ui/index.css">
+    <link rel="stylesheet" href="plugins/styles.css">
+    <link rel="Shortcut Icon" href="imges/jiaocaibaodian.ico" type="image/x-icon" />
+    <style>
+        .hide {
+            display: none;
+        }
+        
+        .c1 {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, .5);
+            z-index: 2;
+        }
+        
+        .c2 {
+            background-color: white;
+            position: fixed;
+            width: 400px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            z-index: 3;
+            margin-top: -150px;
+            margin-left: -200px;
+        }
+        
+        #modal p {
+            margin-left: 80px;
+        }
+    </style>
 </head>
 
 <body class="shelf">
     <div class="header">
         <div class="headerlogo">
-            <a href="/">我的书架</a>
+            <a href="">我的书架</a>
         </div>
         <ul class="headernav">
             <li>
-                <a href="">个人中心</a>
+                <a href=""> 个人中心</a>
             </li>
         </ul>
     </div>
     <div>
         <ul class="group">
             <li class="">
-                <a href="">教材</a>
-                <a href="">文章</a>
-                <a href="">链接</a>
+                <a href=""> 教材</a>
+                <a href=""> 文章</a>
+                <a href=""> 链接</a>
             </li>
         </ul>
-        <ul class="groupmanage">
-            <li class="">
-                <a href="" title="默认分组">默认分组</a>
-                <a href="" title="新建分组">新建分组</a>
-            </li>
-        </ul>
+        <el-row class="">
+            <el-button type="success" round plain onclick="Show();">管理书架分组</el-button>
+        </el-row>
+
+        <div style="margin-top: 15px;">
+            <el-input placeholder="请输入分组名" v-model="input3" class="input-with-select">
+                <el-select v-model="select" slot="prepend" placeholder="类型">
+                    <el-option label="教材" value="1"></el-option>
+                    <el-option label="文章" value="2"></el-option>
+                    <el-option label="链接" value="3"></el-option>
+                </el-select>
+                <el-button slot="append">新建分组</el-button>
+            </el-input>
+        </div>
+        <style>
+            .el-select .el-input {
+                width: 130px;
+            }
+            
+            .input-with-select .el-input-group__prepend {
+                background-color: #fff;
+            }
+        </style>
+        <script>
+            export default {
+                data() {
+                    return {
+                        input1: '',
+                        input2: '',
+                        input3: '',
+                        select: ''
+                    }
+                }
+            }
+        </script>
+
     </div>
-    <div class="search">
-        <form id="shelfSearchForm" class="" action="" target="_blank">
-            <input type="text" name="shelfSearch" class="shelf-search-input" placeholder="输入教材名或作者名">
-            <label for="shelfSearch" class="shelf-search-submit ui-button">搜书架</label>
-        </form>
+    <div id="shade" class="c1 hide"></div>
+    <div id="modal" class="c2 hide">
+        <!-- 分组内部管理 -->
+        <el-row class="">
+            <el-button type="success" icon="el-icon-close" circleonclick="Hide();"></el-button>
+        </el-row>
     </div>
+    <script>
+        function Show() {
+            document.getElementById('shade ').classList.remove('hide ');
+            document.getElementById('modal ').classList.remove('hide ');
+        }
+
+        function Hide() {
+            document.getElementById('shade ').classList.add('hide ');
+            document.getElementById('modal ').classList.add('hide ');
+        }
+    </script>
 </body>
 
 </html>
