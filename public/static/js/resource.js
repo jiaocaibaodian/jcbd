@@ -349,18 +349,21 @@ var indexPage = new Vue({
             //前往视频详情页面
             window.open("/resource/video_detail?url=" + url + "&rid=" + rid)
         },
-        addToShelf() {
+        addToShelf($rid) {
             //加入书架
-            console.log(this.detail);
             axios({
                     method: 'post',
                     url: "/resource/addToShelf",
                     data: {
-                        rid: this.detail.resource.rid
+                        rid: $rid
                     }
                 })
                 .then(res => {
                     console.log(res.data);
+                    this.$message({
+                        type: "success",
+                        message: "加入书架成功"
+                    })
                 })
                 .catch(err => {
                     console.error(err);

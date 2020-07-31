@@ -225,16 +225,16 @@ class Resource extends BaseController
         $data = [];
         if ($type == "全部" && $labels == "") {
             $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
-                ->select()->toArray();
+                ->limit(5)->select()->toArray();
         } elseif ($type == "全部" && $labels != "") {
             $data = Db::table("resource")->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
-                ->select()->toArray();
+                ->limit(5)->select()->toArray();
         } elseif ($type != "全部" && $labels == "") {
             $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("rid","<>","000001")
-                ->select()->toArray();
+                ->limit(5)->select()->toArray();
         } else {
             $data = Db::table("resource")->where("rtype",$type)->where("rname|rauthor|keywords", "like", "%$query%")->where("labels like $temp")->where("rid","<>","000001")
-                ->select()->toArray();
+                ->limit(5)->select()->toArray();
         }
         // data_format($data, 5);
         return json($data);

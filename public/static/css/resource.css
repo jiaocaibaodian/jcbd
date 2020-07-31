@@ -83,49 +83,125 @@ ul.infinite-list li.infinite-list-item span {
     flex: 1;
 }
 
-.el-main .el-form {
+.el-form {
     white-space: nowrap;
-    overflow: auto;
+    padding: 0 20px;
+    border-radius: 25px;
+    box-shadow: 0 0 10px lightgrey;
+    position: fixed;
+    width: 60%;
+    z-index: 10;
 }
 
-.el-main .el-form .el-form-item .el-card__body {
+
+}
+.el-form .el-form-item .el-card__body {
     padding: 0;
 }
-
 .el-form-item {
     margin-bottom: 0;
 }
-
-.container .el-card {
-    height: 600px;
-    overflow: auto;
+.el-form-item .el-form-item__content {
+    line-height: 40px;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
-
+.el-menu-item * {
+    border: none;
+    vertical-align: unset;
+}
+.container .el-card {
+    height: 700px;
+    overflow: auto;
+    box-shadow: none;
+    border: none;
+}
 .container .el-card .el-row {
     height: 10vw;
     min-height: 120px;
 }
-
 .container .el-card .el-row .el-col {
     height: 100%;
     margin-bottom: 20px;
 }
-
 .resource-item {
     width: 100%;
     height: 100%;
     background: #f7f7f7;
     position: relative;
+    overflow: hidden;
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mask-top {
+    width: 100%;
+    height: 22%;
+    position: absolute;
+    left: 0;
+    top: -22%;
+    background: black;
+    opacity: 0.7;
+    text-align: center;
+}
+.mask-top span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+#videos .mask-top {
+    height: 24%;
+    top: -24%;
+}
+#videos .mask-bottom {
+    height: 24%;
+}
+.mask-bottom {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: black;
+    opacity: 0.7;
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
+}
+.resource-item:hover .mask-top {
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    /* Safari */
+    
+    -webkit-transform: translate(0, 100%);
+    -moz-transform: translate(0, 100%);
+    -ms-transform: translate(0, 100%);
+    -o-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+}
+.resource-item:hover .mask-bottom {
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    /* Safari */
+    
+    -webkit-transform: translate(0, -100%);
+    -moz-transform: translate(0, -100%);
+    -ms-transform: translate(0, -100%);
+    -o-transform: translate(0, -100%);
+    transform: translate(0, -100%);
 }
 
-
 /* upload页面 */
-
 .input-box {
     width: 500px;
     padding: 30px;
 }
-
 .el-main {
     overflow: initial;
 }

@@ -287,56 +287,13 @@ html {
     text-align: right;
 }
 
-ul li {
+li {
     list-style: none;
-}
-
-#FontScroll {
-    width: 100%;
-    height: 90px;
-    line-height: 30px;
-    overflow: Hidden;
-    padding: 5px 0;
     margin: 0 auto;
 }
 
-#FontScroll a {
+a {
     color: rgb(119, 117, 117);
-}
-
-#FontScroll .line {
-    text-align: left;
-    width: 100%;
-}
-
-#FontScroll .fontColor a {
-    color: red;
-}
-
-ul li {
-    list-style: none;
-}
-
-#FontScrolls {
-    width: 100%;
-    height: 90px;
-    line-height: 30px;
-    overflow: Hidden;
-    padding: 5px 0;
-    margin: 0 auto;
-}
-
-#FontScrolls a {
-    color: rgb(119, 117, 117);
-}
-
-#FontScrolls .line {
-    text-align: left;
-    width: 100%;
-}
-
-#FontScrolls .fontColor a {
-    color: red;
 }
 
 
@@ -350,4 +307,12 @@ ul li {
 .bottomlunbo2 {
     float: left;
     width: 100%;
+}
+
+
+/* 视频 */
+
+.videoone {
+    border: 5px solid #98c391;
+    border-radius: 10px;
 }

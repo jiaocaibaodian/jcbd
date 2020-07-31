@@ -21,6 +21,26 @@
             <!-- 导航条 -->
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#fff" text-color="#409EFF" active-text-color="#FF6A6A">
                 <el-menu-item>
+                    <el-form>
+                        <el-form-item>
+                            <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
+                            <el-popover placement="bottom" width="400" trigger="focus">
+                                <ul class="infinite-list" style="overflow:auto">
+                                    <li v-for="item in searchResults" class="infinite-list-item" @mousedown="item.rtype=='视频'?openVideo(item.rsrc,item.rid):openFile(item.rid,item.rsrc)">
+                                        <span v-html="item.rname+' --'+item.rauthor"></span>
+                                        <i class="el-icon-arrow-right"></i>
+                                    </li>
+                                </ul>
+                                <el-input slot="reference" placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults">
+                                    <el-select v-model="selectedType.label" slot="prepend" style="width: 100px;" @change="handleTypeChange">
+                                        <el-option v-for="type in types" :value="type.label"></el-option>
+                                    </el-select>
+                                    <el-button slot="append" icon="el-icon-search" @click="showResults()"></el-button>
+                                </el-input>
+                            </el-popover>
+                            <el-button class="uploadbtn" @click="window.open('/resource/upload')">上传资源</el-button>
+                        </el-form-item>
+                    </el-form>
                 </el-menu-item>
                 <el-menu-item index="1">首页</el-menu-item>
                 <el-menu-item index="2">专业区</el-menu-item>
@@ -37,32 +57,12 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-form>
-                <el-form-item>
-                    <el-cascader @change="getTempSearchResults" change-on-select :options="labels" v-model="selectedLabels" style="width: 200px;" placeholder="可以指定搜索内容的标签" clearable></el-cascader>
-                    <el-popover placement="bottom" width="400" trigger="focus">
-                        <ul class="infinite-list" style="overflow:auto">
-                            <li v-for="item in searchResults" class="infinite-list-item" @mousedown="item.rtype=='视频'?openVideo(item.rsrc,item.rid):openFile(item.rid,item.rsrc)">
-                                <span v-html="item.rname+' --'+item.rauthor"></span>
-                                <i class="el-icon-arrow-right"></i>
-                            </li>
-                        </ul>
-                        <el-input slot="reference" placeholder="请输入作者名或者资源名称" v-model="query" style="width: 400px;" @focus="getTempSearchResults" @input="getTempSearchResults">
-                            <el-select v-model="selectedType.label" slot="prepend" style="width: 100px;" @change="handleTypeChange">
-                                <el-option v-for="type in types" :value="type.label"></el-option>
-                            </el-select>
-                            <el-button slot="append" icon="el-icon-search" @click="showResults()"></el-button>
-                        </el-input>
-                    </el-popover>
-                    <el-button class="uploadbtn" @click="window.open('/resource/upload')">上传资源</el-button>
-                </el-form-item>
-            </el-form>
             <!-- 对资源进行分类显示 -->
             <div class="container">
                 <el-card id="textbooks">
                     <span slot="header">教材</span>
                     <el-row>
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='教材'">
+                        <el-col :span="4" v-for="res in resources" v-if="res.rtype=='教材'">
                             <div class="resource-item"></div>
 
                         </el-col>
@@ -71,7 +71,7 @@
                 <el-card id="answers">
                     <span slot="header">答案</span>
                     <el-row>
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='答案'">
+                        <el-col :span="4" v-for="res in resources" v-if="res.rtype=='答案'">
                             <div class="resource-item"></div>
 
                         </el-col>
@@ -80,19 +80,47 @@
                 <el-card id="videos">
                     <span slot="header">视频</span>
                     <el-row>
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='视频'">
+                        <el-col :span="4" v-for="res in resources" v-if="res.rtype=='视频'">
                             <div class="resource-item">
+                                <img :src="res.rcover" style="width: 100%;height: 100%;" alt="">
+                                <div class="mask-top">
+                                    <el-tooltip class="item" effect="dark" :content="res.rname" placement="top">
+                                        <span>{{res.rname}}</span>
+                                    </el-tooltip>
+                                    <div>
+                                        <span>{{res.rauthor}}</span>
+                                    </div>
+                                </div>
+                                <div class="mask-bottom">
+                                    <el-button type="text" @click="window.location.href = res.rorigin">原址</el-button>
+                                    <el-button type="text" @click="addToShelf(res.rid)">加入书架</el-button>
+                                    <el-button type="text" @click="openVideo(res.rsrc,res.rid)">主页</el-button>
+                                    </el-button>
+                                </div>
                             </div>
-
                         </el-col>
                     </el-row>
                 </el-card>
                 <el-card id="books">
                     <span slot="header">电子书籍</span>
-                    <el-row gutter="20">
-                        <el-col :xs="8" :sm="6" :md="6" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='电子书籍'">
+                    <el-row gutter="20" style="height: 14vw;">
+                        <el-col :span="3" v-for="res in resources" v-if="res.rtype=='电子书籍'">
                             <div class="resource-item">
-
+                                <img :src="res.rcover" style="width: 103%;height: 100%;" alt="">
+                                <div class="mask-top">
+                                    <el-tooltip class="item" effect="dark" :content="res.rname" placement="top">
+                                        <span>{{res.rname}}</span>
+                                    </el-tooltip>
+                                    <div>
+                                        <span>{{res.rauthor}}</span>
+                                    </div>
+                                </div>
+                                <div class="mask-bottom">
+                                    <el-button type="text" @click="window.location.href = res.rorigin">原址</el-button>
+                                    <el-button type="text" @click="addToShelf(res.rid)">加入书架</el-button>
+                                    <el-button type="text" @click="openFile(res.rid,res.rsrc)">主页</el-button>
+                                    </el-button>
+                                </div>
                             </div>
                         </el-col>
                     </el-row>
@@ -100,7 +128,7 @@
                 <el-card id="articles">
                     <span slot="header">短篇博客</span>
                     <el-row>
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='短篇博客'">
+                        <el-col :span="4" v-for="res in resources" v-if="res.rtype=='短篇博客'">
                             <div class="resource-item">
 
                             </div>
@@ -110,7 +138,7 @@
                 <el-card id="links">
                     <span slot="header">链接</span>
                     <el-row gutter="20">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4" v-for="res in resources" v-if="res.rtype=='链接'">
+                        <el-col :span="4" v-for="res in resources" v-if="res.rtype=='链接'">
                             <div class="resource-item"></div>
                         </el-col>
                     </el-row>
