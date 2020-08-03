@@ -42,6 +42,17 @@ class Resource extends BaseController
     {
         return View::fetch();
     }
+    public function textbook_detail(){
+        return View::fetch();
+    }
+    public function article_detail(){
+        return View::fetch();
+    }
+    public function getIframe(){
+        $url = input("param.url");
+        $html = file_get_contents($url);
+        return $html;
+    }
     public function uploadFile() //资源上传接口
     {
         $_POST = Request::post();
@@ -71,14 +82,6 @@ class Resource extends BaseController
                     "labels"=> json_encode($labels)
                 ];
                 Db::table("resource")->replace()->insert($data);
-                //更新资源标签表
-                foreach ($labels as $item) {
-                    $data = [
-                        "rid" => $rid,
-                        "lname" => $item,
-                    ];
-                    Db::table("res_lab")->replace()->insert($data);
-                }
                 //更新资源组表，插入新增资源组记录
                 if ($_POST['rgid'] != "") {
                     $data = [
@@ -276,12 +279,13 @@ class Resource extends BaseController
         $rid = \input("param.rid");
         $rgroup = Db::table("rgroup")->field("rgid,rgname")->where("rid", $rid)->findOrEmpty();
         if (empty($rgroup)) {
+            $data = Db::table("resource")->where("rid", $rid)->find();
             return json([
                 'ingroup' => false,
-                'resources'=>[]
+                'resources'=>$data
             ]);
         }
-        $result = Db::view("rgroup")->view("resource", "rid,rname,rtype,rcover,rsrc,rorigin,rauthor", "resource.rid=rgroup.rid")->where("rgid", $rgroup['rgid'])->select();
+        $result = Db::view("rgroup")->view("resource", "rid,rname,rtype,rcover,rsrc,rorigin,rauthor,labels", "resource.rid=rgroup.rid")->where("rgid", $rgroup['rgid'])->select();
         return json([
             "ingroup" => true,
             "rgroup" => $rgroup,

@@ -4,27 +4,36 @@
 }
 
 .el-container .el-main {
-    padding: 0;
+    padding: 10px;
     text-align: center;
 }
 
 .el-main .el-row {
     width: 100%;
     height: 94%;
-    padding: 1%;
 }
 
 .el-main .el-row .el-col .el-card {
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .el-main .el-row .el-col {
     height: 100%;
     position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.el-main .el-row .el-col .resource-info {
+    height: 100%;
+    width: 100px;
+    background: url(/pdf.js/web/images/texture.png);
 }
 
 .el-main .el-row .el-col iframe,
+.iframe,
 .el-video,
 video {
     width: 100%;
@@ -35,7 +44,7 @@ video {
     display: flex;
     justify-content: flex-start;
     position: absolute;
-    background: beige;
+    background: url(/pdf.js/web/images/texture.png);
     width: 100%;
     top: 100%;
 }
@@ -51,18 +60,11 @@ video {
     font-size: 0.3rem;
 }
 
-
-/* .el-main .el-row .el-col .el-card {
-    height: 100%;
-} */
-
 .el-main .el-button {
     position: fixed;
-    top: 90%;
-    width: 100%;
+    top: 94%;
+    width: 98.7%;
     display: block;
-    /* left: 10%; */
-    margin: 0 20px;
 }
 
 .el-drawer {

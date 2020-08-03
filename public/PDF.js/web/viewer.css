@@ -411,7 +411,7 @@ html {
 body {
   height: 100%;
   width: 100%;
-  background-color: #404040;
+  /* background-color: #404040; */
   background-image: url(images/texture.png);
 }
 
@@ -694,11 +694,10 @@ html[dir='rtl'] #sidebarResizer {
 }
 
 #toolbarContainer, .findbar, .secondaryToolbar {
-  position: relative;
-  height: 32px;
-  background-color: #474747; /* fallback */
-  background-image: url(images/texture.png),
-                    linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+    position: relative;
+    height: 32px;
+    background-color: #ff6e37;
+    background-image: url(images/texture.png);
 }
 html[dir='ltr'] #toolbarContainer, .findbar, .secondaryToolbar {
   box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15),
@@ -1780,7 +1779,7 @@ html[dir='rtl'] .outlineItemToggler::before {
    so we can override the opaque grey background when the window is inactive;
    see https://bugzilla.mozilla.org/show_bug.cgi?id=706209 */
 ::-moz-selection { background: rgba(0,0,255,0.3); }
-::selection { background: rgba(0,0,255,0.3); }
+::selection {background: rgba(0,0,255,0.3);}
 
 #errorWrapper {
   background: none repeat scroll 0 0 #FF5555;

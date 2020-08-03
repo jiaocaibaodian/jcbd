@@ -41,7 +41,7 @@
         <el-main>
             <el-row class="resource" :type="!currentRes.ingroup?'flex':''" justify="space-around">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20">
-                    <iframe :src="filesrc" frameborder="0"></iframe>
+                    <iframe :src="currentRes.rsrc" frameborder="0"></iframe>
                     <div class="resource-bar" style="display: flex;justify-content: flex-start;position: absolute;">
                         <div class="resource-bar-item">
                             <el-tooltip class="item" effect="dark" content="访问量" placement="top">
@@ -145,7 +145,6 @@
             el: "#app",
             data() {
                 return {
-                    filesrc: "",
                     drawer: {
                         visible: false,
                         innerCommentDrawer: false,
@@ -178,15 +177,11 @@
                 }
             },
             created: function() {
-                var arr = window.location.href.split(/[?&=]/);
-                var url = arr[2];
-                var rid = arr[4];
-                this.currentRes.rid = rid;
-                this.currentRes.rsrc = url;
-                this.filesrc = "/pdf.js/web/viewer.html?file=" + url;
+                var arr = window.location.href.split(/=/);
+                var rid = arr[1];
                 this.getRgroupById(rid);
-                this.getUserComments();
-                this.seen();
+                this.getUserComments(rid);
+                this.seen(rid);
             },
             methods: {
                 //根据rid获取所在组rgid,rgname
@@ -201,30 +196,33 @@
                         console.log(res.data);
                         this.rgroup = res.data.rgroup;
                         this.resources = res.data.resources;
+                        this.currentRes = res.data.resources;
                         for (let i = 0; i < this.resources.length; i++) {
                             if (this.resources[i].rid == $rid) {
                                 this.currentRes = this.resources[i];
                                 break;
                             }
                         }
+                        this.currentRes.labels = JSON.parse(this.currentRes.labels);
                         this.currentRes.ingroup = res.data.ingroup;
+                        this.currentRes.rsrc = "/pdf.js/web/viewer.html?file=" + this.currentRes.rsrc;
                         console.log(this.currentRes);
                     }).catch(err => {
                         console.error(err);
                     })
                 },
                 //从后端获取播放量，当前用户是否喜欢等等信息
-                getLikes() {
+                getLikes(rid) {
                     this.checkLoginState();
-                    axios.get("/resource/getLikes?rid=" + this.currentRes.rid)
+                    axios.get("/resource/getLikes?rid=" + rid)
                         .then(res => {
                             console.log(res.data);
                             this.resource_bar = res.data;
                         })
                 },
                 //从后端获取评论内容
-                getUserComments() {
-                    axios.get("/resource/getUserComments?rid=" + this.currentRes.rid)
+                getUserComments(rid) {
+                    axios.get("/resource/getUserComments?rid=" + rid)
                         .then(res => {
                             console.log(res.data);
                             this.comments = res.data;
@@ -312,11 +310,11 @@
                             console.error(err);
                         })
                 },
-                seen() {
-                    axios.get("/resource/seen?rid=" + this.currentRes.rid)
+                seen(rid) {
+                    axios.get("/resource/seen?rid=" + rid)
                         .then(res => {
                             console.log(res.data);
-                            this.getLikes();
+                            this.getLikes(rid);
                         })
                 },
                 addToShelf() {

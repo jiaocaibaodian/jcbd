@@ -107,7 +107,6 @@ ul.infinite-list li.infinite-list-item span {
     font-size: 14px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
 }
 .el-menu-item * {
     border: none;
@@ -155,13 +154,6 @@ ul.infinite-list li.infinite-list-item span {
     display: block;
     width: 100%;
 }
-#videos .mask-top {
-    height: 24%;
-    top: -24%;
-}
-#videos .mask-bottom {
-    height: 24%;
-}
 .mask-bottom {
     width: 100%;
     height: 20%;
@@ -173,6 +165,37 @@ ul.infinite-list li.infinite-list-item span {
     display: flex;
     justify-content: space-around;
     align-self: center;
+}
+#videos .mask-top {
+    height: 24%;
+    top: -24%;
+}
+#videos .mask-bottom {
+    height: 24%;
+}
+
+/* #links .mask-top {
+    height: 26%;
+    top: -26%;
+}
+#links .mask-bottom {
+    height: 24%;
+} */
+.mask-center {
+    position: absolute;
+    width: 100%;
+    height: 52%;
+    left: 0;
+    top: 24%;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.resource-item:hover .mask-center {
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    opacity: 1;
 }
 .resource-item:hover .mask-top {
     transition: all 0.7s;
@@ -198,6 +221,9 @@ ul.infinite-list li.infinite-list-item span {
 }
 
 /* upload页面 */
+#upload .el-form {
+    position: relative;
+}
 .input-box {
     width: 500px;
     padding: 30px;
