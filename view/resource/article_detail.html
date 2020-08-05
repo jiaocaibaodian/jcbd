@@ -185,12 +185,13 @@
                 this.getRgroupById(rid);
                 this.getUserComments(rid);
                 this.seen(rid);
+                this.getiframe(rid);
             },
             methods: {
-                getiframe() {
-                    axios.get("/resource/getIframe?url=" + this.currentRes.rorigin)
+                getiframe(rid) {
+                    axios.get("/resource/getIframe?rid=" + rid)
                         .then(res => {
-                            console.log(res)
+                            $(".iframe").html(res.data);
                         })
                         .catch(err => {
                             console.error(err);
@@ -219,7 +220,6 @@
                         this.currentRes.ingroup = res.data.ingroup;
                         this.currentRes.rsrc = "/pdf.js/web/viewer.html?file=" + this.currentRes.rsrc;
                         console.log(this.currentRes);
-                        this.getiframe();
                     }).catch(err => {
                         console.error(err);
                     })

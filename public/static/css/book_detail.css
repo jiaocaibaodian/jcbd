@@ -5,7 +5,6 @@
 
 .el-container .el-main {
     padding: 10px;
-    text-align: center;
 }
 
 .el-main .el-row {
@@ -30,6 +29,11 @@
     height: 100%;
     width: 100px;
     background: url(/pdf.js/web/images/texture.png);
+}
+
+.iframe {
+    box-shadow: 0 0 10px lightgrey;
+    padding: 20px;
 }
 
 .el-main .el-row .el-col iframe,
@@ -58,6 +62,18 @@ video {
 
 .el-main .el-row .el-col .resource-bar .resource-bar-item span {
     font-size: 0.3rem;
+}
+
+.el-main .el-row .el-col .el-card {
+    position: fixed;
+    top: 60px;
+    height: 100%;
+    overflow: auto;
+    width: 24%;
+}
+
+.el-main .el-row .el-col .el-card__header {
+    text-align: center;
 }
 
 .el-main .el-button {

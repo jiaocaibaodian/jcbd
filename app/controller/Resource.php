@@ -6,7 +6,7 @@ use think\facade\Db;
 use think\facade\Request;
 use think\facade\View;
 use think\Validate;
-
+use QL\QueryList;
 class Resource extends BaseController
 {
     public function index()
@@ -49,9 +49,11 @@ class Resource extends BaseController
         return View::fetch();
     }
     public function getIframe(){
-        $url = input("param.url");
-        $html = file_get_contents($url);
-        return $html;
+        $rid = input("param.rid");
+        $rsrc = Db::table("resource")->where("rid",$rid)->value("rsrc");
+        $html = \file_get_contents(app()->getRootPath()."public".$rsrc);
+        $result = \json_decode($html)[0];
+        return $result;
     }
     public function uploadFile() //资源上传接口
     {
@@ -66,10 +68,23 @@ class Resource extends BaseController
             //验证通过，将资源存放到服务器
             $savename = [];
             foreach ($files as $file) {
-                $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
                 $labels = explode(",", $_POST['labels']);
+                if ($_POST['rtype']=='短篇博客'){
+                    //先删除文件，然后重新生成同名不同类型文件
+                    list($usec, $sec) = explode(" ", microtime());
+                    $path = app()->getRootPath()."public/storage/resources/".date("Ymd")."/";
+                    \creatdir($path);
+                    $savename[] = "resources/".date("Ymd")."/".md5($usec).".txt";
+                    $myfile = fopen(app()->getRootPath()."public/storage/".$savename[count($savename)-1], "w");
+                    $root = QueryList::get($_POST['rorigin']);
+                    $txt =  $root->find('.baidu_pl')->htmls();
+                    fwrite($myfile, $txt);
+                    fclose($myfile);
+                }else{
+                    $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
+                }
                 $data = [
                     "rid" => $rid,
                     "rname" => $file->getOriginalName(),

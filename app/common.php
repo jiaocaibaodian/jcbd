@@ -111,3 +111,13 @@ function comment_data_format($data){        //格式化评论数据
     }
     return $result;
 }
+function creatdir( $path ) {
+	if ( !is_dir( $path ) ) {
+		if ( creatdir( dirname( $path ) ) ) {
+			mkdir( $path, 0777 );
+			return true;
+		}
+	} else {
+		return true;
+	}
+}
