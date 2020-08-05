@@ -86,15 +86,12 @@ ul.infinite-list li.infinite-list-item span {
 .el-form {
     white-space: nowrap;
     padding: 0 20px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
     box-shadow: 0 10px 5px lightgrey;
-    /* position: fixed; */
-    /*注释原因，会导致上传按钮被遮挡*/
     width: 100%;
     z-index: 10;
     margin-left: 50px;
-    /*添加原因，避免logo被遮挡*/
+    background: white;
+    border-radius: 10px;
 }
 
 .el-form .el-form-item .el-card__body {
