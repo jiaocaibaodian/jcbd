@@ -14,4 +14,10 @@ $(function() {
     $(".el-header .el-menu .el-submenu .el-menu-item:eq(2)").click(function() {
         window.location.href = "/shelf";
     })
+    $(".el-header .el-menu .el-submenu .el-menu-item:eq(3)").click(function() {
+        window.location.href = "/videos";
+    })
+    $(".el-header .el-menu .el-submenu .el-menu-item:eq(4)").click(function() {
+        window.location.href = "/person";
+    })
 })

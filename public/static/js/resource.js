@@ -40,7 +40,8 @@ var uploadPage = new Vue({
                 labels: [],
                 showAll: false,
                 newlname: ""
-            }
+            },
+            isResourceShow: 0
         }
     },
     created: function() {
@@ -76,8 +77,8 @@ var uploadPage = new Vue({
         handleGroupChange(val) {
             for (let i = 0; i < this.fieldData.group.length; i++) {
                 if (this.fieldData.group[i].value == val) {
-                    this.selectedGroup.id = this.fieldData.group[i].id;
-                    console.log(this.selectedGroup);
+                    this.fieldData.selectedGroup.id = this.fieldData.group[i].id;
+                    console.log(this.fieldData.selectedGroup);
                     return;
                 }
             }
@@ -177,9 +178,9 @@ var uploadPage = new Vue({
         handleLabelChange(val) {
             console.log(val);
             for (let i = 0; i < this.labelDialog.labels.length; i++) {
-                if (this.labelDialog.labels[i].lname == val[val.length - 1]) {
-                    this.labelDialog.parentLabel = this.labelDialog.labels[i];
-                    return;
+                if (this.labelDialog.labels[i].lname == val) {
+                    this.labelDialog.parentLabel = JSON.parse(JSON.stringify(this.labelDialog.labels[i]));
+                    break;
                 }
             }
         },
@@ -219,11 +220,21 @@ var uploadPage = new Vue({
                 })
                 .then(res => {
                     console.log(res.data);
+                    this.isResourceShow++;
                     this.fieldData.labels = res.data;
                     axios.get("/resource/getUnorgLabels")
                         .then(res => {
                             console.log(res.data);
                             this.labelDialog.labels = res.data;
+                            this.$message({
+                                message: "创建成功",
+                                type: "success"
+                            });
+                            //关闭弹窗
+                            this.labelDialog.dialogVisible = false;
+                            this.fieldData.selectedLabels = this.labelDialog.newlname;
+                            //清空输入框
+                            this.labelDialog.newlname = "";
                         })
                         .catch(err => {
                             console.error(err);
@@ -252,14 +263,35 @@ var indexPage = new Vue({
     data() {
         return {
             activeIndex: '4',
-            types: ['全部', '视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
-            selectedType: "全部",
+            selectedType: { label: "全部", value: "" },
+            types: [{
+                label: "全部",
+                value: "#"
+            }, {
+                label: "视频",
+                value: "#videos"
+            }, {
+                label: "链接",
+                value: "#links"
+            }, {
+                label: "电子书籍",
+                value: "#books"
+            }, {
+                label: "短篇博客",
+                value: "#articles"
+            }, {
+                label: "教材",
+                value: "#textbooks"
+            }, {
+                label: "答案",
+                value: "#answers"
+            }],
             resources: [],
             labels: [],
             selectedLabels: "",
             query: "",
             searchResults: [],
-            mode: "none"
+            // mode: "none"
         }
     },
     created: function() {
@@ -275,20 +307,93 @@ var indexPage = new Vue({
     },
     methods: {
         getResource() {
-            axios.get("/resource/get_resource")
+            axios.get("/resource/get_resource?rtype=" + "全部")
                 .then(res => {
                     console.log(res.data);
+                    res.data.data.forEach(element => {
+                        element.labels = JSON.parse(element.labels);
+                    });
                     this.resources.push.apply(this.resources, res.data.data);
                 })
                 .catch(err => {
                     console.error(err);
                 })
         },
+        getTempSearchResults() {
+            axios.get("/resource/get_temp_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType.label)
+                .then(res => {
+                    //json格式化
+                    res.data.forEach(element => {
+                        element.labels = JSON.parse(element.labels);
+                    });
+                    this.searchResults = res.data;
+                    var reg = new RegExp(this.query);
+                    console.log(reg);
+                    for (let i = 0; i < this.searchResults.length; i++) {
+                        this.searchResults[i].rname = this.searchResults[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
+                        this.searchResults[i].rauthor = this.searchResults[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
+        handleClose(done) {
+            done();
+        },
+        openFile(rid, url) {
+            //前往电子书籍详情页面
+            window.open("/resource/book_detail?url=" + url + "&rid=" + rid)
+        },
+        openVideo(url, rid) {
+            //前往视频详情页面
+            window.open("/resource/video_detail?url=" + url + "&rid=" + rid)
+        },
+        addToShelf($rid) {
+            //加入书架
+            axios({
+                    method: 'post',
+                    url: "/resource/addToShelf",
+                    data: {
+                        rid: $rid
+                    }
+                })
+                .then(res => {
+                    console.log(res.data);
+                    this.$message({
+                        type: "success",
+                        message: "加入书架成功"
+                    })
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        },
+        showResults() {
+            //首先检查用户是否有输入查询字段
+            // if (this.query==""){
+            //     this.$message({
+            //         message:
+            //     })
+            // }
+        },
+        handleTypeChange(val) {
+            console.log(val);
+            this.types.forEach(element => {
+                if (element.label == val) {
+                    window.location.href = element.value;
+                    return;
+                }
+            });
+        },
         getSearchResults() {
-            axios.get("/resource/get_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType + "&pageIndex=1")
+            axios.get("/resource/get_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType.label + "&pageIndex=1")
                 .then(res => {
                     console.log(res.data);
                     var reg = new RegExp(this.query);
+                    res.data.data.forEach(element => {
+                        element.labels = JSON.parse(element.labels);
+                    });
                     this.resources.push.apply(this.resources, res.data.data);
                     for (let i = 0; i < this.resources.length; i++) {
                         this.resources[i].rname = this.resources[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
@@ -299,56 +404,5 @@ var indexPage = new Vue({
                     console.error(err);
                 })
         },
-        getTempSearchResults() {
-            axios.get("/resource/get_temp_search_results?query=" + this.query + "&labels=" + this.selectedLabels + "&type=" + this.selectedType)
-                .then(res => {
-                    this.searchResults = res.data;
-                    var reg = new RegExp(this.query);
-                    console.log(reg);
-                    for (let i = 0; i < this.searchResults.length; i++) {
-                        this.searchResults[i].rname = this.searchResults[i].rname.replace(reg, "<strong class='highlight'>" + this.query + "</strong>");
-                        this.searchResults[i].rauthor = this.searchResults[i].rauthor.replace(reg, "<strong class='highlight'>" + this.query + "</strong>")
-                    }
-                    this.mode = "block";
-                })
-                .catch(err => {
-                    console.error(err);
-                })
-        },
-        handleClose(done) {
-            done();
-        },
-        openFile() {
-            //判断 
-            var event = window.event;
-            console.log(event);
-            var url = event.target.parentNode.dataset.rsrc;
-            if (url == undefined) {
-                url = event.target.dataset.rsrc;
-            }
-            console.log(url);
-            window.open("/pdf.js/web/viewer.html?file=" + url);
-            //前往电子书籍详情页面
-        },
-        openVideo() {
-            //前往视频详情页面
-        },
-        addToShelf() {
-            //加入书架
-            console.log(this.detail);
-            axios({
-                    method: 'post',
-                    url: "/resource/addToShelf",
-                    data: {
-                        rid: this.detail.resource.rid
-                    }
-                })
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.error(err);
-                })
-        }
     }
 })

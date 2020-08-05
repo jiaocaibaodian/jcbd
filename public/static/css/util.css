@@ -60,6 +60,9 @@ a {
 
 .el-header .el-menu .el-menu-item:first-child {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

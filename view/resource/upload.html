@@ -8,13 +8,13 @@
     <script type="text/javascript" src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/resource.css">
-    <title>首页</title>
+    <title>上传</title>
 </head>
 
 <body>
     <el-container id="upload">
         <!-- 导航条 -->
-        <el-header>
+        <el-header id="top"style="position: fixed;width: 100%;z-index: 999;" >
             <div class="logo">
                 <div class="logo1"></div>
                 <div class="logo2"></div>
@@ -37,7 +37,7 @@
                 </el-submenu>
             </el-menu>
         </el-header>
-        <el-main>
+        <el-main style="margin-top: 60px;">
             <el-form ref="form" label-width="80px" class="input-box">
                 <el-form-item label="标签">
                     <!-- 通过级联的方式选择资源的各级标签 -->
@@ -50,12 +50,14 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
+                    <el-tooltip class="item" effect="light" content="输入创建组名，如果上传多个同标签文件，可创建组，或者选择您已有的组" placement="top">
                     <el-input v-model="fieldData.rgname" placeholder="在此输入创建组名，如果上传多个同标签文件，可创建组，或者选择您已有的组">
-                        <el-select clearable :change="handleGroupChange" v-model="fieldData.selectedGroup.value" slot="prepend" placeholder="选择已有组" style="width:200px;">
+                        <el-select clearable @change="handleGroupChange" v-model="fieldData.selectedGroup.value" slot="prepend" placeholder="选择已有组" style="width:120px;">
                             <el-option v-for="groupitem in fieldData.group" :key="groupitem.id" :value="groupitem.value"></el-option>
                         </el-select>
                         <el-button slot="append" @click="create_group()">创建</el-button>
                     </el-input>
+                </el-tooltip>
                 </el-form-item>
                 <el-form-item>
                     <el-input v-model="fieldData.author">
@@ -80,7 +82,7 @@
                 </el-form-item>
                 <el-form-item>
                     <div class="upload-file">
-                        <el-upload accept="image/*,.pdf,.mp4,.txt" ref="upload" multiple :limit="5" action="http://xxx.xxx.xxx/personality/uploadExcel" :on-change="handleChange" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList" :http-request="uploadFile"
+                        <el-upload accept="image/*,.pdf,.mp4,.txt" ref="upload" multiple :limit="30" action="http://xxx.xxx.xxx/personality/uploadExcel" :on-change="handleChange" :on-remove="handleRemove" :on-exceed="handleExceed" :file-list="fileList" :http-request="uploadFile"
                             :auto-upload="false">
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                             <el-button style="margin-left: 133px;" size="small" type="success" @click="submitUpload">上传到服务器
@@ -93,7 +95,7 @@
         </el-main>
         <el-footer>
             <el-dialog title="创建标签" :visible.sync="labelDialog.dialogVisible" width="50%" :close-on-click-modal="false">
-                <el-cascader :options="fieldData.labels" v-model="labelDialog.parentLabel.lname" style="width: 200px;" placeholder="请选择父标签" clearable :props="{ checkStrictly: true }" @active-item-change="handleLabelChange"></el-cascader>
+                <el-cascader :key="isResourceShow" :options="fieldData.labels" v-model="labelDialog.parentLabel.lname" style="width: 200px;" placeholder="请选择父标签" clearable :props="{ checkStrictly: true}" @change="handleLabelChange"></el-cascader>
                 <el-button @click="labelDialog.showAll=!labelDialog.showAll;">展开</el-button>
                 <el-row gutter="20" v-if="labelDialog.showAll">
                     <el-col v-for="labelitem in labelDialog.labels" :span="4">
@@ -110,18 +112,6 @@
                 </el-form>
             </el-dialog>
         </el-footer>
-        <el-form class="bg-bubbles">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </el-form>
     </el-container>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>

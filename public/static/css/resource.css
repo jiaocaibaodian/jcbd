@@ -83,79 +83,127 @@ ul.infinite-list li.infinite-list-item span {
     flex: 1;
 }
 
-.el-main .el-form .el-form-item .el-card {
-    display: block;
-    width: 400px;
-    position: absolute;
-    left: 205px;
-    top: 40px;
+.el-form {
+    white-space: nowrap;
+    padding: 0 20px;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
+    box-shadow: 0 10px 5px lightgrey;
+    /* position: fixed; *//*注释原因，会导致上传按钮被遮挡*/
+    width: 100%;
+    z-index: 10;
+    margin-left: 50px;/*添加原因，避免logo被遮挡*/
 }
 
-.el-main .el-form .el-form-item .el-card__body {
+
+}
+.el-form .el-form-item .el-card__body {
     padding: 0;
 }
-
 .el-form-item {
     margin-bottom: 0;
 }
-
-.container .el-card {
-    height: 500px;
-    min-height: 500px;
-    overflow: scroll;
-}
-
-.container .el-card .el-row .el-col div.resource-item {
-    height: 300px;
-    margin: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px lightgrey;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.imgdiv {
-    width: 100%;
-    height: 60%;
-    background: #e1e1fb;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.imgdiv .media {
-    max-height: 100%;
-    max-width: 100%;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info {
-    margin: 10px;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div {
-    display: flex;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link {
-    width: 80%;
-    display: flex;
-    justify-content: flex-start;
-    white-space: nowrap;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-info div .el-link span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.container .el-card .el-row .el-col div.resource-item div.resource-btn {
-    display: flex;
+.el-form-item .el-form-item__content {
+    line-height: 40px;
+    position: relative;
+    font-size: 14px;
+    /* display: flex; *//* 注释的原因，为了页面对其 */
+    align-items: center;
     justify-content: space-around;
 }
-
-
-/* upload页面 */
-
-.input-box {
-    width: 500px;
-    padding: 30px;
+.el-menu-item * {
+    border: none;
+    vertical-align: unset;
+}
+.container .el-card {
+    height: 700px;
+    overflow: auto;
+    box-shadow: none;
+    border: none;
+}
+.container .el-card .el-row {
+    height: 10vw;
+    min-height: 120px;
+}
+.container .el-card .el-row .el-col {
+    height: 100%;
+    margin-bottom: 20px;
+}
+.resource-item {
+    width: 100%;
+    height: 100%;
+    background: #f7f7f7;
+    position: relative;
+    overflow: hidden;
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mask-top {
+    width: 100%;
+    height: 22%;
+    position: absolute;
+    left: 0;
+    top: -22%;
+    background: black;
+    opacity: 0.7;
+    text-align: center;
+}
+.mask-top span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+#videos .mask-top {
+    height: 24%;
+    top: -24%;
+}
+#videos .mask-bottom {
+    height: 24%;
+}
+.mask-bottom {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: black;
+    opacity: 0.7;
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
+}
+.resource-item:hover .mask-top {
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    /* Safari */
+    
+    -webkit-transform: translate(0, 100%);
+    -moz-transform: translate(0, 100%);
+    -ms-transform: translate(0, 100%);
+    -o-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+}
+.resource-item:hover .mask-bottom {
+    transition: all 0.7s;
+    -webkit-transition: all 0.7s;
+    /* Safari */
+    
+    -webkit-transform: translate(0, -100%);
+    -moz-transform: translate(0, -100%);
+    -ms-transform: translate(0, -100%);
+    -o-transform: translate(0, -100%);
+    transform: translate(0, -100%);
 }
 
+/* upload页面 */
+.input-box {
+    width: 40%;
+    padding: 30px;
+}
 .el-main {
     overflow: initial;
 }
