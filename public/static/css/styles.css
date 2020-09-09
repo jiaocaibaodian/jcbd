@@ -36,6 +36,13 @@ html {
     box-shadow: 0 0 5px #DCDFE6;
 }
 
+.checkcode .el-input-group__append {
+    border-left: 0;
+    padding: 0;
+    line-height: 0px;
+    border: none;
+}
+
 .login-title {
     margin-bottom: 20px;
     text-align: center;

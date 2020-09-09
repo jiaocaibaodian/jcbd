@@ -18,6 +18,9 @@ class Resource extends BaseController
         }
 
     }
+    public function test(){
+        return View::fetch();
+    }
     public function upload()
     {
         if (!array_key_exists('token', $_COOKIE)) {
