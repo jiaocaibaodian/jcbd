@@ -39,6 +39,7 @@
                                 </el-input>
                             </el-popover>
                             <el-button class="uploadbtn" @click="window.open('/resource/upload')">上传资源</el-button>
+                            <el-button class="write_post" @click="window.open('/resource/writepost')">写博客</el-button>
                         </el-form-item>
                     </el-form>
                 </el-menu-item>
@@ -182,29 +183,6 @@
                         </el-col>
                     </el-row>
                 </el-card>
-                <el-card id="links">
-                    <span slot="header">链接</span>
-                    <el-row gutter="20" style="height: 14vw;">
-                        <el-col :span="3" v-for="res in resources" v-if="res.rtype=='链接'">
-                            <div class="resource-item">
-                                <img :src="res.rcover" style="width: 103%;height: 100%;" alt="">
-                                <div class="mask-top">
-                                    <el-tooltip class="item" effect="dark" :content="res.rname" placement="top">
-                                        <span>{{res.rname}}</span>
-                                    </el-tooltip>
-                                    <div>
-                                        <span>{{res.rauthor}}</span>
-                                    </div>
-                                </div>
-                                <div class="mask-bottom">
-                                    <el-button type="text" @click="window.open(res.rorigin)">前往链接</el-button>
-                                    <el-button type="text" @click="addToShelf(res.rid)">加入书架</el-button>
-                                    </el-button>
-                                </div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </el-card>
                 <ul class="col-nav">
                     <li><a href="#"><i class="el-icon-arrow-up"></i></a></li>
                     <li><a href="#textbooks">教材</a></li>
@@ -212,7 +190,6 @@
                     <li><a href="#videos">视频</a></li>
                     <li><a href="#books">电子书籍</a></li>
                     <li><a href="#articles">短篇博客</a></li>
-                    <li><a href="#links">链接</a></li>
                 </ul>
             </div>
         </el-main>

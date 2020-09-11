@@ -9,6 +9,7 @@
     <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.12.0/theme-chalk/index.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/book_detail.css">
+    <link rel="stylesheet" href="/static/extend/editormd/css/editormd.css" />
     <title>电子书籍主页</title>
 </head>
 
@@ -41,8 +42,9 @@
         <el-main>
             <el-row class="resource" :type="!currentRes.ingroup?'flex':''" justify="space-around">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20">
-                    <!-- <iframe :src="currentRes.rorigin" frameborder="0" id="iframe" name="iframe"></iframe> -->
-                    <div class="iframe"></div>
+                    <div id="test-editormd-view" class="markdown-body editormd-html-preview">
+
+                    </div>
                 </el-col>
                 <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="4" v-if="currentRes.ingroup">
                     <el-card>
@@ -191,7 +193,7 @@
                 getiframe(rid) {
                     axios.get("/resource/getIframe?rid=" + rid)
                         .then(res => {
-                            $(".iframe").html(res.data);
+                            $("#test-editormd-view").html(res.data);
                         })
                         .catch(err => {
                             console.error(err);
@@ -352,6 +354,17 @@
                 }
             }
         });
+    </script>
+    <script src="/static/extend/editormd/editormd.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var editor = editormd("test-editor", {
+                width: "100%",
+                height: "555px",
+                path: "/static/extend/editormd/lib/",
+                htmlDecode: true, // Decode all html tags & attributes
+            });
+        })
     </script>
 </body>
 

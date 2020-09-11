@@ -7,7 +7,7 @@ var uploadPage = new Vue({
             fileList: [], // upload多文件数组
             fieldData: {
                 labels: [],
-                types: ['视频', '链接', '电子书籍', '短篇博客', '教材', '答案'],
+                types: ['视频', '电子书籍', '短篇博客', '教材', '答案'],
                 type: "",
                 selectedLabels: "",
                 selectedGroup: {

@@ -51,6 +51,9 @@ class Resource extends BaseController
     public function article_detail(){
         return View::fetch();
     }
+    public function writepost(){
+        return View::fetch();
+    }
     public function getIframe(){
         $rid = input("param.rid");
         $rsrc = Db::table("resource")->where("rid",$rid)->value("rsrc");
@@ -191,7 +194,7 @@ class Resource extends BaseController
         $data = [];
         if ($type=="全部"){
             //分页查询，视图查询，双表连接查询
-            $types = ['视频','链接','电子书籍','短篇博客','教材','答案'];
+            $types = ['视频','电子书籍','短篇博客','教材','答案'];
             foreach ($types as $key => $value) {
                 $result = Db::table("resource")->where("rtype",$value)->where("rid","<>","000001")
                 ->order('rid', 'desc')->paginate(20)->toArray();

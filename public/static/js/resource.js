@@ -12,9 +12,6 @@ var indexPage = new Vue({
                 label: "视频",
                 value: "#videos"
             }, {
-                label: "链接",
-                value: "#links"
-            }, {
                 label: "电子书籍",
                 value: "#books"
             }, {
