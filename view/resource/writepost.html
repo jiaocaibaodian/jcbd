@@ -7,41 +7,27 @@
     <link rel="Shortcut Icon" href="/static/img/jiaocaibaodian.ico" type="image/x-icon" />
     <title>写博客</title>
     <link rel="stylesheet" href="/static/extend/layui/css/layui.css">
-    <style>
-        .layui-form {
-            width: 100vw;
-            background: whitesmoke;
-            padding: 10px;
-        }
-        
-        .layui-btn-group {
-            position: absolute;
-            left: 1000px;
-            top: 100px;
-        }
-        
-        .layui-btn-group .layui-btn-primary {
-            margin: 0 5px;
-            border-left: 1px solid #c9c9c9;
-        }
-        
-        .my-group {
-            position: absolute;
-            left: 1300px;
-            top: 196px;
-            z-index: 11;
-            font-weight: bolder;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/cascader.css">
+    <link rel="stylesheet" href="/static/css/writepost.css">
 </head>
 
 <body data-mode="edit" id="app">
     <!-- 你的HTML代码 -->
     <form class="layui-form" action="">
-        <div class="layui-form-item" style="width: 61.6vw;">
-            <label class="layui-form-label">博客地址</label>
-            <div class="layui-input-block">
-                <input type="text" name="url" required lay-verify="required" placeholder="请输入博客地址" autocomplete="off" class="layui-input" onblur="fill()">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">博客地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="url" required lay-verify="required" placeholder="请输入博客地址" autocomplete="off" class="layui-input" onblur="fill()">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">选择分组</label>
+                <div class="layui-input-inline">
+                    <select name="group" id="rgroup" placeholder="请输入博客地址" class="layui-input" lay-filter="group">
+                        <option value=""></option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
@@ -66,39 +52,40 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">资源标签</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="cas">
-                </div>
-            </div>
-            <div class="layui-inline">
                 <label class="layui-form-label">资源关键词</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="class" placeholder="请输入关键词" autocomplete="off" class="layui-input">
+                    <input type="text" name="keywords" placeholder="请输入关键词" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">作者</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="id" placeholder="请输入作者名(转载)" autocomplete="off" class="layui-input">
+                    <input type="text" name="author" placeholder="请输入作者名(转载)" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">资源标签</label>
+                <div class="layui-input-block">
+                    <input type="text" id="label" class="layui-input">
                 </div>
             </div>
         </div>
     </form>
-    <div class="layui-btn-group">
-        <button class="layui-btn" onclick="grab()">抓取</button>
-        <button class="layui-btn" onclick="display()">查看可能结果</button>
-        <button class="layui-btn" onclick="getHTML()">获取代码</button>
+    <div class="btn-group">
+        <div>
+            <button class="layui-btn" onclick="display()">查看可能结果</button>
+            <button class="layui-btn" onclick="getHTML()">拉取文章代码</button>
+        </div>
+        <div>
+            <button class="layui-btn layui-btn-radius layui-btn-danger " onclick="sharingpost()">转载发布</button>
+            <button class="layui-btn layui-btn-radius layui-btn-warm" onclick="originalpost()">原创发布</button>
+        </div>
     </div>
     <div class="layui-btn-group my-group">
         <button class="layui-btn-primary layui-btn-sm" onclick="modifyImage(1)" data-text="添加image域名">
             <i class="layui-icon layui-icon-addition"></i></button>
         <button class="layui-btn-primary layui-btn-sm" onclick="modifyImage(2)" data-text="添加image的https">
             <i class="layui-icon layui-icon-addition"></i></button>
-        <button class="layui-btn-primary layui-btn-sm" onclick="deleteLink()" data-text="删除所有link标签">
-            <i class="layui-icon layui-icon-subtraction"></i></button>
-        <button class="layui-btn-primary layui-btn-sm" onclick="deleteSvg()" data-text="删除所有svg标签">
-            <i class="layui-icon layui-icon-subtraction"></i></button>
     </div>
     <div id="test-editor">
         <link rel="stylesheet" href="/static/extend/editormd/css/editormd.css" />
@@ -116,16 +103,14 @@
                 path: "/static/extend/editormd/lib/",
                 htmlDecode: true, // Decode all html tags & attributes
             });
-        })
-    </script>
-    <script>
+        });
         layui.config({
             base: "/static/extend/layui/lay/mymodules/"
-        }).use(['form', "jquery", "cascader", "form"], function() {
+        }).use(['form', "jquery", "cascader", 'form'], function() {
             var $ = layui.jquery;
             var cascader = layui.cascader;
             var cas = cascader({
-                elem: "#cas",
+                elem: "#label",
                 url: "/resource/get_label",
                 // type: "post",
                 // triggerType: "change",
@@ -133,7 +118,7 @@
                 // where: {
                 //     a: "aaa"
                 // },
-                // changeOnSelect: true,
+                changeOnSelect: true,
                 success: function(valData, labelData) {
                     console.log(valData, labelData);
                 }

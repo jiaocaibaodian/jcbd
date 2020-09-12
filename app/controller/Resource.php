@@ -148,6 +148,7 @@ class Resource extends BaseController
         $data = Db::table("label")->where("lclass", 1)->select();
         $root = array();
         recurGetLabels($data, $root);
+        $root = ["Code"=>0,"Data"=>$root];
         return json($root);
     }
     public function getUnorgLabels()

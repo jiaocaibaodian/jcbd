@@ -1,0 +1,30 @@
+.layui-form {
+    width: 100vw;
+    background: whitesmoke;
+    padding: 10px;
+}
+
+.btn-group {
+    position: absolute;
+    left: 1000px;
+    top: 50px;
+}
+
+.btn-group div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.layui-btn-group .layui-btn-primary {
+    margin: 0 5px;
+    border-left: 1px solid #c9c9c9;
+}
+
+.my-group {
+    position: absolute;
+    left: 1300px;
+    top: 196px;
+    z-index: 11;
+    font-weight: bolder;
+}
