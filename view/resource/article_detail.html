@@ -42,7 +42,7 @@
         <el-main>
             <el-row class="resource" :type="!currentRes.ingroup?'flex':''" justify="space-around">
                 <el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="20">
-                    <div id="test-editormd-view" class="markdown-body editormd-html-preview">
+                    <div id="test-editormd-view" class="markdown-body editormd-html-preview" style="margin:auto 0">
 
                     </div>
                 </el-col>
@@ -52,7 +52,7 @@
                         <el-menu :default-active="currentRes.rid">
                             <el-row>
                                 <el-col :xs="8" :sm="24" :md="24" :lg="24" :xl="24" v-for="res in resources">
-                                    <el-menu-item :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
+                                    <el-menu-item :index="res.rid" @click="switchLocation(res.rsrc,res.rid)">
                                         {{res.rname}}
                                     </el-menu-item>
                                 </el-col>
@@ -198,6 +198,9 @@
                         .catch(err => {
                             console.error(err);
                         })
+                },
+                switchLocation(rsrc, rid) {
+                    window.location.href = '/resource/book_detail?rid=' + rid
                 },
                 //根据rid获取所在组rgid,rgname
                 getRgroupById($rid) {

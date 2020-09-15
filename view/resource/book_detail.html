@@ -50,7 +50,7 @@
                         <el-menu :default-active="currentRes.rid">
                             <el-row>
                                 <el-col :xs="8" :sm="24" :md="24" :lg="24" :xl="24" v-for="res in resources">
-                                    <el-menu-item :index="res.rid" @click="window.location.href='/resource/book_detail?url='+res.rsrc+'&rid='+res.rid">
+                                    <el-menu-item :index="res.rid" @click="switchLocation(res.rsrc,res.rid)">
                                         {{res.rname}}
                                     </el-menu-item>
                                 </el-col>
@@ -339,6 +339,9 @@
                         .catch(err => {
                             console.error(err);
                         })
+                },
+                switchLocation(rsrc, rid) {
+                    window.location.href = '/resource/book_detail?rid=' + rid + "&rsrc=" + rsrc;
                 }
             }
         });

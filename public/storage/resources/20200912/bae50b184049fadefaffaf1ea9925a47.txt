@@ -1,0 +1,131 @@
+<article class="baidu_pl">
+                 <div id="article_content" class="article_content clearfix">
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-3d4dc5c1de.css"/>
+                            <div id="content_views" class="markdown_views prism-atom-one-dark">
+                    <!-- flowchart 箭头图标 勿删 -->
+                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                        <path stroke-linecap="round" d="M5,0 0,2.5 5,5z" id="raphael-marker-block" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"/>
+                    </svg>
+                                            <p><strong>1.判断变量是否定义</strong></p>
+<pre><code>input('?get.id');
+input('?post.name');
+</code></pre>
+<p>变量类型方法包括：</p>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>param</code></td>
+<td>获取当前请求的变量</td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>获取 $_GET 变量</td>
+</tr>
+<tr>
+<td><code>post</code></td>
+<td>获取 $_POST 变量</td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td>获取 $_PUT 变量</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>获取 $_DELETE 变量</td>
+</tr>
+<tr>
+<td><code>session</code></td>
+<td>获取 $_SESSION 变量</td>
+</tr>
+<tr>
+<td><code>cookie</code></td>
+<td>获取 $_COOKIE 变量</td>
+</tr>
+<tr>
+<td><code>request</code></td>
+<td>获取 $_REQUEST 变量</td>
+</tr>
+<tr>
+<td><code>server</code></td>
+<td>获取 $_SERVER 变量</td>
+</tr>
+<tr>
+<td><code>env</code></td>
+<td>获取 $_ENV 变量</td>
+</tr>
+<tr>
+<td><code>route</code></td>
+<td>获取 路由（包括PATHINFO） 变量</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>获取 $_FILE 变量</td>
+</tr>
+</tbody>
+</table><p><strong>2.获取PARAM参数</strong></p>
+<pre><code>input('param.name'); // 获取单个参数
+input('param.'); // 获取全部参数
+// 下面是等效的
+input('name'); 
+input('');
+</code></pre>
+<p><strong>3.获取GET参数</strong></p>
+<pre><code>// 获取单个变量
+input('get.id');
+// 使用过滤方法获取 默认为空字符串
+input('get.name');
+// 获取全部变量
+input('get.');
+</code></pre>
+<p><strong>4.使用过滤方法</strong></p>
+<pre><code>input('get.name','','htmlspecialchars'); // 获取get变量 并用htmlspecialchars函数过滤
+input('username','','strip_tags'); // 获取param变量 并用strip_tags函数过滤
+input('post.name','','org\Filter::safeHtml'); // 获取post变量 并用org\Filter类的safeHtml方法过滤
+</code></pre>
+<p><strong>5.使用变量修饰符</strong></p>
+<pre><code>input('get.id/d');
+input('post.name/s');
+input('post.ids/a');
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>s</code></td>
+<td>强制转换为字符串类型</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td>强制转换为整形类型</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>强制转换为布尔类型</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>强制转换为数组类型</td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td>强制转换为浮点类型</td>
+</tr>
+</tbody>
+</table>
+                                    </div>
+                <link href="https://csdnimg.cn/release/phoenix/mdeditor/markdown_views-e0530931f4.css" rel="stylesheet"/>
+                                </div>
+            </article>

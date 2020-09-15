@@ -54,10 +54,60 @@ class Resource extends BaseController
     public function writepost(){
         return View::fetch();
     }
+    public function getpost(){
+        \session_start();
+        $uname = \getUnameByToken();
+        $_POST = Request::post();
+        //先删除文件，然后重新生成同名不同类型文件
+        list($usec, $sec) = explode(" ", microtime());
+        $path = app()->getRootPath()."public/storage/resources/".date("Ymd")."/";
+        \creatdir($path);
+        $savename = "resources/".date("Ymd")."/".md5($usec).".txt";
+        $myfile = fopen(app()->getRootPath()."public/storage/".$savename, "w");
+        $txt =  $_POST['content'];
+        $files = [$myfile];
+        fwrite($myfile, $txt);
+        fclose($myfile);
+        $labels = explode(",", $_POST['labels']);
+        $rid = $usec;
+        $data = [
+            "rid" => $rid,
+            "rname" => $_POST['rname'],
+            "rtype" => "短篇博客",
+            "rsrc" => "/storage/" . $savename,
+            "rorigin" => $_POST['rorigin'],
+            "rauthor" => $_POST['rauthor'],
+            "keywords" => $_POST['keywords'],
+            "labels"=> json_encode($labels)
+        ]; 
+        Db::table("resource")->replace()->insert($data);
+        //更新资源组表，插入新增资源组记录
+        if ($_POST['rgid'] != "") {
+            $data = [
+                "rgid" => $_POST['rgid'],
+                "rgname" => $_POST['rgname'],
+                "rid" => $rid,
+                "uname" => $uname,
+            ];
+            Db::table("rgroup")->replace()->insert($data);
+        }
+        //更新upload表，插入用户上传记录
+        $data = [
+            "uname" => $uname,
+            "rid" => $rid,
+            "rname" => $_POST['postname'],
+            "rsrc" => "/storage/" . $savename,
+        ];
+        Db::table("upload")->replace()->insert($data);
+        //删除资源组表中建表时的默认资源
+        Db::table("rgroup")->where(['rid' => "000001", 'rgid' => $_POST['rgid']])->delete();
+        return json(["code" => 1, "msg" => "上传成功"]);
+    }
     public function getIframe(){
         $rid = input("param.rid");
         $rsrc = Db::table("resource")->where("rid",$rid)->value("rsrc");
         $html = \file_get_contents(app()->getRootPath()."public".$rsrc);
+        return $html;
         $result = \json_decode($html)[0];
         return $result;
     }
@@ -77,20 +127,7 @@ class Resource extends BaseController
                 //在资源表中更新该资源的信息，包括作者，来源，类型，标签，存储路径等等
                 $rid = $file->md5();
                 $labels = explode(",", $_POST['labels']);
-                if ($_POST['rtype']=='短篇博客'){
-                    //先删除文件，然后重新生成同名不同类型文件
-                    list($usec, $sec) = explode(" ", microtime());
-                    $path = app()->getRootPath()."public/storage/resources/".date("Ymd")."/";
-                    \creatdir($path);
-                    $savename[] = "resources/".date("Ymd")."/".md5($usec).".txt";
-                    $myfile = fopen(app()->getRootPath()."public/storage/".$savename[count($savename)-1], "w");
-                    $root = QueryList::get($_POST['rorigin']);
-                    $txt =  $root->find('.baidu_pl')->htmls();
-                    fwrite($myfile, $txt);
-                    fclose($myfile);
-                }else{
-                    $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
-                }
+                $savename[] = \think\facade\Filesystem::disk('public')->putFile('resources', $file);
                 $data = [
                     "rid" => $rid,
                     "rname" => $file->getOriginalName(),

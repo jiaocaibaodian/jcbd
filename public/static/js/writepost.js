@@ -1,5 +1,9 @@
 //一般直接写在一个js文件中
 var that = this;
+that.group = {
+    id: "",
+    value: ""
+}
 layui.use(['layer', 'form', 'element'], function() {
     that.layer = layui.layer;
     form = layui.form;
@@ -48,26 +52,10 @@ window.onload = function() {
     })
 }
 
-function grab() {
-    $.ajax({
-        method: "GET",
-        url: "http://127.0.0.1/api?url=" + $("input[name='url']").val(),
-        success: function(res) {
-            that.data = JSON.parse(res);
-            console.log(that.data);
-            that.layer.msg("请求成功");
-        },
-        fail: function(err) {
-            console.error(err);
-            that.layer.msg("请检查你输入的网址是否正确");
-        }
-    })
-}
-
 function fill() {
     $.ajax({
         method: 'GET',
-        url: "http://127.0.0.1/api?url=" + $("input[name='url']").val(),
+        url: "http://127.0.0.1:8000/api?url=" + $("input[name='url']").val(),
         success: function(res) {
             that.data = JSON.parse(res);
             console.log(that.data[0]);
@@ -138,7 +126,7 @@ function getHTML() {
     console.log(body)
     $.ajax({
         method: "post",
-        url: "http://127.0.0.1/api",
+        url: "http://127.0.0.1:8000/api",
         data: {
             url: $("input[name='url']").val(),
             body: body
@@ -163,7 +151,7 @@ function modifyImage(i) {
     console.log(add);
     $.ajax({
         method: 'POST',
-        url: "http://www.rcloudy.cn/zhiling",
+        url: "http://127.0.0.1:8000/zhiling",
         data: {
             text: $("#test-editor textarea").val(),
             add: add
@@ -190,15 +178,21 @@ function sharingpost() {
         return;
     }
     //其次验证作者是否为空，
-    author = $("#author").val();
+    author = $("input[name='author']").val();
     if (author == "") {
         tip("当前是转载发布，必须填写作者名");
         return;
     }
     //其次验证关键词是否为空，
-    keywords = $("#keywords").val();
+    keywords = $("input[name='keywords']").val();
     if (keywords == "") {
         tip("请输入关键词")
+        return;
+    }
+    //验证文章名是否为空,
+    postname = $("input[name='postname']").val();
+    if (postname == "") {
+        tip("请输入文章名");
         return;
     }
     //再验证是否选择标签
@@ -206,20 +200,26 @@ function sharingpost() {
     if (labels == "") {
         tip("请选择标签")
     }
-    var fileData = new FormData(); // new formData对象
-    fileData.append("labels", labels);
-    fileData.append("rtype", "短篇博客");
-    fileData.append("rgid", that.group.id)
-    fileData.append("rgname", that.group.value);
-    fileData.append("rauthor", author)
-    fileData.append("rorigin", $("input[name='url']").val())
-    fileData.append("keywords", keywords)
-    fileData.append("content", $("#test-editor textarea").val())
-    $.post({
-        url: "/resource/upload",
-        data: that.fileData,
-        success: res => {
+    var fileData = {
+        labels: labels,
+        rname: $("input[name='postname']").val(),
+        rgid: that.group.id,
+        rgname: that.group.value,
+        rauthor: author,
+        rorigin: $("input[name='url']").val(),
+        keywords: keywords,
+        content: $("#test-editor textarea").val(),
+        postname: postname
+    }
+    $.ajax({
+        type: "post",
+        url: "/resource/getpost",
+        data: fileData,
+        success: function(res) {
             console.log(res)
+        },
+        fail: function(err) {
+            console.error(err);
         }
     })
 }
